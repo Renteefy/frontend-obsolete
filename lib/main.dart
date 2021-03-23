@@ -58,7 +58,22 @@ class _MyAppState extends State<MyApp> {
                         filled: true,
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(
-                              color: Color(0xff434040), width: 0.0),
+                              color: Color(0xff434040), width: 0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color(0xff434040), width: 0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color(0xff434040), width: 0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              color: Color(0xff434040), width: 0),
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         hintText: "Email",
