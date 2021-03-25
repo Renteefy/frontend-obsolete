@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
-import './landing.dart';
 
-void main() => runApp(
-    MaterialApp(theme: ThemeData(brightness: Brightness.dark), home: MyApp()));
+//env
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:frontend/app.dart';
 
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _MyAppState();
-  }
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    // const colour = const Color(0xfEF476f);
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: LandingPage(),
-    );
-  }
+Future main() async {
+  await DotEnv.load(fileName: ".env");
+  runApp(App());
 }
 
 // link : https://i.imgur.com/gNf5rxI.png
