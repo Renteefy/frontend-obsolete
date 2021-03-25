@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import '../shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
-
 import 'package:http/http.dart' as http;
 
 class LandingPage extends StatefulWidget {
@@ -13,17 +10,11 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   String email;
-  Future<int> checkLogin(email) async {
-    var match = {"username": email};
-    var data = await http.post(Uri.http("127.0.0.1:5000", "users/login"),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: match);
-    // var jsonData = json.decode(data.body);
-
-    return (data.statusCode);
+  bool loading = true;
+  Future<int> checklogin(email) async {
+    print(email);
+    Navigator.pushNamed(context, '/home');
+    return 0;
   }
 
   @override
@@ -34,8 +25,7 @@ class _LandingPageState extends State<LandingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SafeArea(
-            child: Expanded(
-                child: Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 50),
@@ -58,6 +48,11 @@ class _LandingPageState extends State<LandingPage> {
                         height: 30,
                       ),
                       TextField(
+                        onChanged: (val) {
+                          setState(() {
+                            email = val;
+                          });
+                        },
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(20),
                           filled: true,
@@ -69,7 +64,12 @@ class _LandingPageState extends State<LandingPage> {
                       SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  loading = true;
+                                });
+                                checklogin(email);
+                              },
                               style: ElevatedButton.styleFrom(
                                   primary: kAccentColor1),
                               child: Padding(
@@ -94,7 +94,7 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                 ),
               ],
-            )),
+            ),
           ),
           Expanded(
               flex: 1,

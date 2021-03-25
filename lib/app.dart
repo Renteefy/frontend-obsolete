@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/HomePage.dart';
 
 // constants
 import './shared/constants.dart';
@@ -15,11 +16,15 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Renteefy",
-        theme: ThemeData(
-            brightness: Brightness.dark,
-            scaffoldBackgroundColor: kBackgroundColor,
-            primaryColor: kPrimaryColor),
-        home: LandingPage());
+      routes: {
+        "/": (context) => LandingPage(),
+        "/home": (context) => HomePage(),
+      },
+      title: "Renteefy",
+      theme: ThemeData(
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: kBackgroundColor,
+          primaryColor: kPrimaryColor),
+    );
   }
 }
