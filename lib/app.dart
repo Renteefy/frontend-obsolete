@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/HomePage.dart';
+import 'package:frontend/pageController/HomePageController.dart';
 
 // constants
 import './shared/constants.dart';
@@ -18,7 +18,7 @@ class _AppState extends State<App> {
     return MaterialApp(
       routes: {
         "/": (context) => LandingPage(),
-        "/home": (context) => HomePage(),
+        "/home": (context) => HomePageController(),
       },
       title: "Renteefy",
       theme: ThemeData(
