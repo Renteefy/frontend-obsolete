@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/pages/AddPage.dart';
 import 'package:frontend/pages/DashboardPage.dart';
 import 'package:frontend/pages/HomePage.dart';
+import 'package:frontend/shared/constants.dart';
 
 class HomePageController extends StatefulWidget {
   @override
@@ -27,6 +28,19 @@ class _HomePageControllerState extends State<HomePageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: IconButton(
+                icon: Icon(Icons.notifications_none_rounded),
+                iconSize: 30,
+                onPressed: () {}),
+          )
+        ],
+      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -46,16 +60,20 @@ class _HomePageControllerState extends State<HomePageController> {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.business),
-                label: 'Business',
+                icon: Icon(Icons.add),
+                label: 'Add Listing',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.school),
-                label: 'School',
+                icon: CircleAvatar(
+                  radius: 13,
+                  backgroundImage:
+                      NetworkImage("https://ui-avatars.com/api/?name=John+Doe"),
+                ),
+                label: 'Dashboard',
               ),
             ],
             currentIndex: _selectedIndex,
-            selectedItemColor: Colors.amber[800],
+            selectedItemColor: kAccentColor1,
             onTap: _onItemTapped,
           ),
         ),
