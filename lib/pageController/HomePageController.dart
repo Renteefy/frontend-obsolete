@@ -16,7 +16,7 @@ class _HomePageControllerState extends State<HomePageController> {
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     AddPage(),
-    DashboardPage()
+    DashboardPage(),
   ];
 
   void _onItemTapped(int index) {

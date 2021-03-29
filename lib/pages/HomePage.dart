@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,7 +35,9 @@ class HomePage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: kPrimaryColor),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/assetCatlog');
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Text(
