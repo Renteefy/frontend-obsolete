@@ -72,9 +72,24 @@ class AssetCatlogPage extends StatelessWidget {
                     spacing: 8.0,
                     runSpacing: 8.0,
                     children: [
-                      ListingCard(),
-                      ListingCard(),
-                      ListingCard(),
+                      ListingCard(
+                        title:
+                            "Lorem ipsum dolor sit amet consectetur adipisicing elit",
+                        interval: "per hour",
+                        price: "50",
+                      ),
+                      ListingCard(
+                        title:
+                            "Lorem ipsum dolor sit amet consectetur adipisicing elit",
+                        interval: "per hour",
+                        price: "50",
+                      ),
+                      ListingCard(
+                        title:
+                            "Lorem ipsum dolor sit amet consectetur adipisicing elit",
+                        interval: "per hour",
+                        price: "50",
+                      ),
                     ],
                   ),
                 )
@@ -86,9 +101,15 @@ class AssetCatlogPage extends StatelessWidget {
 }
 
 class ListingCard extends StatelessWidget {
-  const ListingCard({
-    Key key,
-  }) : super(key: key);
+  final String url;
+  final String title;
+  final String price;
+  final String interval;
+  ListingCard(
+      {this.url = "https://via.placeholder.com/151/162",
+      @required this.title,
+      @required this.price,
+      @required this.interval});
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +131,7 @@ class ListingCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
-                      "https://4.imimg.com/data4/VO/DP/MY-3816229/harry-potter-and-the-cursed-child-parts-i-500x500.jpg",
+                      url,
                       width: 151,
                       height: 162,
                       fit: BoxFit.cover,
@@ -125,14 +146,25 @@ class ListingCard extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Text("50 rs per hour"),
+                  Row(
+                    children: [
+                      Text("₹" + price,
+                          style: GoogleFonts.inter(
+                              color: kAccentColor2,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold)),
+                      Text(" " + interval,
+                          style: GoogleFonts.inter(
+                              fontSize: 18, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
                   SizedBox(
                     height: 20,
                   ),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: kAccentColor2),
                       onPressed: () {},
-                      child: Center(child: Text("Rent This"))),
+                      child: Center(child: Text("Rent this"))),
                 ],
               ),
             ),
