@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
               SizedBox(height: 20),
               Text(
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus malesuada tempus efficitur. Duis at facilisis diam. Pellentesque purus enim, mattis vitae massa sed, ultrices efficitur dui. Proin pulvinar dapibus faucibus. Proin nec gravida "),
-              Image.asset("assets/home.png"),
+              Center(child: Image.asset("assets/home.png")),
               SizedBox(height: 50),
               SizedBox(
                 width: double.infinity,

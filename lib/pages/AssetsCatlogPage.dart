@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,33 +14,27 @@ class AssetCatlogPage extends StatelessWidget {
       showModalBottomSheet(
           context: context,
           builder: (context) {
-            return Column(
-              children: [
-                ListTile(
-                  leading: Icon(Icons.ac_unit),
-                ),
-                ListTile(
-                  leading: Icon(Icons.ac_unit),
-                ),
-              ],
+            return Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0))),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.ac_unit),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.ac_unit),
+                  ),
+                ],
+              ),
             );
           });
     }
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          automaticallyImplyLeading: false,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: IconButton(
-                  icon: Icon(Icons.notifications_none_rounded),
-                  iconSize: 30,
-                  onPressed: () {}),
-            )
-          ],
-        ),
+        appBar: TopBar(),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
@@ -93,19 +88,13 @@ class AssetCatlogPage extends StatelessWidget {
                     spacing: 8.0,
                     runSpacing: 8.0,
                     children: [
-                      ListingCard(
+                      ListingCardBuilder(
                         title:
                             "Lorem ipsum dolor sit amet consectetur adipisicing elit",
                         interval: "per hour",
                         price: "50",
                       ),
-                      ListingCard(
-                        title:
-                            "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-                        interval: "per hour",
-                        price: "50",
-                      ),
-                      ListingCard(
+                      ListingCardBuilder(
                         title:
                             "Lorem ipsum dolor sit amet consectetur adipisicing elit",
                         interval: "per hour",
@@ -118,6 +107,36 @@ class AssetCatlogPage extends StatelessWidget {
             ),
           ),
         ));
+  }
+}
+
+class ListingCardBuilder extends StatelessWidget {
+  final String url;
+  final String title;
+  final String price;
+  final String interval;
+  ListingCardBuilder(
+      {this.url = "https://via.placeholder.com/151/162",
+      @required this.title,
+      @required this.price,
+      @required this.interval});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ListingCard(
+          title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
+          interval: "per hour",
+          price: "50",
+        ),
+        ListingCard(
+          title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
+          interval: "per hour",
+          price: "50",
+        ),
+      ],
+    );
   }
 }
 
@@ -134,9 +153,7 @@ class ListingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 180,
-      height: 380,
+    return Expanded(
       child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
