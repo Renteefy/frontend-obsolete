@@ -5,8 +5,27 @@ import 'package:google_fonts/google_fonts.dart';
 class AssetCatlogPage extends StatelessWidget {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   @override
   Widget build(BuildContext context) {
+    // Add sorting code here
+    void onSortPressed() {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Column(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.ac_unit),
+                ),
+                ListTile(
+                  leading: Icon(Icons.ac_unit),
+                ),
+              ],
+            );
+          });
+    }
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -56,7 +75,9 @@ class AssetCatlogPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    IconButton(icon: Icon(Icons.sort), onPressed: () {}),
+                    IconButton(
+                        icon: Icon(Icons.sort),
+                        onPressed: () => onSortPressed()),
                   ],
                 ),
                 SizedBox(height: 50),
