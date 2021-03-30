@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 
 class TopBar extends PreferredSize {
   @override
-  Size get preferredSize => const Size.fromHeight(100);
+  Size get preferredSize => const Size.fromHeight(40);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
       automaticallyImplyLeading: false,
-      title: Text("Renteefy"),
       actions: [
         IconButton(
             icon: Icon(Icons.notifications_none_rounded),

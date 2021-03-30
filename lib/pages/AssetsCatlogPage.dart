@@ -1,11 +1,100 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/builders/ListingCardBuilder.dart';
 import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AssetCatlogPage extends StatelessWidget {
+// - AssetCatlogPage - All assets will be displayed here
+// Functionality: This renders the Scaffold and calls in the ListingCardBuilder Widget
+// - The  ListingCardBuilder widget renders all the assets on screen. It uses very basic algorithm to
+// render 2 items in one row and return this an array of such rows back to this page, where it is rendered in a scroll view
+// - This page loads data lazily, to save resources.
+// - The json required for the cards to display(for now, will change):
+//
+// {     "url": "https://via.placeholder.com/150",
+//       "title": "Asset1",
+//       "price": "10",
+//       "interval": "per day"
+// }
+
+// fetch function is where the network call resides.
+// So, fetchfive() does 5 network calls, which is inefficient
+// TODO:
+// 1. Gotta refactor fetch and fetchfive function to make one call to server and get 5 unique asset items
+// 2. Build Models for the json which is flowing in
+// 3. Convert the ListCardBuilder to use iterable
+
+class AssetCatlogPage extends StatefulWidget {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  @override
+  _AssetCatlogPageState createState() => _AssetCatlogPageState();
+}
+
+class _AssetCatlogPageState extends State<AssetCatlogPage> {
+  ScrollController scrollController = new ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchFive();
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        print(scrollController.position.pixels);
+        fetchFive();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
+  List<Map<String, String>> assetObjArr = [
+    {
+      "url": "https://via.placeholder.com/150",
+      "title": "Asset1",
+      "price": "10",
+      "interval": "per day"
+    },
+    {
+      "url": "https://via.placeholder.com/150",
+      "title": "Asset2",
+      "price": "10",
+      "interval": "per day"
+    },
+    {
+      "url": "https://via.placeholder.com/150",
+      "title": "Asset3",
+      "price": "40",
+      "interval": "per day"
+    },
+  ];
+
+  void fetch() {
+    setState(() {
+      assetObjArr.add(
+        {
+          "url": "https://via.placeholder.com/150",
+          "title": "Asset3",
+          "price": "40",
+          "interval": "per day"
+        },
+      );
+    });
+  }
+
+  void fetchFive() {
+    for (var i = 0; i < 5; i++) {
+      fetch();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +127,7 @@ class AssetCatlogPage extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
+            controller: scrollController,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,131 +172,10 @@ class AssetCatlogPage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     )),
                 SizedBox(height: 10),
-                Center(
-                  child: Wrap(
-                    alignment: WrapAlignment.spaceBetween,
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: [
-                      ListingCardBuilder(
-                        title:
-                            "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-                        interval: "per hour",
-                        price: "50",
-                      ),
-                      ListingCardBuilder(
-                        title:
-                            "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-                        interval: "per hour",
-                        price: "50",
-                      ),
-                    ],
-                  ),
-                )
+                ListingCardBuilder(objarr: assetObjArr)
               ],
             ),
           ),
         ));
-  }
-}
-
-class ListingCardBuilder extends StatelessWidget {
-  final String url;
-  final String title;
-  final String price;
-  final String interval;
-  ListingCardBuilder(
-      {this.url = "https://via.placeholder.com/151/162",
-      @required this.title,
-      @required this.price,
-      @required this.interval});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ListingCard(
-          title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-          interval: "per hour",
-          price: "50",
-        ),
-        ListingCard(
-          title: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-          interval: "per hour",
-          price: "50",
-        ),
-      ],
-    );
-  }
-}
-
-class ListingCard extends StatelessWidget {
-  final String url;
-  final String title;
-  final String price;
-  final String interval;
-  ListingCard(
-      {this.url = "https://via.placeholder.com/151/162",
-      @required this.title,
-      @required this.price,
-      @required this.interval});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          elevation: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Image.network(
-                      url,
-                      width: 151,
-                      height: 162,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                      "Lorem ipsum dolor sit amet consectetur adipisicing elit ",
-                      style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Text("₹" + price,
-                          style: GoogleFonts.inter(
-                              color: kAccentColor2,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold)),
-                      Text(" " + interval,
-                          style: GoogleFonts.inter(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: kAccentColor2),
-                      onPressed: () {},
-                      child: Center(child: Text("Rent this"))),
-                ],
-              ),
-            ),
-          )),
-    );
   }
 }
