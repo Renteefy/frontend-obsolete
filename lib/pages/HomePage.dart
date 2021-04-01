@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: kPrimaryColor),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/assetCatlog');
+                      Navigator.pushNamed(context, '/assetCatalog');
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),

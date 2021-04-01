@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/pageController/HomePageController.dart';
-import 'package:frontend/pages/AssetsCatlogPage.dart';
+import 'package:frontend/pages/AssetsCatalogPage.dart';
 import 'package:frontend/pages/NotificationPage.dart';
 
 // constants
@@ -21,7 +21,7 @@ class _AppState extends State<App> {
       routes: {
         "/": (context) => LandingPage(),
         "/home": (context) => HomePageController(),
-        "/assetCatlog": (context) => AssetCatlogPage(),
+        "/assetCatalog": (context) => AssetCatalogPage(),
         "/notification": (context) => NotificationPage(),
       },
       title: "Renteefy",

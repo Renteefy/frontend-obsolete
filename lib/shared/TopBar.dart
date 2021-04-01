@@ -14,7 +14,9 @@ class TopBar extends PreferredSize {
         IconButton(
             icon: Icon(Icons.notifications_none_rounded),
             iconSize: 30,
-            onPressed: () {})
+            onPressed: () {
+              Navigator.pushNamed(context, '/notification');
+            })
       ],
     );
   }

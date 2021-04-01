@@ -4,7 +4,7 @@ import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// - AssetCatlogPage - All assets will be displayed here
+// - AssetCatalogPage - All assets will be displayed here
 // Functionality: This renders the Scaffold and calls in the ListingCardBuilder Widget
 // - The  ListingCardBuilder widget renders all the assets on screen. It uses very basic algorithm to
 // render 2 items in one row and return this an array of such rows back to this page, where it is rendered in a scroll view
@@ -24,15 +24,15 @@ import 'package:google_fonts/google_fonts.dart';
 // 2. Build Models for the json which is flowing in
 // 3. Convert the ListCardBuilder to use iterable
 
-class AssetCatlogPage extends StatefulWidget {
+class AssetCatalogPage extends StatefulWidget {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   @override
-  _AssetCatlogPageState createState() => _AssetCatlogPageState();
+  _AssetCatalogPageState createState() => _AssetCatalogPageState();
 }
 
-class _AssetCatlogPageState extends State<AssetCatlogPage> {
+class _AssetCatalogPageState extends State<AssetCatalogPage> {
   ScrollController scrollController = new ScrollController();
 
   @override
