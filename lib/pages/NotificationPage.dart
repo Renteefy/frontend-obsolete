@@ -9,6 +9,15 @@ class NotificationPage extends StatefulWidget {
   _NotificationPageState createState() => _NotificationPageState();
 }
 
+// NotificationPage:
+// json required :
+// [{
+//   status: String, //request raised, accepted, rejected
+//   owner: String,
+//   title: String,
+//   url: String // url of the image
+// }]
+
 class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
