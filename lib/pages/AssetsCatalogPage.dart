@@ -57,7 +57,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     scrollController.dispose();
   }
 
-  List<Map<String, String>> assetObjArr = [
+  List<Map<String, String>> res = [
     {
       "url": "https://via.placeholder.com/150",
       "title": "Asset1",
@@ -80,7 +80,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
 
   void fetch() {
     setState(() {
-      assetObjArr.add(
+      res.add(
         {
           "url": "https://via.placeholder.com/150",
           "title": "Asset3",
@@ -100,7 +100,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
   @override
   Widget build(BuildContext context) {
     List<AssetListing> assetList =
-        assetObjArr.map((dynamic item) => AssetListing.fromJson(item)).toList();
+        res.map((dynamic item) => AssetListing.fromJson(item)).toList();
     // Add sorting code here
     void onSortPressed() {
       showModalBottomSheet(

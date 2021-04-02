@@ -61,14 +61,71 @@ class ProductDetails extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
+                        Row(
+                          children: [
+                            Text(
+                              "Rs. ",
+                              style: GoogleFonts.inter(
+                                  color: Color(0xffBDBDBD),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                            Text(
+                              "10" + " ",
+                              style: GoogleFonts.inter(
+                                  color: kPrimaryColor,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                            Text(
+                              "per day",
+                              style: GoogleFonts.inter(
+                                  color: kPrimaryColor,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         ClipRRect(
                             borderRadius: BorderRadius.circular(17),
                             child: Image.network(
                                 "https://via.placeholder.com/350x150")),
                         SizedBox(
+                          height: 30,
+                        ),
+                        SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                                onPressed: () {}, child: Text("heyo"))),
+                                style: ElevatedButton.styleFrom(
+                                    primary: kAccentColor1),
+                                onPressed: () {},
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Text(
+                                    "Rent item",
+                                    style: GoogleFonts.inter(
+                                        fontWeight: FontWeight.w900),
+                                  ),
+                                ))),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: kAccentColor2),
+                                onPressed: () {},
+                                child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Text(
+                                      "Chat with Owner",
+                                      style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w900),
+                                    )))),
                       ],
                     ),
                   ),
