@@ -1,26 +1,26 @@
 import 'package:flutter/foundation.dart';
 
 class NotificationListing {
-  final String assetID;
+  final String notificationID;
   final String title;
-  final String price;
-  final String interval;
+  final String status;
+  final String rentee;
   final String url;
 
   NotificationListing({
-    @required this.assetID,
+    @required this.notificationID,
     @required this.title,
-    @required this.price,
-    @required this.interval,
+    @required this.status,
+    @required this.rentee,
     @required this.url,
   });
 
   factory NotificationListing.fromJson(Map<String, dynamic> json) {
     return NotificationListing(
-      assetID: json['assetID'] as String,
+      notificationID: json['notificationID'] as String,
       title: json['title'] as String,
-      price: json['price'] as String,
-      interval: json['interval'] as String,
+      status: json['status'] as String,
+      rentee: json['rentee'] as String,
       url: json['url'] as String,
     );
   }

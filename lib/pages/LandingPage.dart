@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../shared/constants.dart';
+import 'package:frontend/shared/alertBox.dart';
+import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../shared/alertBox.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -17,9 +17,9 @@ class _LandingPageState extends State<LandingPage> {
   bool loading = true;
   Future<int> checklogin(email) async {
     print(email);
-    final String URL = DotEnv.env['SERVER_URL'];
+    final String url = DotEnv.env['SERVER_URL'];
     http.Response response = await http.post(
-      Uri.https(URL, "users/login"),
+      Uri.https(url, "users/login"),
       headers: {"Content-Type": "application/json"},
       body: json.encode({'username': email}),
     );
@@ -28,7 +28,7 @@ class _LandingPageState extends State<LandingPage> {
       final storage = new FlutterSecureStorage();
       await storage.write(key: 'jwt', value: jsonData["token"]);
     }
-    print(jsonData);
+
     // Navigator.pushNamed(context, '/home');
     return (response.statusCode);
   }
