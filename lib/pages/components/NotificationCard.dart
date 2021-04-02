@@ -1,21 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/models/NotificationListing.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NotificationCard extends StatelessWidget {
-  final String url;
-  final String rentee;
-  final String title;
-  final String status;
-  final String notificationID;
+  final NotificationListing notifi;
 
-  const NotificationCard(
-      {this.url = "https://via.placeholder.com/150",
-      this.rentee = "",
-      this.status = "",
-      this.title = "",
-      this.notificationID});
+  const NotificationCard({this.notifi});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +18,7 @@ class NotificationCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: Image.network(url)),
+              Expanded(child: Image.network(notifi.url)),
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -35,7 +27,7 @@ class NotificationCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text(rentee,
+                        Text(notifi.rentee,
                             style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: kAccentColor1,
@@ -48,13 +40,13 @@ class NotificationCard extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(title,
+                    Text(notifi.title,
                         style: GoogleFonts.inter(
                             fontSize: 14, fontWeight: FontWeight.bold)),
                     SizedBox(
                       height: 40,
                     ),
-                    Text(status,
+                    Text(notifi.status,
                         style: GoogleFonts.inter(
                             color: Color(0xffA0A0A0),
                             fontSize: 14,

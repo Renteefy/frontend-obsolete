@@ -11,11 +11,7 @@ class NotificationCardBuilder extends StatelessWidget {
     return Column(
       children: objarr
           .map((e) => NotificationCard(
-                rentee: e.rentee,
-                status: e.status,
-                title: e.title,
-                url: e.url,
-                notificationID: e.notificationID,
+                notifi: e,
               ))
           .toList(),
     );
