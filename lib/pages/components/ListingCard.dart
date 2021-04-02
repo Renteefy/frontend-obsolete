@@ -1,30 +1,23 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/models/AssetListing.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ListingCard extends StatelessWidget {
-  final String url;
-  final String title;
-  final String price;
-  final String interval;
-  final int flex;
-  ListingCard(
-      {this.url = "https://via.placeholder.com/150",
-      @required this.title,
-      @required this.price,
-      @required this.interval,
-      this.flex = 1});
+  final AssetListing obj;
+  ListingCard({
+    @required this.obj,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: flex,
+      flex: 1,
       child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
-          elevation: 2,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Padding(
@@ -35,7 +28,7 @@ class ListingCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
-                      url,
+                      obj.url,
                       width: 151,
                       height: 162,
                       fit: BoxFit.cover,
@@ -44,19 +37,19 @@ class ListingCard extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Text("$title",
+                  Text(obj.title,
                       style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
                   SizedBox(
                     height: 10,
                   ),
                   Row(
                     children: [
-                      Text("₹" + price,
+                      Text("₹" + obj.price,
                           style: GoogleFonts.inter(
                               color: kAccentColor2,
                               fontSize: 18,
                               fontWeight: FontWeight.bold)),
-                      Text(" " + interval,
+                      Text(" " + obj.interval,
                           style: GoogleFonts.inter(
                               fontSize: 18, fontWeight: FontWeight.bold)),
                     ],
@@ -66,7 +59,11 @@ class ListingCard extends StatelessWidget {
                   ),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: kAccentColor2),
-                      onPressed: () {},
+                      onPressed: () {
+                        print("pressed");
+                        Navigator.pushNamed(context, "/productDetail",
+                            arguments: {"assetID": obj.title});
+                      },
                       child: Center(child: Text("Rent this"))),
                 ],
               ),

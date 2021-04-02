@@ -12,7 +12,7 @@ class NotificationPage extends StatefulWidget {
 
 // NotificationPage:
 // json required :
-// [{
+// res :[{
 //   status: String, //request raised, accepted, rejected
 //   owner: String,
 //   title: String,

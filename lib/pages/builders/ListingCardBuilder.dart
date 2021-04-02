@@ -13,7 +13,8 @@ class ListingCardBuilder extends StatelessWidget {
       var obj = objarr[i];
       if ((i + 1) % 2 == 0) {
         childList.add(ListingCard(
-            title: obj.title, price: obj.price, interval: obj.interval));
+          obj: obj,
+        ));
         list.add(Row(
           children: childList,
         ));
@@ -21,21 +22,13 @@ class ListingCardBuilder extends StatelessWidget {
       } else {
         //print(obj);
         childList.add(ListingCard(
-            title: obj.title,
-            url: obj.url,
-            price: obj.price,
-            interval: obj.interval));
+          obj: obj,
+        ));
       }
     }
     if (objarr.length % 2 != 0) {
       list.add(Row(
-        children: [
-          ListingCard(
-              title: objarr[objarr.length - 1].title,
-              price: objarr[objarr.length - 1].price,
-              url: objarr[objarr.length - 1].url,
-              interval: objarr[objarr.length - 1].interval)
-        ],
+        children: [ListingCard(obj: objarr[objarr.length - 1])],
       ));
     }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/pageController/HomePageController.dart';
 import 'package:frontend/pages/AssetsCatalogPage.dart';
 import 'package:frontend/pages/NotificationPage.dart';
+import 'package:frontend/pages/ProductDetails.dart';
 
 // constants
 import './shared/constants.dart';
@@ -23,6 +24,7 @@ class _AppState extends State<App> {
         "/home": (context) => HomePageController(),
         "/assetCatalog": (context) => AssetCatalogPage(),
         "/notification": (context) => NotificationPage(),
+        "/productDetail": (context) => ProductDetails(),
       },
       title: "Renteefy",
       theme: ThemeData(

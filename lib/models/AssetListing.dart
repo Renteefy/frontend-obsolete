@@ -12,7 +12,7 @@ class AssetListing {
     @required this.title,
     @required this.price,
     @required this.interval,
-    @required this.url,
+    this.url = "https://via.placeholder.com/150",
   });
 
   factory AssetListing.fromJson(Map<String, dynamic> json) {

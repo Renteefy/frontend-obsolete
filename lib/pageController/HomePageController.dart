@@ -43,7 +43,7 @@ class _HomePageControllerState extends State<HomePageController> {
             bottomRight: Radius.circular(10),
           ),
           child: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
+            items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
