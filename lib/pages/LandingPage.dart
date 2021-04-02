@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../shared/alertBox.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -13,8 +17,20 @@ class _LandingPageState extends State<LandingPage> {
   bool loading = true;
   Future<int> checklogin(email) async {
     print(email);
-    Navigator.pushNamed(context, '/home');
-    return 0;
+    final String URL = DotEnv.env['SERVER_URL'];
+    http.Response response = await http.post(
+      Uri.https(URL, "users/login"),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({'username': email}),
+    );
+    var jsonData = json.decode(response.body);
+    if (response.statusCode == 200) {
+      final storage = new FlutterSecureStorage();
+      await storage.write(key: 'jwt', value: jsonData["token"]);
+    }
+    print(jsonData);
+    // Navigator.pushNamed(context, '/home');
+    return (response.statusCode);
   }
 
   @override
@@ -64,11 +80,30 @@ class _LandingPageState extends State<LandingPage> {
                       SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 setState(() {
                                   loading = true;
                                 });
-                                checklogin(email);
+                                int resCode = await checklogin(email);
+                                if (resCode == 200) {
+                                  Navigator.pushNamed(context, '/home');
+                                } else {
+                                  VoidCallback continueCallBack = () => {
+                                        Navigator.of(context).pop(),
+                                        // code on Okay comes here
+                                      };
+                                  BlurryDialog alert = BlurryDialog(
+                                      "Login Failed",
+                                      "Incorrect email",
+                                      continueCallBack);
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return alert;
+                                    },
+                                  );
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: kAccentColor1),
@@ -109,3 +144,4 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 }
+// http://159.89.164.229:5000/users/login
