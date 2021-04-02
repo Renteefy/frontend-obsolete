@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/AssetListing.dart';
 import 'package:frontend/pages/builders/ListingCardBuilder.dart';
 import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/constants.dart';
@@ -21,7 +22,7 @@ import 'package:google_fonts/google_fonts.dart';
 // So, fetchfive() does 5 network calls, which is inefficient
 // TODO:
 // 1. Gotta refactor fetch and fetchfive function to make one call to server and get 5 unique asset items
-// 2. Build Models for the json which is flowing in
+// 2. Build Models for the json which is flowing in (done)
 // 3. Convert the ListCardBuilder to use iterable
 
 class AssetCatalogPage extends StatefulWidget {
@@ -98,6 +99,8 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<AssetListing> assetList =
+        assetObjArr.map((dynamic item) => AssetListing.fromJson(item)).toList();
     // Add sorting code here
     void onSortPressed() {
       showModalBottomSheet(
@@ -172,7 +175,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
                       fontWeight: FontWeight.bold,
                     )),
                 SizedBox(height: 10),
-                ListingCardBuilder(objarr: assetObjArr)
+                ListingCardBuilder(objarr: assetList)
               ],
             ),
           ),
