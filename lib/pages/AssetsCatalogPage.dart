@@ -4,6 +4,7 @@ import 'package:frontend/pages/builders/ListingCardBuilder.dart';
 import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/services/AssetsHttpService.dart';
 
 // - AssetCatalogPage - All assets will be displayed here
 // Functionality: This renders the Scaffold and calls in the ListingCardBuilder Widget
@@ -35,18 +36,21 @@ class AssetCatalogPage extends StatefulWidget {
 
 class _AssetCatalogPageState extends State<AssetCatalogPage> {
   ScrollController scrollController = new ScrollController();
+  final assetService = AssetsHttpService();
+  // Skip is basically the number of entries that have to be skipped in the database call, should be incremented after every call
+  int skip = 0;
 
   @override
   void initState() {
     super.initState();
 
-    fetchFive();
+    fetch(5);
 
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         print(scrollController.position.pixels);
-        fetchFive();
+        fetch(5);
       }
     });
   }
@@ -57,50 +61,57 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     scrollController.dispose();
   }
 
-  List<Map<String, String>> res = [
-    {
-      "url": "https://via.placeholder.com/150",
-      "title": "Asset1",
-      "price": "10",
-      "interval": "per day"
-    },
-    {
-      "url": "https://via.placeholder.com/150",
-      "title": "Asset2",
-      "price": "10",
-      "interval": "per day"
-    },
-    {
-      "url": "https://via.placeholder.com/150",
-      "title": "Asset3",
-      "price": "40",
-      "interval": "per day"
-    },
-  ];
+  // List<Map<String, String>> res = [
+  //   {
+  //     "url": "https://via.placeholder.com/150",
+  //     "title": "Asset1",
+  //     "price": "10",
+  //     "interval": "per day"
+  //   },
+  //   {
+  //     "url": "https://via.placeholder.com/150",
+  //     "title": "Asset2",
+  //     "price": "10",
+  //     "interval": "per day"
+  //   },
+  //   {
+  //     "url": "https://via.placeholder.com/150",
+  //     "title": "Asset3",
+  //     "price": "40",
+  //     "interval": "per day"
+  //   },
+  // ];
 
-  void fetch() {
+  // void fetch() {
+  //   setState(() {
+  //     res.add(
+  //       {
+  //         "url": "https://via.placeholder.com/150",
+  //         "title": "Asset3",
+  //         "price": "40",
+  //         "interval": "per day"
+  //       },
+  //     );
+  //   });
+  // }
+
+  // void fetchFive() {
+  //   for (var i = 0; i < 5; i++) {
+  //     fetch();
+  //   }
+  // }
+  //
+  List<AssetListing> res = [];
+  void fetch(int limit) async {
+    List<AssetListing> tmp = await assetService.getAssets(skip, limit);
     setState(() {
-      res.add(
-        {
-          "url": "https://via.placeholder.com/150",
-          "title": "Asset3",
-          "price": "40",
-          "interval": "per day"
-        },
-      );
+      res.addAll(tmp);
+      // increment skip here
     });
-  }
-
-  void fetchFive() {
-    for (var i = 0; i < 5; i++) {
-      fetch();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<AssetListing> assetList =
-        res.map((dynamic item) => AssetListing.fromJson(item)).toList();
     // Add sorting code here
     void onSortPressed() {
       showModalBottomSheet(
@@ -175,7 +186,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
                       fontWeight: FontWeight.bold,
                     )),
                 SizedBox(height: 10),
-                ListingCardBuilder(objarr: assetList)
+                ListingCardBuilder(objarr: res)
               ],
             ),
           ),
