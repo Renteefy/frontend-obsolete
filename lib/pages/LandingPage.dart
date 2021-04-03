@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/shared/alertBox.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:frontend/helpers/UserHttpService.dart';
+import 'package:frontend/services/UserHttpService.dart';
 
 class LandingPage extends StatefulWidget {
   @override
