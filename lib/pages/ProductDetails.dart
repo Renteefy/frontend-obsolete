@@ -2,15 +2,43 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:frontend/shared/constants.dart';
+import 'package:frontend/models/AssetListing.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/services/AssetsHttpService.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class ProductDetails extends StatelessWidget {
-  // use the assetID to fetch details from server for specific product
+class ProductDetails extends StatefulWidget {
+  @override
+  _ProductDetailsState createState() => _ProductDetailsState();
+}
+
+class _ProductDetailsState extends State<ProductDetails> {
+  final assetService = AssetsHttpService();
+  SingleAsset asset;
+
+  void fetchAsset(String assetID) async {
+    SingleAsset tmp = await assetService.getSingleAsset(assetID);
+    setState(() {
+      asset = tmp;
+    });
+  }
+
+  final String url = "https://" + env['SERVER_URL'];
+  // final String url = "http://" + "127.0.0.1:5000";
+  bool flag = true;
+
   @override
   Widget build(BuildContext context) {
     final routes =
         ModalRoute.of(context).settings.arguments as Map<String, String>;
-    print(routes["assetID"]);
+    if (flag == true) {
+      fetchAsset(routes["assetID"]);
+      setState(() {
+        flag = false;
+      });
+    }
+
+    // print(routes["assetID"]);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -38,13 +66,12 @@ class ProductDetails extends StatelessWidget {
                       children: [
                         ClipRRect(
                             borderRadius: BorderRadius.circular(17),
-                            child: Image.network(
-                                "https://via.placeholder.com/350")),
+                            child: Image.network(url + asset.url)),
                         SizedBox(
                           height: 20,
                         ),
                         Text(
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                          asset.title,
                           style: GoogleFonts.inter(
                               fontSize: 24, fontWeight: FontWeight.w900),
                         ),
@@ -52,7 +79,7 @@ class ProductDetails extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          "amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                          asset.description,
                           style: GoogleFonts.inter(
                               color: Color(0xffBDBDBD),
                               fontSize: 14,
@@ -71,14 +98,14 @@ class ProductDetails extends StatelessWidget {
                                   fontWeight: FontWeight.w900),
                             ),
                             Text(
-                              "10" + " ",
+                              asset.price + " ",
                               style: GoogleFonts.inter(
                                   color: kPrimaryColor,
                                   fontSize: 25,
                                   fontWeight: FontWeight.w900),
                             ),
                             Text(
-                              "per day",
+                              asset.interval,
                               style: GoogleFonts.inter(
                                   color: kPrimaryColor,
                                   fontSize: 25,

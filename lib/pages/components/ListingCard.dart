@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/AssetListing.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ListingCard extends StatelessWidget {
   final AssetListing obj;
@@ -12,6 +13,8 @@ class ListingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String url = "https://" + env['SERVER_URL'];
+    // final String url = "http://" + "127.0.0.1:5000";
     return Expanded(
       flex: 1,
       child: Card(
@@ -28,7 +31,7 @@ class ListingCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
-                      obj.url,
+                      url + obj.url,
                       width: 151,
                       height: 162,
                       fit: BoxFit.cover,
@@ -61,8 +64,9 @@ class ListingCard extends StatelessWidget {
                       style: ElevatedButton.styleFrom(primary: kAccentColor2),
                       onPressed: () {
                         print("pressed");
+                        print(obj.assetID);
                         Navigator.pushNamed(context, "/productDetail",
-                            arguments: {"assetID": obj.title});
+                            arguments: {"assetID": obj.assetID});
                       },
                       child: Center(child: Text("Rent this"))),
                 ],
