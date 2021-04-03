@@ -34,7 +34,7 @@ class _LandingPageState extends State<LandingPage> {
             };
         BlurryDialog alert = BlurryDialog(
             "Look, We love you. ❤️",
-            "This app is presently invited users only. Unfortunately, we do not see you on the invite list. Stay tuned for the first public release.",
+            "This app is presently for invited users only. Unfortunately, we do not see you on the invite list. Stay tuned for the first public release.",
             continueCallBack);
 
         showDialog(

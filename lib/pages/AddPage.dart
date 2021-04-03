@@ -7,7 +7,7 @@ class AddPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        "LOL Add PAge",
+        "LOL Add Page",
         style: optionStyle,
       ),
     );
