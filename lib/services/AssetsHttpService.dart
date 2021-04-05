@@ -13,7 +13,35 @@ class AssetsHttpService {
   Future<List<AssetListing>> getAssets(int skip, int limit) async {
     String value = await store.read(key: "jwt");
 
-    var data = await http.get(Uri.https(url, "assets/getsome/$skip/$limit"),
+    var data = await http.get(Uri.http(url, "assets/getsome/$skip/$limit"),
+        headers: {'Content-Type': 'application/json', 'Authorization': value});
+    var jsonData = json.decode(data.body);
+
+    if (data.statusCode != 200) {
+      print("Auth Failed, please login");
+      throw "Unable to retrieve assetCatalog.";
+    }
+
+    List<AssetListing> assets = [];
+
+    for (var asset in jsonData["assets"]) {
+      final tmp = AssetListing(
+          assetID: asset["assetID"],
+          title: asset["title"],
+          price: asset["price"],
+          interval: asset["interval"],
+          url: asset["url"]);
+
+      assets.add(tmp);
+    }
+
+    return assets;
+  }
+
+  Future<List<AssetListing>> getAllAssets() async {
+    String value = await store.read(key: "jwt");
+
+    var data = await http.get(Uri.http(url, "assets/"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     var jsonData = json.decode(data.body);
 
@@ -41,7 +69,7 @@ class AssetsHttpService {
   Future<SingleAsset> getSingleAsset(String assetID) async {
     String value = await store.read(key: "jwt");
 
-    var data = await http.get(Uri.https(url, "assets/asset/$assetID"),
+    var data = await http.get(Uri.http(url, "assets/asset/$assetID"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     var jsonData = json.decode(data.body);
 
