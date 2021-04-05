@@ -110,6 +110,28 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     });
   }
 
+  void sortMadoAppa(String property) {
+    switch (property) {
+      case "name":
+        setState(() {
+          res.sort((a, b) => a.title.compareTo(b.title));
+        });
+        break;
+      case "price":
+        setState(() {
+          res.sort((a, b) => a.price.compareTo(b.price));
+        });
+        break;
+      case "interval":
+        setState(() {
+          res.sort((a, b) => a.interval.compareTo(b.interval));
+        });
+        break;
+      default:
+        return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Add sorting code here
@@ -125,9 +147,27 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
               child: Column(
                 children: [
                   ListTile(
+                    title: Text("Name"),
                     leading: Icon(Icons.ac_unit),
+                    onTap: () => setState(() {
+                      sortMadoAppa("name");
+                      Navigator.of(context).pop();
+                    }),
                   ),
                   ListTile(
+                    title: Text("Price"),
+                    leading: Icon(Icons.ac_unit),
+                    onTap: () => setState(() {
+                      sortMadoAppa("price");
+                      Navigator.of(context).pop();
+                    }),
+                  ),
+                  ListTile(
+                    title: Text("Interval"),
+                    onTap: () => setState(() {
+                      sortMadoAppa("interval");
+                      Navigator.of(context).pop();
+                    }),
                     leading: Icon(Icons.ac_unit),
                   ),
                 ],
