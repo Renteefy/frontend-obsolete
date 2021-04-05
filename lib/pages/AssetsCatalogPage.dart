@@ -45,6 +45,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     super.initState();
 
     fetch(5);
+    fetchAll();
 
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
@@ -102,10 +103,20 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
   // }
   //
   List<AssetListing> res = [];
+  List<AssetListing> searchRes = [];
+  List<AssetListing> allAssets = [];
   void fetch(int limit) async {
     List<AssetListing> tmp = await assetService.getAssets(skip, limit);
     setState(() {
       res.addAll(tmp);
+      // increment skip here
+    });
+  }
+
+  void fetchAll() async {
+    List<AssetListing> tmp = await assetService.getAllAssets();
+    setState(() {
+      allAssets.addAll(tmp);
       // increment skip here
     });
   }
@@ -115,21 +126,43 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
       case "name":
         setState(() {
           res.sort((a, b) => a.title.compareTo(b.title));
+          searchRes.sort((a, b) => a.title.compareTo(b.title));
         });
         break;
       case "price":
         setState(() {
-          res.sort((a, b) => a.price.compareTo(b.price));
+          res.sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
+          searchRes
+              .sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
         });
         break;
       case "interval":
         setState(() {
           res.sort((a, b) => a.interval.compareTo(b.interval));
+          searchRes.sort((a, b) => a.interval.compareTo(b.interval));
         });
         break;
       default:
         return;
     }
+  }
+
+  bool searched = false;
+
+  onSearchTextChanged(String text) async {
+    searched = true;
+    searchRes.clear();
+    if (text.isEmpty) {
+      searched = false;
+      setState(() {});
+      return;
+    }
+    allAssets.forEach((asset) {
+      if (asset.title.toLowerCase().contains(text.toLowerCase()) ||
+          asset.price.contains(text)) searchRes.add(asset);
+    });
+
+    setState(() {});
   }
 
   @override
@@ -203,9 +236,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
                   children: [
                     Expanded(
                       child: TextField(
-                        onChanged: (val) {
-                          print(val);
-                        },
+                        onChanged: onSearchTextChanged,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(20),
                           filled: true,
@@ -226,7 +257,11 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
                       fontWeight: FontWeight.bold,
                     )),
                 SizedBox(height: 10),
-                ListingCardBuilder(objarr: res)
+                (searched)
+                    ? ListingCardBuilder(
+                        objarr: searchRes,
+                      )
+                    : ListingCardBuilder(objarr: res)
               ],
             ),
           ),
