@@ -12,7 +12,6 @@ class AssetListing {
     @required this.title,
     @required this.price,
     @required this.interval,
-    // this.url = "https://via.placeholder.com/150",
     @required this.url,
   });
 

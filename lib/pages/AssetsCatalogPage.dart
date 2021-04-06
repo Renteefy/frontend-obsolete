@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/AssetListing.dart';
-import 'package:frontend/pages/builders/ListingCardBuilder.dart';
+import 'package:frontend/pages/components/ListingCard.dart';
 import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -102,7 +102,26 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
   //   }
   // }
   //
-  List<AssetListing> res = [];
+  List<AssetListing> res = [
+    // AssetListing(
+    //     assetID: "10",
+    //     title: "title",
+    //     price: "price",
+    //     interval: " interval",
+    //     url: "url"),
+    // AssetListing(
+    //     assetID: "10",
+    //     title: "title",
+    //     price: "price",
+    //     interval: " interval",
+    //     url: "url"),
+    // AssetListing(
+    //     assetID: "10",
+    //     title: "title",
+    //     price: "price",
+    //     interval: " interval",
+    //     url: "url"),
+  ];
   List<AssetListing> searchRes = [];
   List<AssetListing> allAssets = [];
   void fetch(int limit) async {
@@ -131,14 +150,14 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
         break;
       case "price":
         setState(() {
-          res.sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
+          //res.sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
           searchRes
               .sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
         });
         break;
       case "interval":
         setState(() {
-          res.sort((a, b) => a.interval.compareTo(b.interval));
+          //res.sort((a, b) => a.interval.compareTo(b.interval));
           searchRes.sort((a, b) => a.interval.compareTo(b.interval));
         });
         break;
@@ -150,12 +169,17 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
   bool searched = false;
 
   onSearchTextChanged(String text) async {
-    searched = true;
     searchRes.clear();
     if (text.isEmpty) {
       searched = false;
-      setState(() {});
+      setState(() {
+        searched = false;
+      });
       return;
+    } else {
+      setState(() {
+        searched = true;
+      });
     }
     allAssets.forEach((asset) {
       if (asset.title.toLowerCase().contains(text.toLowerCase()) ||
@@ -213,58 +237,112 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
         appBar: TopBar(),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            controller: scrollController,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text("Rent ",
-                        style: GoogleFonts.inter(
-                            fontSize: 24, fontWeight: FontWeight.w900)),
-                    Text("Assets",
-                        style: GoogleFonts.inter(
-                            fontSize: 24,
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.w900)),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        onChanged: onSearchTextChanged,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(20),
-                          filled: true,
-                          border: InputBorder.none,
-                          hintText: 'Search Asset',
-                        ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text("Rent ",
+                      style: GoogleFonts.inter(
+                          fontSize: 24, fontWeight: FontWeight.w900)),
+                  Text("Assets",
+                      style: GoogleFonts.inter(
+                          fontSize: 24,
+                          color: kPrimaryColor,
+                          fontWeight: FontWeight.w900)),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      onChanged: onSearchTextChanged,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(20),
+                        filled: true,
+                        border: InputBorder.none,
+                        hintText: 'Search Asset',
                       ),
                     ),
-                    IconButton(
-                        icon: Icon(Icons.sort),
-                        onPressed: () => onSortPressed()),
-                  ],
-                ),
-                SizedBox(height: 50),
-                Text("All Listings",
-                    style: GoogleFonts.inter(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    )),
-                SizedBox(height: 10),
-                (searched)
-                    ? ListingCardBuilder(
-                        objarr: searchRes,
-                      )
-                    : ListingCardBuilder(objarr: res)
-              ],
-            ),
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.sort), onPressed: () => onSortPressed()),
+                ],
+              ),
+              SizedBox(height: 50),
+              Flexible(
+                child: GridView.builder(
+                    controller: scrollController,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1 / 2,
+                    ),
+                    itemCount: (searched) ? searchRes.length : res.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return ListingCard(
+                        obj: (searched) ? searchRes[index] : res[index],
+                      );
+                    }),
+              ),
+            ],
           ),
         ));
+    // return Scaffold(
+    //     appBar: TopBar(),
+    //     body: Padding(
+    //       padding: const EdgeInsets.all(20.0),
+    //       child: SingleChildScrollView(
+    //         controller: scrollController,
+    //         child: Column(
+    //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             Row(
+    //               children: [
+    //                 Text("Rent ",
+    //                     style: GoogleFonts.inter(
+    //                         fontSize: 24, fontWeight: FontWeight.w900)),
+    //                 Text("Assets",
+    //                     style: GoogleFonts.inter(
+    //                         fontSize: 24,
+    //                         color: kPrimaryColor,
+    //                         fontWeight: FontWeight.w900)),
+    //               ],
+    //             ),
+    //             SizedBox(height: 20),
+    //             Row(
+    //               children: [
+    //                 Expanded(
+    //                   child: TextField(
+    //                     onChanged: onSearchTextChanged,
+    //                     decoration: InputDecoration(
+    //                       contentPadding: EdgeInsets.all(20),
+    //                       filled: true,
+    //                       border: InputBorder.none,
+    //                       hintText: 'Search Asset',
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 IconButton(
+    //                     icon: Icon(Icons.sort),
+    //                     onPressed: () => onSortPressed()),
+    //               ],
+    //             ),
+    //             SizedBox(height: 50),
+    //             Text("All Listings",
+    //                 style: GoogleFonts.inter(
+    //                   fontSize: 24,
+    //                   fontWeight: FontWeight.bold,
+    //                 )),
+    //             SizedBox(height: 10),
+    //             (searched)
+    //                 ? ListingCardBuilder(
+    //                     objarr: searchRes,
+    //                   )
+    //                 : ListingCardBuilder(objarr: res)
+    //           ],
+    //         ),
+    //       ),
+    //     ));
   }
 }

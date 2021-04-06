@@ -15,8 +15,8 @@ class ListingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final String url = "https://" + env['SERVER_URL'];
     // final String url = "http://" + "127.0.0.1:5000";
-    return Expanded(
-      flex: 1,
+    return SizedBox(
+      height: double.infinity,
       child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -27,6 +27,7 @@ class ListingCard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
@@ -41,11 +42,14 @@ class ListingCard extends StatelessWidget {
                     height: 10,
                   ),
                   Text(obj.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
                       style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
                   SizedBox(
                     height: 10,
                   ),
-                  Row(
+                  Wrap(
                     children: [
                       Text("₹" + obj.price,
                           style: GoogleFonts.inter(
@@ -56,9 +60,6 @@ class ListingCard extends StatelessWidget {
                           style: GoogleFonts.inter(
                               fontSize: 18, fontWeight: FontWeight.bold)),
                     ],
-                  ),
-                  SizedBox(
-                    height: 20,
                   ),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: kAccentColor2),

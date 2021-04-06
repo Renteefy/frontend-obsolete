@@ -13,7 +13,7 @@ class AssetsHttpService {
   Future<List<AssetListing>> getAssets(int skip, int limit) async {
     String value = await store.read(key: "jwt");
 
-    var data = await http.get(Uri.http(url, "assets/getsome/$skip/$limit"),
+    var data = await http.get(Uri.https(url, "assets/getsome/$skip/$limit"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     var jsonData = json.decode(data.body);
 
@@ -41,7 +41,7 @@ class AssetsHttpService {
   Future<List<AssetListing>> getAllAssets() async {
     String value = await store.read(key: "jwt");
 
-    var data = await http.get(Uri.http(url, "assets/"),
+    var data = await http.get(Uri.https(url, "assets/"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     var jsonData = json.decode(data.body);
 
