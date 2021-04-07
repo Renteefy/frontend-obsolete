@@ -27,7 +27,7 @@ class NotificationCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      Wrap(
                         children: [
                           Text("You want to rent ",
                               style: GoogleFonts.inter(
@@ -91,7 +91,7 @@ class NotificationCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      Wrap(
                         children: [
                           Text(notifi.rentee,
                               style: GoogleFonts.inter(

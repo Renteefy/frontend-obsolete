@@ -14,6 +14,7 @@ class ListingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String url = "https://" + env['SERVER_URL'];
+
     // final String url = "http://" + "127.0.0.1:5000";
     return SizedBox(
       height: double.infinity,
