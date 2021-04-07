@@ -46,15 +46,15 @@ class _AddPageState extends State<AddPage> {
                         fontWeight: FontWeight.w900)),
               ],
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             Text(
               "Rent your assets/items on Renteefy",
               style: GoogleFonts.inter(fontWeight: FontWeight.w900),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             Text(
                 "alesuada tempus efficitur. Duis at facilisis diam. Pellentesque purus enim, mattis vitae massa sed, ultrices efficitur dui. Proin pulvinar dapibus faucibus. Proin nec gravida "),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             Text(
               "What do you want to rent?",
               style:
@@ -196,11 +196,11 @@ class _AddPageState extends State<AddPage> {
                               ],
                             )))),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             ElevatedButton(
               onPressed: () {},
-              style: ElevatedButton.styleFrom(primary: kAccentColor2),
+              style: ElevatedButton.styleFrom(primary: kAccentColor1),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Row(
