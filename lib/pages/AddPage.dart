@@ -182,16 +182,16 @@ class _AddPageState extends State<AddPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.camera_alt_outlined),
-                                SizedBox(
-                                  width: 16,
-                                ),
                                 Text(
-                                  "Add Some Pictures",
+                                  "Add Some Pictures  ",
                                   style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
                                   ),
+                                ),
+                                Icon(Icons.camera_alt_outlined),
+                                SizedBox(
+                                  width: 16,
                                 ),
                               ],
                             )))),
@@ -208,7 +208,7 @@ class _AddPageState extends State<AddPage> {
                   children: [
                     Text("Submit Listing",
                         style: GoogleFonts.inter(
-                            fontWeight: FontWeight.bold, fontSize: 18)),
+                            fontWeight: FontWeight.bold, fontSize: 14)),
                     Icon(Icons.arrow_right_alt),
                   ],
                 ),

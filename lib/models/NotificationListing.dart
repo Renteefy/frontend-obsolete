@@ -5,6 +5,7 @@ class NotificationListing {
   final String title;
   final String status;
   final String rentee;
+  final String owner;
   final String url;
 
   NotificationListing({
@@ -12,6 +13,7 @@ class NotificationListing {
     @required this.title,
     @required this.status,
     @required this.rentee,
+    @required this.owner,
     @required this.url,
   });
 
@@ -21,6 +23,7 @@ class NotificationListing {
       title: json['title'] as String,
       status: json['status'] as String,
       rentee: json['rentee'] as String,
+      owner: json['owner'] as String,
       url: json['url'] as String,
     );
   }
