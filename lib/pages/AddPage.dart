@@ -46,12 +46,7 @@ class _AddPageState extends State<AddPage> {
                         fontWeight: FontWeight.w900)),
               ],
             ),
-            SizedBox(height: 10),
-            Text(
-              "Rent your assets/items on Renteefy",
-              style: GoogleFonts.inter(fontWeight: FontWeight.w900),
-            ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             Text(
                 "alesuada tempus efficitur. Duis at facilisis diam. Pellentesque purus enim, mattis vitae massa sed, ultrices efficitur dui. Proin pulvinar dapibus faucibus. Proin nec gravida "),
             SizedBox(height: 30),

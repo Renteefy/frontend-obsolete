@@ -133,7 +133,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(20.0),
                                             child: Text(
-                                              "Rent item",
+                                              "Rent Item",
                                               style: GoogleFonts.inter(
                                                   fontWeight: FontWeight.w900),
                                             ),
