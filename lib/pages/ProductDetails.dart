@@ -61,10 +61,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ClipRRect(
-                                      borderRadius: BorderRadius.circular(17),
-                                      child: Image.network(
-                                          url + snapshot.data.url)),
+                                  Center(
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(17),
+                                        child: Image.network(
+                                            url + snapshot.data.url)),
+                                  ),
                                   SizedBox(
                                     height: 20,
                                   ),

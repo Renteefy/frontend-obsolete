@@ -69,7 +69,7 @@ class AssetsHttpService {
   Future<SingleAsset> getSingleAsset(String assetID) async {
     String value = await store.read(key: "jwt");
 
-    var data = await http.get(Uri.http(url, "assets/asset/$assetID"),
+    var data = await http.get(Uri.https(url, "assets/asset/$assetID"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     var jsonData = json.decode(data.body);
 
