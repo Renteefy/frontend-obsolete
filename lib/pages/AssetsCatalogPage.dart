@@ -62,68 +62,10 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     scrollController.dispose();
   }
 
-  // List<Map<String, String>> res = [
-  //   {
-  //     "url": "https://via.placeholder.com/150",
-  //     "title": "Asset1",
-  //     "price": "10",
-  //     "interval": "per day"
-  //   },
-  //   {
-  //     "url": "https://via.placeholder.com/150",
-  //     "title": "Asset2",
-  //     "price": "10",
-  //     "interval": "per day"
-  //   },
-  //   {
-  //     "url": "https://via.placeholder.com/150",
-  //     "title": "Asset3",
-  //     "price": "40",
-  //     "interval": "per day"
-  //   },
-  // ];
-
-  // void fetch() {
-  //   setState(() {
-  //     res.add(
-  //       {
-  //         "url": "https://via.placeholder.com/150",
-  //         "title": "Asset3",
-  //         "price": "40",
-  //         "interval": "per day"
-  //       },
-  //     );
-  //   });
-  // }
-
-  // void fetchFive() {
-  //   for (var i = 0; i < 5; i++) {
-  //     fetch();
-  //   }
-  // }
-  //
-  List<AssetListing> res = [
-    // AssetListing(
-    //     assetID: "10",
-    //     title: "title",
-    //     price: "price",
-    //     interval: " interval",
-    //     url: "url"),
-    // AssetListing(
-    //     assetID: "10",
-    //     title: "title",
-    //     price: "price",
-    //     interval: " interval",
-    //     url: "url"),
-    // AssetListing(
-    //     assetID: "10",
-    //     title: "title",
-    //     price: "price",
-    //     interval: " interval",
-    //     url: "url"),
-  ];
+  List<AssetListing> res = [];
   List<AssetListing> searchRes = [];
   List<AssetListing> allAssets = [];
+
   void fetch(int limit) async {
     List<AssetListing> tmp = await assetService.getAssets(skip, limit);
     setState(() {
@@ -150,14 +92,14 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
         break;
       case "price":
         setState(() {
-          //res.sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
+          res.sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
           searchRes
               .sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
         });
         break;
       case "interval":
         setState(() {
-          //res.sort((a, b) => a.interval.compareTo(b.interval));
+          res.sort((a, b) => a.interval.compareTo(b.interval));
           searchRes.sort((a, b) => a.interval.compareTo(b.interval));
         });
         break;
@@ -170,16 +112,11 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
 
   onSearchTextChanged(String text) async {
     searchRes.clear();
+    searched = true;
     if (text.isEmpty) {
       searched = false;
-      setState(() {
-        searched = false;
-      });
+      setState(() {});
       return;
-    } else {
-      setState(() {
-        searched = true;
-      });
     }
     allAssets.forEach((asset) {
       if (asset.title.toLowerCase().contains(text.toLowerCase()) ||
@@ -287,62 +224,5 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
             ],
           ),
         ));
-    // return Scaffold(
-    //     appBar: TopBar(),
-    //     body: Padding(
-    //       padding: const EdgeInsets.all(20.0),
-    //       child: SingleChildScrollView(
-    //         controller: scrollController,
-    //         child: Column(
-    //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //           crossAxisAlignment: CrossAxisAlignment.start,
-    //           children: [
-    //             Row(
-    //               children: [
-    //                 Text("Rent ",
-    //                     style: GoogleFonts.inter(
-    //                         fontSize: 24, fontWeight: FontWeight.w900)),
-    //                 Text("Assets",
-    //                     style: GoogleFonts.inter(
-    //                         fontSize: 24,
-    //                         color: kPrimaryColor,
-    //                         fontWeight: FontWeight.w900)),
-    //               ],
-    //             ),
-    //             SizedBox(height: 20),
-    //             Row(
-    //               children: [
-    //                 Expanded(
-    //                   child: TextField(
-    //                     onChanged: onSearchTextChanged,
-    //                     decoration: InputDecoration(
-    //                       contentPadding: EdgeInsets.all(20),
-    //                       filled: true,
-    //                       border: InputBorder.none,
-    //                       hintText: 'Search Asset',
-    //                     ),
-    //                   ),
-    //                 ),
-    //                 IconButton(
-    //                     icon: Icon(Icons.sort),
-    //                     onPressed: () => onSortPressed()),
-    //               ],
-    //             ),
-    //             SizedBox(height: 50),
-    //             Text("All Listings",
-    //                 style: GoogleFonts.inter(
-    //                   fontSize: 24,
-    //                   fontWeight: FontWeight.bold,
-    //                 )),
-    //             SizedBox(height: 10),
-    //             (searched)
-    //                 ? ListingCardBuilder(
-    //                     objarr: searchRes,
-    //                   )
-    //                 : ListingCardBuilder(objarr: res)
-    //           ],
-    //         ),
-    //       ),
-    //     ));
   }
 }
