@@ -33,7 +33,7 @@ class _NotificationPageState extends State<NotificationPage> {
       "url": "https://via.placeholder.com/150",
       "title":
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,",
-      "rentee": "Ayush",
+      "rentee": "yaj",
       "owner": "yaj1",
       "status": "Request Raised",
     }
