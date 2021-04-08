@@ -6,7 +6,6 @@ class NotificationListing {
   final String status;
   final String rentee;
   final String owner;
-  final String url;
 
   NotificationListing({
     @required this.notificationID,
@@ -14,7 +13,6 @@ class NotificationListing {
     @required this.status,
     @required this.rentee,
     @required this.owner,
-    @required this.url,
   });
 
   factory NotificationListing.fromJson(Map<String, dynamic> json) {
@@ -24,7 +22,6 @@ class NotificationListing {
       status: json['status'] as String,
       rentee: json['rentee'] as String,
       owner: json['owner'] as String,
-      url: json['url'] as String,
     );
   }
 }
