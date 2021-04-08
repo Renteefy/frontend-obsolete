@@ -32,6 +32,7 @@ class SingleAsset {
   final String interval;
   final String url;
   final String description;
+  final String username;
 
   SingleAsset({
     @required this.assetID,
@@ -40,6 +41,7 @@ class SingleAsset {
     @required this.interval,
     @required this.url,
     @required this.description,
+    @required this.username,
   });
 
   factory SingleAsset.fromJson(Map<String, dynamic> json) {
@@ -50,6 +52,7 @@ class SingleAsset {
       interval: json['interval'] as String,
       url: json['url'] as String,
       description: json['description'] as String,
+      username: json['username'] as String,
     );
   }
 }

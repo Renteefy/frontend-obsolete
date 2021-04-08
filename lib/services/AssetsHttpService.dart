@@ -84,7 +84,8 @@ class AssetsHttpService {
         price: jsonData["price"],
         interval: jsonData["interval"],
         url: jsonData["url"],
-        description: jsonData["description"]);
+        description: jsonData["description"],
+        username: jsonData["username"]);
 
     return asset;
   }
