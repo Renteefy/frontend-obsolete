@@ -88,4 +88,28 @@ class AssetsHttpService {
 
     return asset;
   }
+
+  Future<int> postAsset(String title, String description, picture, String price,
+      String interval, String category) async {
+    var request = http.MultipartRequest("POST", Uri.https(url, "assets"));
+
+    request.fields["title"] = title;
+    request.fields["description"] = description;
+    request.fields["price"] = price;
+    request.fields["interval"] = interval;
+    request.fields["category"] = "category";
+
+    final storage = new FlutterSecureStorage();
+    String value = await storage.read(key: "jwt");
+    if (picture != null) {
+      request.files
+          .add(await http.MultipartFile.fromPath('AssetImage', picture));
+    }
+    request.headers.addAll(
+        {'Content-Type': 'multipart/form-data', 'Authorization': value});
+
+    var response = await request.send();
+    var respStr = await http.Response.fromStream(response);
+    return (respStr.statusCode);
+  }
 }

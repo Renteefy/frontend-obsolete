@@ -78,7 +78,6 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     List<AssetListing> tmp = await assetService.getAllAssets();
     setState(() {
       allAssets.addAll(tmp);
-      // increment skip here
     });
   }
 
