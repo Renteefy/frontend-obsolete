@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/AssetListing.dart';
-
+import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -62,7 +62,10 @@ class ListingCard extends StatelessWidget {
                   Flexible(
                     child: Text(
                       "₹" + obj.price + " " + obj.interval,
-                      style: GoogleFonts.inter(fontSize: 17),
+                      style: GoogleFonts.inter(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: kPrimaryColor),
                     ),
                   ),
                 ],

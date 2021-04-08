@@ -14,19 +14,6 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text("Welcome to ",
-                      style: GoogleFonts.inter(
-                          fontSize: 24, fontWeight: FontWeight.w900)),
-                  Text("Renteefy",
-                      style: GoogleFonts.inter(
-                          fontSize: 24,
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.w900)),
-                ],
-              ),
-              SizedBox(height: 20),
               Text(
                   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus malesuada tempus efficitur. Duis at facilisis diam. Pellentesque purus enim, mattis vitae massa sed, ultrices efficitur dui. Proin pulvinar dapibus faucibus. Proin nec gravida "),
               Center(child: Image.asset("assets/home.png")),

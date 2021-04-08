@@ -19,6 +19,11 @@ class _HomePageControllerState extends State<HomePageController> {
     AddPage(),
     DashboardPage(),
   ];
+  static List<List<String>> title = [
+    ["Home", ""],
+    ["Add", "Listing"],
+    ["Dashboard", ""],
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -29,41 +34,45 @@ class _HomePageControllerState extends State<HomePageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      appBar: TopBar(title[_selectedIndex]),
+      body: SafeArea(
+        child: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-          ),
-          child: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                label: 'Add Listing',
-              ),
-              BottomNavigationBarItem(
-                icon: CircleAvatar(
-                  radius: 13,
-                  backgroundImage:
-                      NetworkImage("https://ui-avatars.com/api/?name=John+Doe"),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+            ),
+            child: BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
                 ),
-                label: 'Dashboard',
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: kAccentColor1,
-            onTap: _onItemTapped,
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.add),
+                  label: 'Add Listing',
+                ),
+                BottomNavigationBarItem(
+                  icon: CircleAvatar(
+                    radius: 13,
+                    backgroundImage: NetworkImage(
+                        "https://ui-avatars.com/api/?name=John+Doe"),
+                  ),
+                  label: 'Dashboard',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: kAccentColor1,
+              onTap: _onItemTapped,
+            ),
           ),
         ),
       ),

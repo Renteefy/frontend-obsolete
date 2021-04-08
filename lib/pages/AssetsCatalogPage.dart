@@ -70,6 +70,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     setState(() {
       res.addAll(tmp);
       // increment skip here
+      skip = skip + 5;
     });
   }
 
@@ -171,6 +172,18 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          title: Row(
+            children: [
+              Text("Rent ",
+                  style: GoogleFonts.inter(
+                      fontSize: 24, fontWeight: FontWeight.w900)),
+              Text("Assets",
+                  style: GoogleFonts.inter(
+                      fontSize: 24,
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.w900)),
+            ],
+          ),
           actions: [
             IconButton(
                 icon: Icon(Icons.notifications_none_rounded),
@@ -180,55 +193,45 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
                 })
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Text("Rent ",
-                      style: GoogleFonts.inter(
-                          fontSize: 24, fontWeight: FontWeight.w900)),
-                  Text("Assets",
-                      style: GoogleFonts.inter(
-                          fontSize: 24,
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.w900)),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      onChanged: onSearchTextChanged,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(20),
-                        filled: true,
-                        border: InputBorder.none,
-                        hintText: 'Search Asset',
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onChanged: onSearchTextChanged,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(20),
+                          filled: true,
+                          border: InputBorder.none,
+                          hintText: 'Search Asset',
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.sort), onPressed: () => onSortPressed()),
-                ],
-              ),
-              SizedBox(height: 50),
-              Flexible(
-                child: GridView.builder(
-                    controller: scrollController,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                    ),
-                    itemCount: (searched) ? searchRes.length : res.length,
-                    itemBuilder: (BuildContext ctx, index) {
-                      return ListingCard(
-                        obj: (searched) ? searchRes[index] : res[index],
-                      );
-                    }),
-              ),
-            ],
+                    IconButton(
+                        icon: Icon(Icons.sort),
+                        onPressed: () => onSortPressed()),
+                  ],
+                ),
+                SizedBox(height: 50),
+                Flexible(
+                  child: GridView.builder(
+                      controller: scrollController,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                      ),
+                      itemCount: (searched) ? searchRes.length : res.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return ListingCard(
+                          obj: (searched) ? searchRes[index] : res[index],
+                        );
+                      }),
+                ),
+              ],
+            ),
           ),
         ));
   }

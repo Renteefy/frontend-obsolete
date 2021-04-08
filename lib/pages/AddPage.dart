@@ -41,19 +41,6 @@ class _AddPageState extends State<AddPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text("Add  ",
-                      style: GoogleFonts.inter(
-                          fontSize: 24, fontWeight: FontWeight.w900)),
-                  Text("Listings",
-                      style: GoogleFonts.inter(
-                          fontSize: 24,
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.w900)),
-                ],
-              ),
-              SizedBox(height: 20),
               Text(
                   "alesuada tempus efficitur. Duis at facilisis diam. Pellentesque purus enim, mattis vitae massa sed, ultrices efficitur dui. Proin pulvinar dapibus faucibus. Proin nec gravida "),
               SizedBox(height: 30),
