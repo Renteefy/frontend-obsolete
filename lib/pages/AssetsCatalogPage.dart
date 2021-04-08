@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/AssetListing.dart';
 import 'package:frontend/pages/components/ListingCard.dart';
-import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/services/AssetsHttpService.dart';
@@ -170,7 +169,17 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     }
 
     return Scaffold(
-        appBar: TopBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          actions: [
+            IconButton(
+                icon: Icon(Icons.notifications_none_rounded),
+                iconSize: 30,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/notification');
+                })
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -210,8 +219,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
                 child: GridView.builder(
                     controller: scrollController,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1 / 2,
+                      crossAxisCount: 1,
                     ),
                     itemCount: (searched) ? searchRes.length : res.length,
                     itemBuilder: (BuildContext ctx, index) {

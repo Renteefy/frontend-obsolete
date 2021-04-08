@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:frontend/services/AssetsHttpService.dart';
 import 'package:frontend/shared/alertBox.dart';
+import "dart:io";
 
 class AddPage extends StatefulWidget {
   static const TextStyle optionStyle =
@@ -193,7 +192,7 @@ class _AddPageState extends State<AddPage> {
                   child: (file != null)
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                          child: Image(image: AssetImage(file)))
+                          child: Image.file(File(file)))
                       : ElevatedButton(
                           onPressed: pickImage,
                           style:
