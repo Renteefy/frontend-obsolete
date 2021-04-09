@@ -12,7 +12,7 @@ class NotificationHttpService {
   Future<List<NotificationListing>> getUserNotifications() async {
     String value = await store.read(key: "jwt");
 
-    var data = await http.get(Uri.https(url, "notifications/"),
+    var data = await http.get(Uri.http(url, "notifications/user/"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     var jsonData = json.decode(data.body);
 
@@ -23,7 +23,7 @@ class NotificationHttpService {
 
     List<NotificationListing> notifications = [];
 
-    for (var notif in jsonData["notifications"]) {
+    for (var notif in jsonData) {
       final tmp = NotificationListing(
           notificationID: notif["notificationID"],
           title: notif["title"],

@@ -4,40 +4,56 @@ import 'package:frontend/models/NotificationListing.dart';
 import 'package:frontend/pages/components/NotificationCard.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/services/NotificationsHttpService.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
   _NotificationPageState createState() => _NotificationPageState();
 }
 
-// NotificationPage:
-// json required :
-// res :[{
-//   status: String, //request raised, accepted, rejected
-//   owner: String,
-//   title: String,
-//   url: String // url of the image
-// }]
-
 class _NotificationPageState extends State<NotificationPage> {
-  List<Map<String, String>> res = [
-    {
-      "url": "https://via.placeholder.com/150",
-      "title":
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,",
-      "rentee": "Ayush",
-      "owner": "yaj",
-      "status": "Request Raised",
-    },
-    {
-      "url": "https://via.placeholder.com/150",
-      "title":
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,",
-      "rentee": "yaj",
-      "owner": "yaj1",
-      "status": "Request Raised",
-    }
-  ];
+  final store = new FlutterSecureStorage();
+  @override
+  void initState() {
+    super.initState();
+    fetchNotifications();
+  }
+
+  List<NotificationListing> notificationList = [];
+  String username;
+
+  void fetchNotifications() async {
+    String value = await store.read(key: "username");
+    setState(() {
+      username = value;
+    });
+    List<NotificationListing> notifications =
+        await NotificationHttpService().getUserNotifications();
+    setState(() {
+      notificationList = notifications;
+    });
+    // print(notificationList);
+  }
+
+  // List<Map<String, String>> res = [
+  //   {
+  //     "url": "https://via.placeholder.com/150",
+  //     "title":
+  //         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,",
+  //     "rentee": "Ayush",
+  //     "owner": "yaj",
+  //     "status": "Request Raised",
+  //   },
+  //   {
+  //     "url": "https://via.placeholder.com/150",
+  //     "title":
+  //         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,",
+  //     "rentee": "yaj",
+  //     "owner": "yaj1",
+  //     "status": "Request Raised",
+  //   }
+  // ];
   // res comes in gets converted in to Notification listing object array.
   // the list view builder will loop through this notification listing array.
   // if (owner of current item == username from flutter secure storage )
@@ -45,8 +61,8 @@ class _NotificationPageState extends State<NotificationPage> {
   // else render Rentee card (without any options only status and chat with owner button)
   @override
   Widget build(BuildContext context) {
-    List<NotificationListing> notificationList =
-        res.map((dynamic item) => NotificationListing.fromJson(item)).toList();
+    // List<NotificationListing> notificationList =
+    //     res.map((dynamic item) => NotificationListing.fromJson(item)).toList();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -73,11 +89,10 @@ class _NotificationPageState extends State<NotificationPage> {
               child: ListView.builder(
                   itemCount: notificationList.length,
                   itemBuilder: (BuildContext ctxt, int index) {
-                    print(notificationList[index].owner);
                     return NotificationCard(
                       notifi: notificationList[index],
                       isRentee: (notificationList[index].owner ==
-                              "yaj") // replace yaj with the logged in username
+                              username) // replace yaj with the logged in username
                           ? false
                           : true,
                     );
