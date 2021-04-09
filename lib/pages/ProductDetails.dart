@@ -150,28 +150,25 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                   primary: kAccentColor1),
                                           onPressed: (rented)
                                               ? () async {
-                                                  NotificationHttpService()
-                                                      .deleteNotificaiton(
-                                                          notifID);
                                                   VoidCallback
                                                       continueCallBack = () => {
                                                             Navigator.of(
                                                                     context)
                                                                 .pop(),
-                                                            // code on Okay comes here
+                                                            NotificationHttpService()
+                                                                .deleteNotificaiton(
+                                                                    notifID),
+                                                            setState(() {
+                                                              rented = false;
+                                                            })
                                                           };
 
-                                                  VoidCallback
-                                                      continueCallBack = () => {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(),
-                                                            // code on Okay comes here
-                                                          };
-                                                  BlurryDialog alert = BlurryDialog(
-                                                      "Undo?",
-                                                      "Do you want to undo the request?",
-                                                      continueCallBack);
+                                                  BlurryDialog alert =
+                                                      BlurryDialog(
+                                                    "Undo?",
+                                                    "Do you want to undo the request?",
+                                                    continueCallBack,
+                                                  );
 
                                                   showDialog(
                                                     context: context,
@@ -180,9 +177,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                       return alert;
                                                     },
                                                   );
-                                                  setState(() {
-                                                    rented = false;
-                                                  });
                                                 }
                                               : () async {
                                                   String postRes =
