@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/services/NotificationsHttpService.dart';
 
 import 'package:frontend/shared/constants.dart';
 import 'package:frontend/models/AssetListing.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/services/AssetsHttpService.dart';
-import 'package:frontend/services/NotificationsHttpService.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/shared/alertBox.dart';
 
@@ -17,28 +17,27 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   final assetService = AssetsHttpService();
   SingleAsset asset;
+  bool flag = false;
+  bool rented = false;
+  String notifID;
 
   Future<SingleAsset> fetchAsset(String assetID) async {
     SingleAsset tmp = await assetService.getSingleAsset(assetID);
+    // I've used flag here because when I hadn't it was calling the api like 5 times per second
+    if (!flag) {
+      String abc = await NotificationHttpService().isAlreadyRented(tmp.title);
+      flag = true;
+      if (abc != "0") {
+        setState(() {
+          rented = true;
+          notifID = abc;
+        });
+      }
+    }
     return tmp;
   }
 
   final String url = "https://" + env['SERVER_URL'];
-  bool rented = false;
-  String notif_id = "";
-
-  Future<bool> checkIsRented(String title) async {
-    String abc = await NotificationHttpService().isAlreadyRented(title);
-    if (abc == "0") {
-      return false;
-    } else {
-      setState(() {
-        notif_id = abc;
-      });
-      return true;
-    }
-  }
-
   // final String url = "http://" + "127.0.0.1:5000";
 
   @override
@@ -78,14 +77,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ClipRRect(
-                                      borderRadius: BorderRadius.circular(17),
-                                      child: Image.network(
-                                        url + snapshot.data.url,
-                                        fit: BoxFit.fill,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                      )),
+                                  Center(
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(17),
+                                        child: Image.network(
+                                            url + snapshot.data.url)),
+                                  ),
                                   SizedBox(
                                     height: 20,
                                   ),
@@ -145,112 +142,94 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   ),
                                   SizedBox(
                                       width: double.infinity,
-                                      child: FutureBuilder(
-                                          future: checkIsRented(
-                                              snapshot.data.title),
-                                          builder: (BuildContext context,
-                                              AsyncSnapshot snapshot_x) {
-                                            print(snapshot_x.data);
-                                            if (snapshot_x.data == null) {
-                                              return CircularProgressIndicator();
-                                            }
-                                            return ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: kAccentColor1),
-                                                onPressed: (snapshot_x.data ||
-                                                        rented)
-                                                    ? () {
-                                                        NotificationHttpService()
-                                                            .deleteNotificaiton(
-                                                                notif_id);
-                                                        VoidCallback
-                                                            continueCallBack =
-                                                            () => {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop(),
-                                                                  // code on Okay comes here
-                                                                };
-                                                        BlurryDialog alert =
-                                                            BlurryDialog(
-                                                                "Undo?",
-                                                                "Do you want to undo the request?",
-                                                                continueCallBack);
+                                      child: ElevatedButton(
+                                          style: (rented)
+                                              ? ElevatedButton.styleFrom(
+                                                  primary: kAccentColor4)
+                                              : ElevatedButton.styleFrom(
+                                                  primary: kAccentColor1),
+                                          onPressed: (rented)
+                                              ? () async {
+                                                  NotificationHttpService()
+                                                      .deleteNotificaiton(
+                                                          notifID);
+                                                  VoidCallback
+                                                      continueCallBack = () => {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(),
+                                                            // code on Okay comes here
+                                                          };
+                                                  BlurryDialog alert = BlurryDialog(
+                                                      "Undo?",
+                                                      "Do you want to undo the request?",
+                                                      continueCallBack);
 
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return alert;
-                                                          },
-                                                        );
-                                                        setState(() {
-                                                          rented = false;
-                                                        });
-                                                      }
-                                                    : () async {
-                                                        String postRes =
-                                                            await NotificationHttpService()
-                                                                .postNotification(
-                                                                    snapshot
-                                                                        .data
-                                                                        .title,
-                                                                    "Request Raised",
-                                                                    snapshot
-                                                                        .data
-                                                                        .username);
-                                                        if (postRes != "0") {
-                                                          setState(() {
-                                                            rented = true;
-                                                            notif_id = postRes;
-                                                          });
-                                                        } else {
-                                                          VoidCallback
-                                                              continueCallBack =
-                                                              () => {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop(),
-                                                                    // code on Okay comes here
-                                                                  };
-                                                          BlurryDialog alert =
-                                                              BlurryDialog(
-                                                                  "Failure",
-                                                                  "Something went wrong, Please try again",
-                                                                  continueCallBack);
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return alert;
+                                                    },
+                                                  );
+                                                  setState(() {
+                                                    rented = false;
+                                                  });
+                                                }
+                                              : () async {
+                                                  String postRes =
+                                                      await NotificationHttpService()
+                                                          .postNotification(
+                                                              snapshot
+                                                                  .data.title,
+                                                              "Request Raised",
+                                                              snapshot.data
+                                                                  .username);
+                                                  if (postRes != "0") {
+                                                    setState(() {
+                                                      notifID = postRes;
+                                                      rented = true;
+                                                    });
+                                                  } else {
+                                                    VoidCallback
+                                                        continueCallBack =
+                                                        () => {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(),
+                                                              // code on Okay comes here
+                                                            };
+                                                    BlurryDialog alert =
+                                                        BlurryDialog(
+                                                            "Failure",
+                                                            "Something went wrong, Please try again",
+                                                            continueCallBack);
 
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return alert;
-                                                            },
-                                                          );
-                                                        }
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return alert;
                                                       },
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      20.0),
-                                                  child:
-                                                      (snapshot_x.data ||
-                                                              rented)
-                                                          ? Text(
-                                                              "Request Sent",
-                                                              style: GoogleFonts.inter(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w900),
-                                                            )
-                                                          : Text(
-                                                              "Rent Item",
-                                                              style: GoogleFonts.inter(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w900),
-                                                            ),
-                                                ));
-                                          })),
+                                                    );
+                                                  }
+                                                },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: (rented)
+                                                ? Text(
+                                                    "Request Sent",
+                                                    style: GoogleFonts.inter(
+                                                        fontWeight:
+                                                            FontWeight.w900),
+                                                  )
+                                                : Text(
+                                                    "Rent Item",
+                                                    style: GoogleFonts.inter(
+                                                        fontWeight:
+                                                            FontWeight.w900),
+                                                  ),
+                                          ))),
                                   SizedBox(
                                     height: 10,
                                   ),
