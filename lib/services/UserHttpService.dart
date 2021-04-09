@@ -17,6 +17,8 @@ class UserHttpService {
     if (response.statusCode == 200) {
       //print(jsonDecode(response.body));
       await store.write(key: 'jwt', value: json.decode(response.body)["token"]);
+      await store.write(
+          key: 'username', value: json.decode(response.body)["username"]);
       return true;
     } else {
       return false;
