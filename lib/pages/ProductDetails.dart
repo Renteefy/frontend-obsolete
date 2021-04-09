@@ -160,6 +160,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                                 .pop(),
                                                             // code on Okay comes here
                                                           };
+
+                                                  VoidCallback
+                                                      continueCallBack = () => {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(),
+                                                            // code on Okay comes here
+                                                          };
                                                   BlurryDialog alert = BlurryDialog(
                                                       "Undo?",
                                                       "Do you want to undo the request?",
