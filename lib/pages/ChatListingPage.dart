@@ -5,8 +5,15 @@ import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ChatListingPage extends StatelessWidget {
-  final List<ChatListing> usersList = [
-    ChatListing(chatID: "chat1", user1: "tester1", user2: "yajat"),
+  final List<ChatListing> userList = [
+    ChatListing.fromJson({
+      "user1": {"username": "yajat"},
+      "user2": {
+        "username": "tester1",
+        "lastMessage": "this is some last message"
+      },
+      "chatID": "this is chatID"
+    }),
   ];
 
   @override
@@ -39,8 +46,12 @@ class ChatListingPage extends StatelessWidget {
       ),
       body: Container(
         child: ListView.builder(
-          itemCount: usersList.length,
+          itemCount: userList.length,
           itemBuilder: (context, index) {
+            var selUser = (userList[index].user1.username != "tester")
+                ? userList[index].user1
+                : userList[index]
+                    .user2; // replace with username from global storage
             return Card(
               margin: EdgeInsets.all(20),
               child: ListTile(
@@ -51,12 +62,15 @@ class ChatListingPage extends StatelessWidget {
                         "https://ui-avatars.com/api/?name=John+Doe"),
                   ),
                   title: Text(
-                    "Ayush",
+                    userList[index].user1.username,
                     style: GoogleFonts.inter(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  subtitle: Text('The airplane is only in Act II.'),
-                  onTap: () => print("ListTile")),
+                  subtitle: (selUser.lastMessage != null)
+                      ? Text(selUser.lastMessage)
+                      : Text('Start conversation'),
+                  onTap: () => Navigator.of(context).pushNamed("/chat",
+                      arguments: {"chatID": userList[index].chatID})),
             );
           },
         ),

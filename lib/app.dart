@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/pageController/HomePageController.dart';
 import 'package:frontend/pages/AssetsCatalogPage.dart';
 import 'package:frontend/pages/ChatListingPage.dart';
+import 'package:frontend/pages/ChatView.dart';
 import 'package:frontend/pages/NotificationPage.dart';
 import 'package:frontend/pages/ProductDetails.dart';
 
@@ -27,6 +28,7 @@ class _AppState extends State<App> {
         "/notification": (context) => NotificationPage(),
         "/productDetail": (context) => ProductDetails(),
         "/chatListing": (context) => ChatListingPage(),
+        "/chat": (context) => ChatView(),
       },
       title: "Renteefy",
       theme: ThemeData(
