@@ -33,6 +33,13 @@ class TopBar extends PreferredSize {
             iconSize: 30,
             onPressed: () {
               Navigator.pushNamed(context, '/notification');
+            }),
+        SizedBox(width: 10),
+        IconButton(
+            icon: Icon(Icons.messenger_outline),
+            iconSize: 28,
+            onPressed: () {
+              Navigator.pushNamed(context, '/chatListing');
             })
       ],
     );

@@ -25,15 +25,12 @@ class _NotificationPageState extends State<NotificationPage> {
 
   void fetchNotifications() async {
     String value = await store.read(key: "username");
-    setState(() {
-      username = value;
-    });
     List<NotificationListing> notifications =
         await NotificationHttpService().getUserNotifications();
     setState(() {
+      username = value;
       notificationList = notifications;
     });
-    // print(notificationList);
   }
 
   // the list view builder will loop through this notification listing array.
@@ -45,25 +42,25 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        title: Row(
+          children: [
+            Text("Latest ",
+                style: GoogleFonts.inter(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w900,
+                )),
+            Text("Notifications",
+                style: GoogleFonts.inter(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
+                    color: kPrimaryColor)),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Row(
-              children: [
-                Text("Latest ",
-                    style: GoogleFonts.inter(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900,
-                    )),
-                Text("Notifications",
-                    style: GoogleFonts.inter(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w900,
-                        color: kPrimaryColor)),
-              ],
-            ),
             Flexible(
               child: ListView.builder(
                   itemCount: notificationList.length,

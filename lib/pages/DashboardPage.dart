@@ -226,6 +226,20 @@ class UserInfoCard extends StatelessWidget {
               Text("yojat@gmail.com",
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.bold, color: kAccentColor3)),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(icon: Icon(Icons.edit_outlined), onPressed: () {}),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  IconButton(
+                      icon: Icon(Icons.email_outlined), onPressed: () {}),
+                ],
+              )
             ],
           ),
         ),

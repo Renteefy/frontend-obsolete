@@ -62,7 +62,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               future: fetchAsset(routes["assetID"]),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                  return Container(child: Text("Loading"));
+                  return Container(child: CircularProgressIndicator());
                 }
                 return SingleChildScrollView(
                   child: Center(
