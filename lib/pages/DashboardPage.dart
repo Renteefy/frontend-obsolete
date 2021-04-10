@@ -11,15 +11,8 @@ class DashboardPage extends StatelessWidget {
         url: "https://via.placeholder.com/230",
         title: "This is title",
         interval: "some interval",
-        username: "yojat",
-        assetID: "12"),
-    SingleAsset(
-        description: "This is some description",
-        price: "300",
-        url: "https://via.placeholder.com/230",
-        title: "This is title",
-        interval: "some interval",
-        username: "yojat",
+        owner: "yojat",
+        renter: "tester1",
         assetID: "12"),
   ];
   final List<SingleAsset> serviceRes = [
@@ -29,15 +22,8 @@ class DashboardPage extends StatelessWidget {
         url: "https://via.placeholder.com/230",
         title: "This is title",
         interval: "some interval",
-        username: "yojat",
-        assetID: "12"),
-    SingleAsset(
-        description: "This is some description",
-        price: "300",
-        url: "https://via.placeholder.com/230",
-        title: "This is title",
-        interval: "some interval",
-        username: "yojat",
+        owner: "yojat",
+        renter: "tester1",
         assetID: "12"),
   ];
   final List<SingleAsset> rentedAssetRes = [
@@ -47,7 +33,8 @@ class DashboardPage extends StatelessWidget {
         url: "https://via.placeholder.com/230",
         title: "This is title",
         interval: "some interval",
-        username: "yojat",
+        owner: "yojat",
+        renter: "tester1",
         assetID: "12"),
     SingleAsset(
         description: "This is some description",
@@ -55,7 +42,8 @@ class DashboardPage extends StatelessWidget {
         url: "https://via.placeholder.com/230",
         title: "This is title",
         interval: "some interval",
-        username: "yojat",
+        owner: "yojat",
+        renter: "tester1",
         assetID: "12"),
   ];
   final List<SingleAsset> rentedServiceRes = [
@@ -65,7 +53,8 @@ class DashboardPage extends StatelessWidget {
         url: "https://via.placeholder.com/230",
         title: "This is title",
         interval: "some interval",
-        username: "yojat",
+        owner: "yojat",
+        renter: "tester1",
         assetID: "12"),
     SingleAsset(
         description: "This is some description",
@@ -73,7 +62,8 @@ class DashboardPage extends StatelessWidget {
         url: "https://via.placeholder.com/230",
         title: "This is title",
         interval: "some interval",
-        username: "yojat",
+        owner: "yojat",
+        renter: "tester1",
         assetID: "12"),
   ];
 

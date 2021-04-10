@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/ChatListing.dart';
+import 'package:frontend/pages/ChatView.dart';
+import 'package:frontend/pages/ProductDetails.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -69,8 +71,12 @@ class ChatListingPage extends StatelessWidget {
                   subtitle: (selUser.lastMessage != null)
                       ? Text(selUser.lastMessage)
                       : Text('Start conversation'),
-                  onTap: () => Navigator.of(context).pushNamed("/chat",
-                      arguments: {"chatID": userList[index].chatID})),
+                  onTap: () {
+                    var route = MaterialPageRoute(
+                        builder: (context) =>
+                            ChatView(chatID: userList[index].chatID));
+                    Navigator.of(context).push(route);
+                  }),
             );
           },
         ),

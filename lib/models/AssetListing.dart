@@ -32,8 +32,9 @@ class SingleAsset {
   final String interval;
   final String url;
   final String description;
-  final String username;
-
+  final String owner;
+  final String renter; // person who is presently renting the product
+  final List<String> waitingList;
   SingleAsset({
     @required this.assetID,
     @required this.title,
@@ -41,7 +42,9 @@ class SingleAsset {
     @required this.interval,
     @required this.url,
     @required this.description,
-    @required this.username,
+    @required this.owner,
+    @required this.renter,
+    this.waitingList,
   });
 
   factory SingleAsset.fromJson(Map<String, dynamic> json) {
@@ -52,7 +55,8 @@ class SingleAsset {
       interval: json['interval'] as String,
       url: json['url'] as String,
       description: json['description'] as String,
-      username: json['username'] as String,
+      owner: json['owner'] as String,
+      renter: json['owner'] as String,
     );
   }
 }

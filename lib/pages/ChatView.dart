@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class ChatView extends StatefulWidget {
+  final String chatID;
+  const ChatView({Key key, this.chatID}) : super(key: key);
   @override
   _ChatViewState createState() => _ChatViewState();
 }
@@ -20,17 +22,12 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    final arguments =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-
-    final String chatID = arguments["chatID"];
-
     ScrollController scrollController = new ScrollController();
     TextEditingController messageController = new TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(chatID),
+        title: Text(widget.chatID),
         backgroundColor: Colors.transparent,
       ),
       body: Padding(

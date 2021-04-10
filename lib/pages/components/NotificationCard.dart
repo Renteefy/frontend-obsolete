@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/NotificationListing.dart';
+import 'package:frontend/pages/ProductDetails.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/services/NotificationsHttpService.dart';
@@ -143,8 +144,11 @@ class _NotificationCardState extends State<NotificationCard> {
     } else {
       return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, "/productDetail",
-              arguments: {"assetID": widget.notifi.assetID});
+          var route = MaterialPageRoute(
+              builder: (context) => ProductDetails(
+                    assetID: widget.notifi.assetID,
+                  ));
+          Navigator.of(context).push(route);
         },
         child: Container(
           margin: EdgeInsets.fromLTRB(0, 10, 0, 10),

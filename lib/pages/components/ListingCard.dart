@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/AssetListing.dart';
+import 'package:frontend/pages/ProductDetails.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,8 +19,11 @@ class ListingCard extends StatelessWidget {
     // final String url = "http://" + "127.0.0.1:5000";
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, "/productDetail",
-            arguments: {"assetID": obj.assetID});
+        var route = MaterialPageRoute(
+            builder: (context) => ProductDetails(
+                  assetID: obj.assetID,
+                ));
+        Navigator.of(context).push(route);
       },
       child: Container(
         decoration: BoxDecoration(
