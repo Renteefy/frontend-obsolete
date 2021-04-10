@@ -12,7 +12,7 @@ class NotificationHttpService {
   Future<List<NotificationListing>> getUserNotifications() async {
     String value = await store.read(key: "jwt");
 
-    var data = await http.get(Uri.http(url, "notifications/user/"),
+    var data = await http.get(Uri.https(url, "notifications/user/"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     var jsonData = json.decode(data.body);
 
@@ -24,13 +24,7 @@ class NotificationHttpService {
     List<NotificationListing> notifications = [];
 
     for (var notif in jsonData) {
-      final tmp = NotificationListing(
-          notificationID: notif["notificationID"],
-          title: notif["title"],
-          status: notif["status"],
-          rentee: notif["rentee"],
-          owner: notif["owner"]);
-
+      final tmp = NotificationListing.fromJson(notif);
       notifications.add(tmp);
     }
 
@@ -69,7 +63,18 @@ class NotificationHttpService {
     var res = await http.delete(
         Uri.https(url, "notifications/notification/$notificationID"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
-    print(res.statusCode);
-    print(res.body);
+    print("$notificationID deleted");
+  }
+
+  Future<int> patchNotification(
+      String propName, String value, String notifID) async {
+    String token = await store.read(key: "jwt");
+    var changes = '{"changes": [{"propName": "$propName", "value": "$value"}]}';
+
+    http.Response response = await http.patch(
+        Uri.https(url, "notifications/notification/$notifID"),
+        body: changes,
+        headers: {'Content-Type': 'application/json', 'Authorization': token});
+    return (response.statusCode);
   }
 }

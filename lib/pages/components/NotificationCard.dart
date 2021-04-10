@@ -3,16 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/NotificationListing.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/services/NotificationsHttpService.dart';
 
-class NotificationCard extends StatelessWidget {
+class NotificationCard extends StatefulWidget {
   final NotificationListing notifi;
   final bool isRentee;
 
-  const NotificationCard({this.notifi, @required this.isRentee});
+  NotificationCard({this.notifi, @required this.isRentee});
 
   @override
+  _NotificationCardState createState() => _NotificationCardState();
+}
+
+class _NotificationCardState extends State<NotificationCard> {
+  @override
   Widget build(BuildContext context) {
-    if (isRentee == true) {
+    if (widget.isRentee == true) {
       return Container(
         child: Card(
           shape: RoundedRectangleBorder(
@@ -32,7 +38,7 @@ class NotificationCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            notifi.title,
+                            widget.notifi.title,
                             style: GoogleFonts.inter(
                                 fontSize: 18, fontWeight: FontWeight.w700),
                           ),
@@ -50,7 +56,7 @@ class NotificationCard extends StatelessWidget {
                                 width: 10,
                               ),
                               Text(
-                                "Rentee: " + notifi.rentee,
+                                "Rentee: " + widget.notifi.rentee,
                                 style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -63,22 +69,28 @@ class NotificationCard extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              (notifi.status == "Request Raised")
+                              (widget.notifi.status == "Request Raised")
                                   ? Icon(
                                       Icons.warning_rounded,
                                       size: 30,
                                       color: Color(0xffd9d7d7),
                                     )
-                                  : Icon(
-                                      Icons.done_all_outlined,
-                                      size: 30,
-                                      color: Color(0xffd9d7d7),
-                                    ),
+                                  : (widget.notifi.status == "Accepted")
+                                      ? Icon(
+                                          Icons.done_all_outlined,
+                                          size: 30,
+                                          color: Color(0xffd9d7d7),
+                                        )
+                                      : Icon(
+                                          Icons.cancel,
+                                          size: 30,
+                                          color: Color(0xffd9d7d7),
+                                        ),
                               SizedBox(
                                 width: 10,
                               ),
                               Text(
-                                "Status: " + notifi.status,
+                                "Status: " + widget.notifi.status,
                                 style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -110,7 +122,7 @@ class NotificationCard extends StatelessWidget {
                       label: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Text(
-                          "Chat with " + notifi.owner,
+                          "Chat with " + widget.notifi.owner,
                           style: GoogleFonts.inter(
                               fontSize: 15, fontWeight: FontWeight.bold),
                         ),
@@ -142,7 +154,7 @@ class NotificationCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            notifi.title,
+                            widget.notifi.title,
                             style: GoogleFonts.inter(
                                 fontSize: 18, fontWeight: FontWeight.w700),
                           ),
@@ -160,7 +172,7 @@ class NotificationCard extends StatelessWidget {
                                 width: 10,
                               ),
                               Text(
-                                "Rentee: " + notifi.rentee,
+                                "Rentee: " + widget.notifi.rentee,
                                 style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -173,22 +185,28 @@ class NotificationCard extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              (notifi.status == "Request Raised")
+                              (widget.notifi.status == "Request Raised")
                                   ? Icon(
                                       Icons.warning_rounded,
                                       size: 30,
                                       color: Color(0xffd9d7d7),
                                     )
-                                  : Icon(
-                                      Icons.warning_amber_outlined,
-                                      size: 30,
-                                      color: Color(0xffd9d7d7),
-                                    ),
+                                  : (widget.notifi.status == "Accepted")
+                                      ? Icon(
+                                          Icons.done_all_outlined,
+                                          size: 30,
+                                          color: Color(0xffd9d7d7),
+                                        )
+                                      : Icon(
+                                          Icons.cancel,
+                                          size: 30,
+                                          color: Color(0xffd9d7d7),
+                                        ),
                               SizedBox(
                                 width: 10,
                               ),
                               Text(
-                                "Status: " + notifi.status,
+                                "Status: " + widget.notifi.status,
                                 style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
@@ -208,13 +226,65 @@ class NotificationCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                        icon: Icon(Icons.check),
+                        icon: (widget.notifi.status != "Accepted")
+                            ? Icon(Icons.check)
+                            : Icon(Icons.refresh),
                         color: kAccentColor1,
-                        onPressed: () {}),
+                        onPressed: (widget.notifi.status != "Accepted")
+                            ? () async {
+                                int resStatus = await NotificationHttpService()
+                                    .patchNotification("status", "Accepted",
+                                        widget.notifi.notificationID);
+                                if (resStatus == 200) {
+                                  // Only using "setState" should refresh the page, but it ain't doing so
+                                  setState(() {
+                                    widget.notifi.status = "Accepted";
+                                  });
+                                }
+                              }
+                            : () async {
+                                int resStatus = await NotificationHttpService()
+                                    .patchNotification(
+                                        "status",
+                                        "Request Raised",
+                                        widget.notifi.notificationID);
+                                if (resStatus == 200) {
+                                  // Only using "setState" should refresh the page, but it ain't doing so
+                                  setState(() {
+                                    widget.notifi.status = "Request Raised";
+                                  });
+                                }
+                              }),
                     IconButton(
-                        icon: Icon(Icons.close),
+                        icon: (widget.notifi.status != "Denied")
+                            ? Icon(Icons.close)
+                            : Icon(Icons.refresh),
                         color: kPrimaryColor,
-                        onPressed: () {}),
+                        onPressed: (widget.notifi.status != "Denied")
+                            ? () async {
+                                int resStatus = await NotificationHttpService()
+                                    .patchNotification("status", "Denied",
+                                        widget.notifi.notificationID);
+                                if (resStatus == 200) {
+                                  // Only using "setState" should refresh the page, but it ain't doing so
+                                  setState(() {
+                                    widget.notifi.status = "Denied";
+                                  });
+                                }
+                              }
+                            : () async {
+                                int resStatus = await NotificationHttpService()
+                                    .patchNotification(
+                                        "status",
+                                        "Request Raised",
+                                        widget.notifi.notificationID);
+                                if (resStatus == 200) {
+                                  // Only using "setState" should refresh the page, but it ain't doing so
+                                  setState(() {
+                                    widget.notifi.status = "Request Raised";
+                                  });
+                                }
+                              }),
                     IconButton(
                         icon: Icon(Icons.messenger_outline), onPressed: () {}),
                   ],

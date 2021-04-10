@@ -36,33 +36,12 @@ class _NotificationPageState extends State<NotificationPage> {
     // print(notificationList);
   }
 
-  // List<Map<String, String>> res = [
-  //   {
-  //     "url": "https://via.placeholder.com/150",
-  //     "title":
-  //         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,",
-  //     "rentee": "Ayush",
-  //     "owner": "yaj",
-  //     "status": "Request Raised",
-  //   },
-  //   {
-  //     "url": "https://via.placeholder.com/150",
-  //     "title":
-  //         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,",
-  //     "rentee": "yaj",
-  //     "owner": "yaj1",
-  //     "status": "Request Raised",
-  //   }
-  // ];
-  // res comes in gets converted in to Notification listing object array.
   // the list view builder will loop through this notification listing array.
   // if (owner of current item == username from flutter secure storage )
   //  render Owner card (with accept and reject options)
   // else render Rentee card (without any options only status and chat with owner button)
   @override
   Widget build(BuildContext context) {
-    // List<NotificationListing> notificationList =
-    //     res.map((dynamic item) => NotificationListing.fromJson(item)).toList();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

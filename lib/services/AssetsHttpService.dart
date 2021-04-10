@@ -25,13 +25,7 @@ class AssetsHttpService {
     List<AssetListing> assets = [];
 
     for (var asset in jsonData["assets"]) {
-      final tmp = AssetListing(
-          assetID: asset["assetID"],
-          title: asset["title"],
-          price: asset["price"],
-          interval: asset["interval"],
-          url: asset["url"]);
-
+      final tmp = AssetListing.fromJson(asset);
       assets.add(tmp);
     }
 
@@ -53,13 +47,7 @@ class AssetsHttpService {
     List<AssetListing> assets = [];
 
     for (var asset in jsonData["assets"]) {
-      final tmp = AssetListing(
-          assetID: asset["assetID"],
-          title: asset["title"],
-          price: asset["price"],
-          interval: asset["interval"],
-          url: asset["url"]);
-
+      final tmp = AssetListing.fromJson(asset);
       assets.add(tmp);
     }
 
@@ -78,14 +66,7 @@ class AssetsHttpService {
       throw "Unable to retrieve assetCatalog.";
     }
 
-    final asset = SingleAsset(
-        assetID: jsonData["assetID"],
-        title: jsonData["title"],
-        price: jsonData["price"],
-        interval: jsonData["interval"],
-        url: jsonData["url"],
-        description: jsonData["description"],
-        username: jsonData["username"]);
+    final asset = SingleAsset.fromJson(jsonData);
 
     return asset;
   }
