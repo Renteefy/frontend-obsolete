@@ -4,7 +4,61 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/models/AssetListing.dart';
 
 class DashboardPage extends StatelessWidget {
-  final List<SingleAsset> assetres = [
+  final List<SingleAsset> assetRes = [
+    SingleAsset(
+        description: "This is some description",
+        price: "300",
+        url: "https://via.placeholder.com/230",
+        title: "This is title",
+        interval: "some interval",
+        username: "yojat",
+        assetID: "12"),
+    SingleAsset(
+        description: "This is some description",
+        price: "300",
+        url: "https://via.placeholder.com/230",
+        title: "This is title",
+        interval: "some interval",
+        username: "yojat",
+        assetID: "12"),
+  ];
+  final List<SingleAsset> serviceRes = [
+    SingleAsset(
+        description: "This is some description",
+        price: "300",
+        url: "https://via.placeholder.com/230",
+        title: "This is title",
+        interval: "some interval",
+        username: "yojat",
+        assetID: "12"),
+    SingleAsset(
+        description: "This is some description",
+        price: "300",
+        url: "https://via.placeholder.com/230",
+        title: "This is title",
+        interval: "some interval",
+        username: "yojat",
+        assetID: "12"),
+  ];
+  final List<SingleAsset> rentedAssetRes = [
+    SingleAsset(
+        description: "This is some description",
+        price: "300",
+        url: "https://via.placeholder.com/230",
+        title: "This is title",
+        interval: "some interval",
+        username: "yojat",
+        assetID: "12"),
+    SingleAsset(
+        description: "This is some description",
+        price: "300",
+        url: "https://via.placeholder.com/230",
+        title: "This is title",
+        interval: "some interval",
+        username: "yojat",
+        assetID: "12"),
+  ];
+  final List<SingleAsset> rentedServiceRes = [
     SingleAsset(
         description: "This is some description",
         price: "300",
@@ -30,49 +84,98 @@ class DashboardPage extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           UserInfoCard(),
-          TitleSection(),
           SizedBox(
-            height: 300,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                primary: false,
-                itemCount: assetres.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => Container(
-                      width: 200,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                                child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image(
-                                  image: NetworkImage(assetres[index].url)),
-                            )),
-                            Flexible(
-                              child: Text(
-                                  assetres[index].title +
-                                      "ajsdfnaskldfansdlnfa asdfnasdlkfnlk",
-                                  style: GoogleFonts.inter(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )),
-          )
+            height: 40,
+          ),
+          TitleSection(
+            title: "Your Assets",
+            subtitle: "Your listed assets on Renteefy",
+          ),
+          HorizontalCardViewBuilder(res: assetRes),
+          SizedBox(
+            height: 40,
+          ),
+          TitleSection(
+              title: "Your Services",
+              subtitle: "Your listed services on Renteefy"),
+          HorizontalCardViewBuilder(res: serviceRes),
+          SizedBox(
+            height: 40,
+          ),
+          Divider(
+            color: Colors.white,
+            thickness: 2,
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          TitleSection(
+              title: "Rented Assets", subtitle: "Assets you have rented"),
+          HorizontalCardViewBuilder(res: rentedAssetRes),
+          SizedBox(
+            height: 40,
+          ),
+          TitleSection(
+              title: "Rented Services", subtitle: "Service you have rented"),
+          HorizontalCardViewBuilder(res: rentedServiceRes),
         ]),
       ),
     );
   }
 }
 
+class HorizontalCardViewBuilder extends StatelessWidget {
+  const HorizontalCardViewBuilder({
+    Key key,
+    @required this.res,
+  }) : super(key: key);
+
+  final List<SingleAsset> res;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          primary: false,
+          itemCount: res.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) => Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                          flex: 10,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(res[index].url)),
+                          )),
+                      Flexible(
+                        child: Text(res[index].title + "",
+                            style: GoogleFonts.inter(
+                                fontSize: 14, fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                ),
+              )),
+    );
+  }
+}
+
 class TitleSection extends StatelessWidget {
+  final String title;
+  final String subtitle;
+
   const TitleSection({
     Key key,
+    this.title,
+    this.subtitle,
   }) : super(key: key);
 
   @override
@@ -80,12 +183,14 @@ class TitleSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Your Assets",
+        Text(title,
             style:
                 GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w900)),
-        Text("Your asset listings on Renteefy",
-            style:
-                GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w500)),
+        Text(subtitle,
+            style: GoogleFonts.inter(
+                color: kAccentColor3,
+                fontSize: 15,
+                fontWeight: FontWeight.w500)),
       ],
     );
   }
