@@ -1,22 +1,41 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/models/ChatListing.dart';
 import 'package:frontend/pages/ChatView.dart';
-import 'package:frontend/pages/ProductDetails.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ChatListingPage extends StatelessWidget {
+class ChatListingPage extends StatefulWidget {
+  @override
+  _ChatListingPageState createState() => _ChatListingPageState();
+}
+
+class _ChatListingPageState extends State<ChatListingPage> {
+  final store = new FlutterSecureStorage();
+
+  String username;
+
   final List<ChatListing> userList = [
     ChatListing.fromJson({
-      "user1": {"username": "yajat"},
-      "user2": {
-        "username": "tester1",
-        "lastMessage": "this is some last message"
-      },
-      "chatID": "this is chatID"
+      "user1": "yajat",
+      "user2": "tester1",
+      "chatID": "this is chatID",
+      "lastMessage": "this is lastmessage",
     }),
   ];
+  @override
+  void initState() {
+    super.initState();
+    resolveUsername();
+  }
+
+  void resolveUsername() async {
+    var tmp = await store.read(key: "username");
+    setState(() {
+      username = tmp;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +69,11 @@ class ChatListingPage extends StatelessWidget {
         child: ListView.builder(
           itemCount: userList.length,
           itemBuilder: (context, index) {
-            var selUser = (userList[index].user1.username != "tester")
+            var selUser = (userList[index].user1 != username)
                 ? userList[index].user1
                 : userList[index]
                     .user2; // replace with username from global storage
+
             return Card(
               margin: EdgeInsets.all(20),
               child: ListTile(
@@ -64,17 +84,19 @@ class ChatListingPage extends StatelessWidget {
                         "https://ui-avatars.com/api/?name=John+Doe"),
                   ),
                   title: Text(
-                    userList[index].user1.username,
+                    selUser,
                     style: GoogleFonts.inter(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  subtitle: (selUser.lastMessage != null)
-                      ? Text(selUser.lastMessage)
+                  subtitle: (userList[index].lastMessage != null)
+                      ? Text(userList[index].lastMessage)
                       : Text('Start conversation'),
                   onTap: () {
                     var route = MaterialPageRoute(
-                        builder: (context) =>
-                            ChatView(chatID: userList[index].chatID));
+                        builder: (context) => ChatView(
+                              chatID: userList[index].chatId,
+                              username: username,
+                            ));
                     Navigator.of(context).push(route);
                   }),
             );

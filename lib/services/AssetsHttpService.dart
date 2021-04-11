@@ -71,22 +71,6 @@ class AssetsHttpService {
     return asset;
   }
 
-  Future<SingleAsset> getSingleAsset2(String assetID) async {
-    String value = await store.read(key: "jwt");
-
-    var data = await http.get(Uri.https(url, "assets/asset/$assetID"),
-        headers: {'Content-Type': 'application/json', 'Authorization': value});
-    var jsonData = json.decode(data.body);
-    if (data.statusCode != 200) {
-      print("Auth Failed, please login");
-      throw "Unable to retrieve assetCatalog.";
-    }
-
-    final asset = SingleAsset.fromJson(jsonData);
-
-    return asset;
-  }
-
   Future<int> postAsset(String title, String description, picture, String price,
       String interval, String category) async {
     var request = http.MultipartRequest("POST", Uri.https(url, "assets"));

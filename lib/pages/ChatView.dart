@@ -6,7 +6,8 @@ import 'package:intl/intl.dart';
 
 class ChatView extends StatefulWidget {
   final String chatID;
-  const ChatView({Key key, this.chatID}) : super(key: key);
+  final String username;
+  const ChatView({Key key, this.chatID, this.username}) : super(key: key);
   @override
   _ChatViewState createState() => _ChatViewState();
 }
@@ -27,7 +28,7 @@ class _ChatViewState extends State<ChatView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.chatID),
+        title: Text(widget.username),
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
@@ -41,14 +42,14 @@ class _ChatViewState extends State<ChatView> {
                     itemBuilder: (context, index) {
                       return Column(
                         crossAxisAlignment:
-                            (chats[index]["sender"] == "tester1")
+                            (chats[index]["sender"] == widget.username)
                                 ? CrossAxisAlignment.start
                                 : CrossAxisAlignment.end,
                         children: [
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
-                              color: (chats[index]["sender"] != "tester1")
+                              color: (chats[index]["sender"] != widget.username)
                                   ? kPrimaryColor
                                   : kAccentColor3,
                             ),
