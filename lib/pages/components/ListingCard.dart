@@ -19,6 +19,7 @@ class ListingCard extends StatelessWidget {
     // final String url = "http://" + "127.0.0.1:5000";
     return GestureDetector(
       onTap: () {
+        print(obj.assetID);
         var route = MaterialPageRoute(
             builder: (context) => ProductDetails(
                   assetID: obj.assetID,

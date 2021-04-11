@@ -42,21 +42,21 @@ class SingleAsset {
     @required this.interval,
     @required this.url,
     @required this.description,
-    @required this.owner,
-    @required this.renter,
+    this.owner,
+    this.renter,
     this.waitingList,
   });
 
   factory SingleAsset.fromJson(Map<String, dynamic> json) {
     return SingleAsset(
-      assetID: json['assetID'] as String,
-      title: json['title'] as String,
-      price: json['price'] as String,
-      interval: json['interval'] as String,
-      url: json['url'] as String,
-      description: json['description'] as String,
-      owner: json['owner'] as String,
-      renter: json['owner'] as String,
+      assetID: json["assetResponse"]['assetID'] as String,
+      title: json["assetResponse"]['title'] as String,
+      price: json["assetResponse"]['price'] as String,
+      interval: json["assetResponse"]['interval'] as String,
+      url: json["assetResponse"]['url'] as String,
+      description: json["assetResponse"]['description'] as String,
+      owner: json["assetResponse"]['owner'] as String,
+      renter: json["assetResponse"]['renter'] as String,
     );
   }
 }

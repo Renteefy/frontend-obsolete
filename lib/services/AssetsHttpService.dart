@@ -80,6 +80,7 @@ class AssetsHttpService {
     request.fields["price"] = price;
     request.fields["interval"] = interval;
     request.fields["category"] = "category";
+    request.fields["owner"] = await store.read(key: "username");
 
     final storage = new FlutterSecureStorage();
     String value = await storage.read(key: "jwt");
