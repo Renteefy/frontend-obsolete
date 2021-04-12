@@ -7,9 +7,6 @@ import 'package:frontend/shared/alertBox.dart';
 import "dart:io";
 
 class AddPage extends StatefulWidget {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
   @override
   _AddPageState createState() => _AddPageState();
 }
@@ -270,7 +267,7 @@ class _AddPageState extends State<AddPage> {
                       file,
                       priceController.text,
                       interval,
-                      "");
+                      category);
                   if (postRes == 200) {
                     VoidCallback continueCallBack = () => {
                           Navigator.pushReplacementNamed(context, '/home')

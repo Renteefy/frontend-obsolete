@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/models/NotificationListing.dart';
 import 'package:frontend/pages/ChatView.dart';
+import 'package:frontend/pages/EditPage.dart';
 import 'package:frontend/shared/alertBox.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:frontend/models/AssetListing.dart';
@@ -347,6 +348,35 @@ class _DetailsState extends State<Details> {
                                     style: GoogleFonts.inter(
                                         fontWeight: FontWeight.w900),
                                   )))),
+                      // SizedBox(
+                      //     width: double.infinity,
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.all(8.0),
+                      //       child: ElevatedButton(
+                      //           style: ElevatedButton.styleFrom(
+                      //               primary: kAccentColor2),
+                      //           onPressed: () {
+                      //             var route = MaterialPageRoute(
+                      //                 builder: (context) => EditListingPage(
+                      //                       category: widget.asset.category,
+                      //                       type: "Asset",
+                      //                       description:
+                      //                           widget.asset.description,
+                      //                       interval: widget.asset.interval,
+                      //                       price: widget.asset.price,
+                      //                       title: widget.asset.title,
+                      //                       url: widget.asset.url,
+                      //                     ));
+                      //             Navigator.of(context).push(route);
+                      //           },
+                      //           child: Padding(
+                      //               padding: const EdgeInsets.all(20.0),
+                      //               child: Text(
+                      //                 "Edit this",
+                      //                 style: GoogleFonts.inter(
+                      //                     fontWeight: FontWeight.w900),
+                      //               ))),
+                      //     )),
                     ],
                   ),
                 ),

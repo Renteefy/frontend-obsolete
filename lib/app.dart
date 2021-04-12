@@ -3,6 +3,7 @@ import 'package:frontend/pageController/HomePageController.dart';
 import 'package:frontend/pages/AssetsCatalogPage.dart';
 import 'package:frontend/pages/ChatListingPage.dart';
 import 'package:frontend/pages/ChatView.dart';
+import 'package:frontend/pages/EditPage.dart';
 import 'package:frontend/pages/NotificationPage.dart';
 import 'package:frontend/pages/ProductDetails.dart';
 
@@ -28,6 +29,7 @@ class _AppState extends State<App> {
         "/notification": (context) => NotificationPage(),
         "/productDetail": (context) => ProductDetails(),
         "/chatListing": (context) => ChatListingPage(),
+        "/editListing": (context) => EditListingPage(),
         "/chat": (context) => ChatView(),
       },
       title: "Renteefy",

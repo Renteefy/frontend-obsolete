@@ -15,8 +15,8 @@ class AssetListing {
     @required this.price,
     @required this.interval,
     @required this.url,
-    this.category,
     @required this.date,
+    this.category,
   });
 
   factory AssetListing.fromJson(Map<String, dynamic> json) {
