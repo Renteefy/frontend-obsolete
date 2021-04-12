@@ -7,6 +7,7 @@ class AssetListing {
   final String interval;
   final String url;
   final String date;
+  final String category;
 
   AssetListing({
     @required this.assetID,
@@ -14,6 +15,7 @@ class AssetListing {
     @required this.price,
     @required this.interval,
     @required this.url,
+    this.category,
     @required this.date,
   });
 
@@ -24,6 +26,7 @@ class AssetListing {
         price: json['price'] as String,
         interval: json['interval'] as String,
         url: json['url'] as String,
+        category: json['category'] as String,
         date: json['date'] as String);
   }
 }
@@ -36,6 +39,7 @@ class SingleAsset {
   final String url;
   final String description;
   final String owner;
+  final String category;
   final String renter; // person who is presently renting the product
   final List<String> waitingList;
   SingleAsset({
@@ -45,6 +49,7 @@ class SingleAsset {
     @required this.interval,
     @required this.url,
     @required this.description,
+    this.category,
     this.owner,
     this.renter,
     this.waitingList,
@@ -60,6 +65,7 @@ class SingleAsset {
       description: json['description'] as String,
       owner: json['owner'] as String,
       renter: json['renter'] as String,
+      category: json['category'] as String,
     );
   }
 }

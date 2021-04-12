@@ -17,6 +17,7 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   String type = "Asset";
   String interval;
+  String category;
   TextEditingController titleController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
@@ -155,6 +156,58 @@ class _AddPageState extends State<AddPage> {
                     onChanged: (String value) {
                       setState(() {
                         interval = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                color: Color(0xff1a1a1a),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    underline: SizedBox(),
+                    focusColor: kPrimaryColor,
+                    value: interval,
+                    style: TextStyle(color: Colors.white),
+                    iconEnabledColor: Colors.black,
+                    items: <String>[
+                      "Books and Stationary",
+                      "Furniture and Home Decor",
+                      "Hardware and Tools",
+                      "Technology and Electronics",
+                      "Clothing and Accessories",
+                      "Others",
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            value,
+                            style: GoogleFonts.inter(fontSize: 14),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    icon: Icon(
+                      // Add this
+                      Icons.arrow_drop_down, // Add this
+                      color: kAccentColor1,
+                      size: 30,
+                    ),
+                    hint: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Category",
+                        style: GoogleFonts.inter(fontSize: 15),
+                      ),
+                    ),
+                    onChanged: (String value) {
+                      setState(() {
+                        category = value;
                       });
                     },
                   ),

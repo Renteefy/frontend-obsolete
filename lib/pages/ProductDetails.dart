@@ -185,10 +185,14 @@ class _DetailsState extends State<Details> {
                       SizedBox(
                         height: 20,
                       ),
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(17),
-                          child: Image.network(
-                              "https://via.placeholder.com/350x150")),
+                      Center(
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(17),
+                            child: Image.network(
+                              "https://via.placeholder.com/350x150",
+                              fit: BoxFit.fill,
+                            )),
+                      ),
                       SizedBox(
                         height: 30,
                       ),
@@ -228,7 +232,7 @@ class _DetailsState extends State<Details> {
                                                     // code on Okay comes here
                                                   };
                                           BlurryDialog alert = BlurryDialog(
-                                              "Hooray!",
+                                              "Hooray!🎉",
                                               "$owner has accepted you request to rent the item!",
                                               continueCallBack,
                                               false);
@@ -250,7 +254,7 @@ class _DetailsState extends State<Details> {
                                                         // code on Okay comes here
                                                       };
                                               BlurryDialog alert = BlurryDialog(
-                                                  "Alas ",
+                                                  "Alas😞",
                                                   "$owner has denied you request to rent the item.",
                                                   continueCallBack,
                                                   false);
