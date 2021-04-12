@@ -7,7 +7,9 @@ import 'package:intl/intl.dart';
 class ChatView extends StatefulWidget {
   final String chatID;
   final String username;
-  const ChatView({Key key, this.chatID, this.username}) : super(key: key);
+  final String chatee;
+  const ChatView({Key key, this.chatID, this.username, this.chatee})
+      : super(key: key);
   @override
   _ChatViewState createState() => _ChatViewState();
 }
@@ -28,7 +30,7 @@ class _ChatViewState extends State<ChatView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.username),
+        title: Text(widget.chatee),
         backgroundColor: Colors.transparent,
       ),
       body: Padding(

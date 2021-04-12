@@ -69,10 +69,12 @@ class _ChatListingPageState extends State<ChatListingPage> {
         child: ListView.builder(
           itemCount: userList.length,
           itemBuilder: (context, index) {
-            var selUser = (userList[index].user1 != username)
+            String selUser = (userList[index].user1 != username)
                 ? userList[index].user1
-                : userList[index]
-                    .user2; // replace with username from global storage
+                : userList[index].user2;
+            String unselUser = (userList[index].user1 == username)
+                ? userList[index].user1
+                : userList[index].user2;
 
             return Card(
               margin: EdgeInsets.all(20),
@@ -96,6 +98,7 @@ class _ChatListingPageState extends State<ChatListingPage> {
                         builder: (context) => ChatView(
                               chatID: userList[index].chatId,
                               username: username,
+                              chatee: unselUser,
                             ));
                     Navigator.of(context).push(route);
                   }),

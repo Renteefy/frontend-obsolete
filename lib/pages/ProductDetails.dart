@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/pages/ChatView.dart';
 
 import 'package:frontend/shared/constants.dart';
 import 'package:frontend/models/AssetListing.dart';
@@ -55,7 +57,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 }
 
-class Details extends StatelessWidget {
+class Details extends StatefulWidget {
   const Details({
     Key key,
     @required this.url,
@@ -66,7 +68,29 @@ class Details extends StatelessWidget {
   final SingleAsset asset;
 
   @override
+  _DetailsState createState() => _DetailsState();
+}
+
+class _DetailsState extends State<Details> {
+  final store = new FlutterSecureStorage();
+
+  String username;
+  @override
+  void initState() {
+    super.initState();
+    resolveUsername();
+  }
+
+  void resolveUsername() async {
+    var tmp = await store.read(key: "username");
+    setState(() {
+      username = tmp;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(widget.asset);
     return Container(
         child: SingleChildScrollView(
       child: Center(
@@ -84,13 +108,14 @@ class Details extends StatelessWidget {
                       Center(
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(17),
-                            child: Image.network(url + asset.url)),
+                            child:
+                                Image.network(widget.url + widget.asset.url)),
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       Text(
-                        asset.title,
+                        widget.asset.title,
                         style: GoogleFonts.inter(
                             fontSize: 24, fontWeight: FontWeight.w900),
                       ),
@@ -98,7 +123,7 @@ class Details extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        asset.description,
+                        widget.asset.description,
                         style: GoogleFonts.inter(
                             color: Color(0xffBDBDBD),
                             fontSize: 14,
@@ -117,14 +142,14 @@ class Details extends StatelessWidget {
                                 fontWeight: FontWeight.w900),
                           ),
                           Text(
-                            asset.price + " ",
+                            widget.asset.price + " ",
                             style: GoogleFonts.inter(
                                 color: kPrimaryColor,
                                 fontSize: 25,
                                 fontWeight: FontWeight.w900),
                           ),
                           Text(
-                            asset.interval,
+                            widget.asset.interval,
                             style: GoogleFonts.inter(
                                 color: kPrimaryColor,
                                 fontSize: 25,
@@ -164,7 +189,15 @@ class Details extends StatelessWidget {
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   primary: kAccentColor2),
-                              onPressed: () {},
+                              onPressed: () {
+                                var route = MaterialPageRoute(
+                                    builder: (context) => ChatView(
+                                          username: "username",
+                                          chatID: "chatID",
+                                          chatee: widget.asset.owner,
+                                        ));
+                                Navigator.of(context).push(route);
+                              },
                               child: Padding(
                                   padding: const EdgeInsets.all(20.0),
                                   child: Text(
