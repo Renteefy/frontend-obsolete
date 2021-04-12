@@ -6,6 +6,7 @@ class AssetListing {
   final String price;
   final String interval;
   final String url;
+  final String date;
 
   AssetListing({
     @required this.assetID,
@@ -13,6 +14,7 @@ class AssetListing {
     @required this.price,
     @required this.interval,
     @required this.url,
+    @required this.date,
   });
 
   factory AssetListing.fromJson(Map<String, dynamic> json) {
@@ -21,7 +23,8 @@ class AssetListing {
         title: json['title'] as String,
         price: json['price'] as String,
         interval: json['interval'] as String,
-        url: json['url'] as String);
+        url: json['url'] as String,
+        date: json['date'] as String);
   }
 }
 

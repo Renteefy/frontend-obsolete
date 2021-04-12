@@ -83,23 +83,52 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
 
   void sortMadoAppa(String property) {
     switch (property) {
-      case "name":
+      case "name_a":
         setState(() {
-          res.sort((a, b) => a.title.compareTo(b.title));
-          searchRes.sort((a, b) => a.title.compareTo(b.title));
+          res.sort(
+              (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+          searchRes.sort(
+              (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
         });
         break;
-      case "price":
+      case "name_b":
+        setState(() {
+          res.sort(
+              (b, a) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+          searchRes.sort(
+              (b, a) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+        });
+        break;
+      case "price_a":
         setState(() {
           res.sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
           searchRes
               .sort((a, b) => int.parse(a.price).compareTo(int.parse(b.price)));
         });
         break;
+      case "price_b":
+        setState(() {
+          res.sort((b, a) => int.parse(a.price).compareTo(int.parse(b.price)));
+          searchRes
+              .sort((b, a) => int.parse(a.price).compareTo(int.parse(b.price)));
+        });
+        break;
       case "interval":
         setState(() {
           res.sort((a, b) => a.interval.compareTo(b.interval));
           searchRes.sort((a, b) => a.interval.compareTo(b.interval));
+        });
+        break;
+      case "date_a":
+        setState(() {
+          res.sort((b, a) => a.date.compareTo(b.date));
+          searchRes.sort((b, a) => a.date.compareTo(b.date));
+        });
+        break;
+      case "date_b":
+        setState(() {
+          res.sort((a, b) => a.date.compareTo(b.date));
+          searchRes.sort((a, b) => a.date.compareTo(b.date));
         });
         break;
       default:
@@ -140,18 +169,34 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
               child: Column(
                 children: [
                   ListTile(
-                    title: Text("Name"),
+                    title: Text("Name: A to Z"),
                     leading: Icon(Icons.ac_unit),
                     onTap: () => setState(() {
-                      sortMadoAppa("name");
+                      sortMadoAppa("name_a");
                       Navigator.of(context).pop();
                     }),
                   ),
                   ListTile(
-                    title: Text("Price"),
+                    title: Text("Name: Z to A"),
                     leading: Icon(Icons.ac_unit),
                     onTap: () => setState(() {
-                      sortMadoAppa("price");
+                      sortMadoAppa("name_b");
+                      Navigator.of(context).pop();
+                    }),
+                  ),
+                  ListTile(
+                    title: Text("Price: Low to High"),
+                    leading: Icon(Icons.ac_unit),
+                    onTap: () => setState(() {
+                      sortMadoAppa("price_a");
+                      Navigator.of(context).pop();
+                    }),
+                  ),
+                  ListTile(
+                    title: Text("Price: High to Low"),
+                    leading: Icon(Icons.ac_unit),
+                    onTap: () => setState(() {
+                      sortMadoAppa("price_b");
                       Navigator.of(context).pop();
                     }),
                   ),
@@ -159,6 +204,22 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
                     title: Text("Interval"),
                     onTap: () => setState(() {
                       sortMadoAppa("interval");
+                      Navigator.of(context).pop();
+                    }),
+                    leading: Icon(Icons.ac_unit),
+                  ),
+                  ListTile(
+                    title: Text("Date (Newest to Oldest)"),
+                    onTap: () => setState(() {
+                      sortMadoAppa("date_a");
+                      Navigator.of(context).pop();
+                    }),
+                    leading: Icon(Icons.ac_unit),
+                  ),
+                  ListTile(
+                    title: Text("Date (Oldest to Newest)"),
+                    onTap: () => setState(() {
+                      sortMadoAppa("date_b");
                       Navigator.of(context).pop();
                     }),
                     leading: Icon(Icons.ac_unit),
