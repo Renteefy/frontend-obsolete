@@ -13,7 +13,6 @@ class ChatListingPage extends StatefulWidget {
 
 class _ChatListingPageState extends State<ChatListingPage> {
   final store = new FlutterSecureStorage();
-
   String username;
 
   final List<ChatListing> userList = [

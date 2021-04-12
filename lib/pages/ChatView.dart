@@ -20,7 +20,11 @@ class _ChatViewState extends State<ChatView> {
   @override
   void initState() {
     super.initState();
-    chats.add({"sender": "yajat", "message": "value", "time": DateTime.now()});
+    chats.add({
+      "sender": "someone who is not tester1",
+      "message": "value",
+      "time": DateTime.now()
+    });
   }
 
   @override
@@ -45,13 +49,13 @@ class _ChatViewState extends State<ChatView> {
                       return Column(
                         crossAxisAlignment:
                             (chats[index]["sender"] == widget.username)
-                                ? CrossAxisAlignment.start
-                                : CrossAxisAlignment.end,
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
                         children: [
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
-                              color: (chats[index]["sender"] != widget.username)
+                              color: (chats[index]["sender"] == widget.username)
                                   ? kPrimaryColor
                                   : kAccentColor3,
                             ),
@@ -76,7 +80,7 @@ class _ChatViewState extends State<ChatView> {
               onSubmitted: (value) {
                 setState(() {
                   chats.add({
-                    "sender": "yajat",
+                    "sender": widget.username,
                     "message": value,
                     "time": DateTime.now()
                   });

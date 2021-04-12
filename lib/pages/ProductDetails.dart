@@ -330,9 +330,9 @@ class _DetailsState extends State<Details> {
                               onPressed: () {
                                 var route = MaterialPageRoute(
                                     builder: (context) => ChatView(
-                                          username: "username",
+                                          username: username,
                                           chatID: "chatID",
-                                          chatee: widget.asset.owner,
+                                          chatee: "someone who is not tester1",
                                         ));
                                 Navigator.of(context).push(route);
                               },
