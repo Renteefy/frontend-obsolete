@@ -230,7 +230,8 @@ class _DetailsState extends State<Details> {
                                           BlurryDialog alert = BlurryDialog(
                                               "Hooray!",
                                               "$owner has accepted you request to rent the item!",
-                                              continueCallBack);
+                                              continueCallBack,
+                                              false);
 
                                           showDialog(
                                             context: context,
@@ -251,7 +252,8 @@ class _DetailsState extends State<Details> {
                                               BlurryDialog alert = BlurryDialog(
                                                   "Alas ",
                                                   "$owner has denied you request to rent the item.",
-                                                  continueCallBack);
+                                                  continueCallBack,
+                                                  false);
 
                                               showDialog(
                                                 context: context,
@@ -268,8 +270,8 @@ class _DetailsState extends State<Details> {
                                                             .pop(),
                                                         notifiService
                                                             .deleteNotificaiton(
-                                                                widget.notifi
-                                                                    .notificationID),
+                                                                widget
+                                                                    .notifiID),
                                                         setState(() {
                                                           widget.rentedStatus =
                                                               null;
@@ -278,7 +280,8 @@ class _DetailsState extends State<Details> {
                                               BlurryDialog alert = BlurryDialog(
                                                   "Undo?",
                                                   "Do you want to undo your request to rent this item?",
-                                                  continueCallBack);
+                                                  continueCallBack,
+                                                  true);
 
                                               showDialog(
                                                 context: context,

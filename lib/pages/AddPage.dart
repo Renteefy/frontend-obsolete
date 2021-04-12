@@ -223,8 +223,11 @@ class _AddPageState extends State<AddPage> {
                           Navigator.pushReplacementNamed(context, '/home')
                           // code on Okay comes here
                         };
-                    BlurryDialog alert = BlurryDialog("Success",
-                        "Listing submitted successfully", continueCallBack);
+                    BlurryDialog alert = BlurryDialog(
+                        "Success",
+                        "Listing submitted successfully",
+                        continueCallBack,
+                        false);
 
                     showDialog(
                       context: context,
@@ -240,7 +243,8 @@ class _AddPageState extends State<AddPage> {
                     BlurryDialog alert = BlurryDialog(
                         "Failure",
                         "Something went wrong, Please try again",
-                        continueCallBack);
+                        continueCallBack,
+                        false);
 
                     showDialog(
                       context: context,

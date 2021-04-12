@@ -5,8 +5,10 @@ class BlurryDialog extends StatelessWidget {
   final String title;
   final String content;
   final VoidCallback continueCallBack;
+  final bool showSecondButton;
 
-  BlurryDialog(this.title, this.content, this.continueCallBack);
+  BlurryDialog(
+      this.title, this.content, this.continueCallBack, this.showSecondButton);
   final TextStyle textStyle = TextStyle(color: Colors.white);
 
   @override
@@ -29,12 +31,14 @@ class BlurryDialog extends StatelessWidget {
                 continueCallBack();
               },
             ),
-            TextButton(
-              child: Text("Cancel"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+            (showSecondButton)
+                ? TextButton(
+                    child: Text("Cancel"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                : null,
           ],
         ));
   }
