@@ -49,14 +49,14 @@ class SingleAsset {
 
   factory SingleAsset.fromJson(Map<String, dynamic> json) {
     return SingleAsset(
-      assetID: json["assetResponse"]['assetID'] as String,
-      title: json["assetResponse"]['title'] as String,
-      price: json["assetResponse"]['price'] as String,
-      interval: json["assetResponse"]['interval'] as String,
-      url: json["assetResponse"]['url'] as String,
-      description: json["assetResponse"]['description'] as String,
-      owner: json["assetResponse"]['owner'] as String,
-      renter: json["assetResponse"]['renter'] as String,
+      assetID: json['assetID'] as String,
+      title: json['title'] as String,
+      price: json['price'] as String,
+      interval: json['interval'] as String,
+      url: json['url'] as String,
+      description: json['description'] as String,
+      owner: json['owner'] as String,
+      renter: json['renter'] as String,
     );
   }
 }

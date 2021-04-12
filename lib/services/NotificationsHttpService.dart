@@ -6,7 +6,6 @@ import 'package:frontend/models/NotificationListing.dart';
 
 class NotificationHttpService {
   final String url = env['SERVER_URL'];
-  // final String url = env['SERVER_URLx'];
   final store = new FlutterSecureStorage();
 
   Future<List<NotificationListing>> getUserNotifications() async {
@@ -32,27 +31,20 @@ class NotificationHttpService {
   }
 
   Future<String> postNotification(
-      String title, String status, String owner) async {
+      String title, String status, String owner, String assetID) async {
     String value = await store.read(key: "jwt");
     http.Response response = await http.post(
       Uri.https(url, "notifications"),
       headers: {"Content-Type": "application/json", 'Authorization': value},
-      body: json.encode({'title': title, 'status': status, 'owner': owner}),
+      body: json.encode({
+        'title': title,
+        'status': status,
+        'owner': owner,
+        'assetID': assetID
+      }),
     );
     if (response.statusCode == 200) {
       return json.decode(response.body)["id"];
-    } else {
-      return "0";
-    }
-  }
-
-  Future<String> isAlreadyRented(String title) async {
-    String value = await store.read(key: "jwt");
-    var data = await http.get(
-        Uri.https(url, "notifications/user/alreadySent/$title"),
-        headers: {'Content-Type': 'application/json', 'Authorization': value});
-    if (data.statusCode == 200) {
-      return json.decode(data.body)[0]["_id"];
     } else {
       return "0";
     }

@@ -4,10 +4,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/models/AssetListing.dart';
+import 'package:frontend/models/NotificationListing.dart';
 
 class AssetsHttpService {
   final String url = env['SERVER_URL'];
-  // final String url = "127.0.0.1:5000";
   final store = new FlutterSecureStorage();
 
   Future<List<AssetListing>> getAssets(int skip, int limit) async {
@@ -54,21 +54,27 @@ class AssetsHttpService {
     return assets;
   }
 
-  Future<SingleAsset> getSingleAsset(String assetID) async {
+  Future<List<dynamic>> getSingleAsset(String assetID) async {
     String value = await store.read(key: "jwt");
 
     var data = await http.get(Uri.https(url, "assets/asset/$assetID"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     var jsonData = json.decode(data.body);
+    var notifi;
 
     if (data.statusCode != 200) {
       print("Auth Failed, please login");
       throw "Unable to retrieve assetCatalog.";
     }
 
-    final asset = SingleAsset.fromJson(jsonData);
+    final asset = SingleAsset.fromJson(jsonData["assetResponse"]);
+    if (jsonData["notifiResponse"] != null) {
+      notifi = NotificationListing.fromJson(jsonData["notifiResponse"]);
+    } else {
+      notifi = "";
+    }
 
-    return asset;
+    return [asset, notifi];
   }
 
   Future<int> postAsset(String title, String description, picture, String price,

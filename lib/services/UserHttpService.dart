@@ -15,10 +15,10 @@ class UserHttpService {
       body: json.encode({'username': username}),
     );
     if (response.statusCode == 200) {
-      //print(jsonDecode(response.body));
+      String username = json.decode(response.body)["username"];
+      print(username + " logged in");
       await store.write(key: 'jwt', value: json.decode(response.body)["token"]);
-      await store.write(
-          key: 'username', value: json.decode(response.body)["username"]);
+      await store.write(key: 'username', value: username);
       return true;
     } else {
       return false;
