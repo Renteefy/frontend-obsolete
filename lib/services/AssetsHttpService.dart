@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 // import 'dart:html';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -80,6 +81,32 @@ class AssetsHttpService {
   Future<int> postAsset(String title, String description, picture, String price,
       String interval, String category) async {
     var request = http.MultipartRequest("POST", Uri.https(url, "assets"));
+
+    request.fields["title"] = title;
+    request.fields["description"] = description;
+    request.fields["price"] = price;
+    request.fields["interval"] = interval;
+    request.fields["category"] = category;
+    request.fields["owner"] = await store.read(key: "username");
+
+    final storage = new FlutterSecureStorage();
+    String value = await storage.read(key: "jwt");
+    if (picture != null) {
+      request.files
+          .add(await http.MultipartFile.fromPath('AssetImage', picture));
+    }
+    request.headers.addAll(
+        {'Content-Type': 'multipart/form-data', 'Authorization': value});
+
+    var response = await request.send();
+    var respStr = await http.Response.fromStream(response);
+    return (respStr.statusCode);
+  }
+
+  Future<int> patchAsset(String title, String description, picture,
+      String price, String interval, String category, String assetID) async {
+    var request =
+        http.MultipartRequest("PATCH", Uri.https(url, "assets/asset/$assetID"));
 
     request.fields["title"] = title;
     request.fields["description"] = description;

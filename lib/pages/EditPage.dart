@@ -17,6 +17,7 @@ class EditListingPage extends StatefulWidget {
   final String description;
   final String url;
   final String title;
+  final String assetID;
 
   const EditListingPage(
       {Key key,
@@ -26,6 +27,7 @@ class EditListingPage extends StatefulWidget {
       this.price,
       this.category,
       this.description,
+      this.assetID,
       this.url})
       : super(key: key);
 
@@ -38,16 +40,20 @@ class _EditListingPageState extends State<EditListingPage> {
   String url;
   String interval;
   String category;
+  String assetID;
   TextEditingController titleController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool newImagePicked = false;
 
   void pickImage() async {
     PickedFile pickedFile =
         await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
       url = (pickedFile != null) ? pickedFile.path : null;
+      newImagePicked = true;
       print(url);
     });
   }
@@ -62,6 +68,7 @@ class _EditListingPageState extends State<EditListingPage> {
     priceController.text = widget.price;
     descriptionController.text = widget.description;
     category = widget.category;
+    assetID = widget.assetID;
     print(category);
   }
 
@@ -297,13 +304,16 @@ class _EditListingPageState extends State<EditListingPage> {
                       return;
                     }
                     _formKey.currentState.save();
-                    int postRes = await AssetsHttpService().postAsset(
+                    // Change this to patch asset
+                    String tmpUrl = (newImagePicked) ? url : null;
+                    int postRes = await AssetsHttpService().patchAsset(
                         titleController.text,
                         descriptionController.text,
-                        url,
+                        tmpUrl,
                         priceController.text,
                         interval,
-                        category);
+                        category,
+                        assetID);
                     if (postRes == 200) {
                       VoidCallback continueCallBack = () => {
                             Navigator.pushReplacementNamed(context, '/home')
@@ -311,7 +321,7 @@ class _EditListingPageState extends State<EditListingPage> {
                           };
                       BlurryDialog alert = BlurryDialog(
                           "Success",
-                          "Listing submitted successfully",
+                          "Listing updated successfully",
                           continueCallBack,
                           false);
 
