@@ -128,4 +128,26 @@ class AssetsHttpService {
     var respStr = await http.Response.fromStream(response);
     return (respStr.statusCode);
   }
+
+  Future<List<SingleAsset>> getUserAssets() async {
+    String value = await store.read(key: "jwt");
+    String username = await store.read(key: "username");
+
+    var data = await http.get(Uri.https(url, "assets/user/$username"),
+        headers: {'Content-Type': 'application/json', 'Authorization': value});
+
+    if (data.statusCode != 200) {
+      print("Auth Failed, please login");
+      throw "Unable to retrieve assetCatalog.";
+    }
+    var jsonData = json.decode(data.body);
+
+    List<SingleAsset> assets = [];
+    for (var asset in jsonData["assets"]) {
+      asset["renter"] = "aise hi likh diya hai";
+      final tmp = SingleAsset.fromJson(asset);
+      assets.add(tmp);
+    }
+    return assets;
+  }
 }
