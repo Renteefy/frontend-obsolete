@@ -75,7 +75,36 @@ class _EditListingPageState extends State<EditListingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(["Edit", "Listing"]),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Row(
+          children: [
+            Text("Edit ",
+                style: GoogleFonts.inter(
+                    fontSize: 24, fontWeight: FontWeight.w900)),
+            Text("Listing",
+                style: GoogleFonts.inter(
+                    fontSize: 24,
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.w900)),
+          ],
+        ),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.notifications_none_rounded),
+              iconSize: 30,
+              onPressed: () {
+                Navigator.pushNamed(context, '/notification');
+              }),
+          SizedBox(width: 10),
+          IconButton(
+              icon: Icon(Icons.messenger_outline),
+              iconSize: 28,
+              onPressed: () {
+                Navigator.pushNamed(context, '/chatListing');
+              })
+        ],
+      ),
       body: SingleChildScrollView(
           padding: EdgeInsets.all(20),
           child: Form(
