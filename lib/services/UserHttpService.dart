@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/models/UserListing.dart';
 
 class UserHttpService {
   final String url = env['SERVER_URL'];
@@ -15,13 +16,28 @@ class UserHttpService {
       body: json.encode({'username': username}),
     );
     if (response.statusCode == 200) {
-      String username = json.decode(response.body)["username"];
+      var jsonData = json.decode(response.body);
+      String username = jsonData["username"];
       print(username + " logged in");
-      await store.write(key: 'jwt', value: json.decode(response.body)["token"]);
+      await store.write(key: 'jwt', value: jsonData["token"]);
       await store.write(key: 'username', value: username);
+      await store.write(key: 'picture', value: jsonData["picture"]);
       return true;
     } else {
       return false;
     }
+  }
+
+  Future<UserListing> getUserDetails() async {
+    String value = await store.read(key: "jwt");
+    var data = await http.get(Uri.https(url, "users/user"),
+        headers: {'Content-Type': 'application/json', 'Authorization': value});
+    if (data.statusCode != 200) {
+      print("Auth Failed, please login");
+      throw "Unable to retrieve assetCatalog.";
+    }
+    var jsonData = json.decode(data.body);
+    UserListing user = UserListing.fromJson(jsonData);
+    return user;
   }
 }
