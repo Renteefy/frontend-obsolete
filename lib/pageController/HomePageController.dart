@@ -28,7 +28,6 @@ class _HomePageControllerState extends State<HomePageController> {
 
   void getPicture() async {
     String tmp = await store.read(key: "picture");
-
     setState(() {
       picture = tmp;
     });

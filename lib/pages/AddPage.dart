@@ -167,7 +167,7 @@ class _AddPageState extends State<AddPage> {
                     isExpanded: true,
                     underline: SizedBox(),
                     focusColor: kPrimaryColor,
-                    value: interval,
+                    value: category,
                     style: TextStyle(color: Colors.white),
                     iconEnabledColor: Colors.black,
                     items: <String>[
