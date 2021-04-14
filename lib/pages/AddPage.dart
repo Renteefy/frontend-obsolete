@@ -176,6 +176,7 @@ class _AddPageState extends State<AddPage> {
                       "Hardware and Tools",
                       "Technology and Electronics",
                       "Clothing and Accessories",
+                      "Automobiles and Vehicles",
                       "Others",
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(

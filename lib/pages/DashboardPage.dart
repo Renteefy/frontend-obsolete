@@ -18,11 +18,13 @@ final String url = "https://" + env['SERVER_URL'];
 
 class _DashboardPageState extends State<DashboardPage> {
   List<SingleAsset> assetRes;
+  List<SingleAsset> rentedAssetRes;
 
   @override
   void initState() {
     super.initState();
     fetchAssetRes();
+    fetchRentedAssetRes();
     fetchUserDetails();
   }
 
@@ -30,6 +32,13 @@ class _DashboardPageState extends State<DashboardPage> {
     List<SingleAsset> tmp = await AssetsHttpService().getUserAssets();
     setState(() {
       assetRes = tmp;
+    });
+  }
+
+  void fetchRentedAssetRes() async {
+    List<SingleAsset> tmp = await AssetsHttpService().getUserRentedAssets();
+    setState(() {
+      rentedAssetRes = tmp;
     });
   }
 
@@ -57,7 +66,7 @@ class _DashboardPageState extends State<DashboardPage> {
         description: "This is some description",
         price: "300",
         url:
-            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
+            "/static/2021-04-12T07:29:12.676Z2021-04-03T10:02:12.932Z72425.jpg",
         title: "This is title",
         interval: "some interval",
         owner: "yojat",
@@ -65,35 +74,35 @@ class _DashboardPageState extends State<DashboardPage> {
         assetID: "12"),
   ];
 
-  final List<SingleAsset> rentedAssetRes = [
-    SingleAsset(
-        description: "This is some description",
-        price: "300",
-        url:
-            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
-        title: "This is title",
-        interval: "some interval",
-        owner: "yojat",
-        renter: "tester1",
-        assetID: "12"),
-    SingleAsset(
-        description: "This is some description",
-        price: "300",
-        url:
-            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
-        title: "This is title",
-        interval: "some interval",
-        owner: "yojat",
-        renter: "tester1",
-        assetID: "12"),
-  ];
+  // final List<SingleAsset> rentedAssetRes = [
+  //   SingleAsset(
+  //       description: "This is some description",
+  //       price: "300",
+  //       url:
+  //           "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
+  //       title: "This is title",
+  //       interval: "some interval",
+  //       owner: "yojat",
+  //       renter: "tester1",
+  //       assetID: "12"),
+  //   SingleAsset(
+  //       description: "This is some description",
+  //       price: "300",
+  //       url:
+  //           "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
+  //       title: "This is title",
+  //       interval: "some interval",
+  //       owner: "yojat",
+  //       renter: "tester1",
+  //       assetID: "12"),
+  // ];
 
   final List<SingleAsset> rentedServiceRes = [
     SingleAsset(
         description: "This is some description",
         price: "300",
         url:
-            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
+            "/static/2021-04-12T07:29:12.676Z2021-04-03T10:02:12.932Z72425.jpg",
         title: "This is title",
         interval: "some interval",
         owner: "yojat",

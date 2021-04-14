@@ -249,6 +249,7 @@ class _EditListingPageState extends State<EditListingPage> {
                         "Hardware and Tools",
                         "Technology and Electronics",
                         "Clothing and Accessories",
+                        "Automobiles and Vehicles",
                         "Others",
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
