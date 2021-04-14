@@ -170,7 +170,7 @@ class HorizontalCardViewBuilder extends StatelessWidget {
     return SizedBox(
       height: 200,
       child: (res == null)
-          ? CircularProgressIndicator()
+          ? Center(child: CircularProgressIndicator())
           : (res.length == 0)
               ? Text("Assets Illa")
               : ListView.builder(
