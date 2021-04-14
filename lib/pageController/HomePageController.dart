@@ -87,7 +87,7 @@ class _HomePageControllerState extends State<HomePageController> {
                           backgroundImage: (picture != "/static/null")
                               ? NetworkImage("https://" + url + picture)
                               : NetworkImage(
-                                  "https://ui-avatars.com/api/?name=John+Doe"),
+                                  "https://ui-avatars.com/api/?name=Place+Holder"),
                         ),
                         label: 'Dashboard',
                       ),
