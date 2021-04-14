@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/AssetsCatalogPage.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/models/AssetListing.dart';
+import 'package:frontend/models/UserListing.dart';
 import 'package:frontend/services/AssetsHttpService.dart';
+import 'package:frontend/services/UserHttpService.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/pages/ProductDetails.dart';
 
@@ -12,18 +13,30 @@ class DashboardPage extends StatefulWidget {
   _DashboardPageState createState() => _DashboardPageState();
 }
 
+UserListing userDetails;
+final String url = "https://" + env['SERVER_URL'];
+
 class _DashboardPageState extends State<DashboardPage> {
   List<SingleAsset> assetRes;
+
   @override
   void initState() {
     super.initState();
     fetchAssetRes();
+    fetchUserDetails();
   }
 
   void fetchAssetRes() async {
     List<SingleAsset> tmp = await AssetsHttpService().getUserAssets();
     setState(() {
       assetRes = tmp;
+    });
+  }
+
+  void fetchUserDetails() async {
+    UserListing tmp = await UserHttpService().getUserDetails();
+    setState(() {
+      userDetails = tmp;
     });
   }
 
@@ -43,7 +56,8 @@ class _DashboardPageState extends State<DashboardPage> {
     SingleAsset(
         description: "This is some description",
         price: "300",
-        url: "https://via.placeholder.com/230",
+        url:
+            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
         title: "This is title",
         interval: "some interval",
         owner: "yojat",
@@ -55,7 +69,8 @@ class _DashboardPageState extends State<DashboardPage> {
     SingleAsset(
         description: "This is some description",
         price: "300",
-        url: "https://via.placeholder.com/230",
+        url:
+            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
         title: "This is title",
         interval: "some interval",
         owner: "yojat",
@@ -64,7 +79,8 @@ class _DashboardPageState extends State<DashboardPage> {
     SingleAsset(
         description: "This is some description",
         price: "300",
-        url: "https://via.placeholder.com/230",
+        url:
+            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
         title: "This is title",
         interval: "some interval",
         owner: "yojat",
@@ -76,7 +92,8 @@ class _DashboardPageState extends State<DashboardPage> {
     SingleAsset(
         description: "This is some description",
         price: "300",
-        url: "https://via.placeholder.com/230",
+        url:
+            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
         title: "This is title",
         interval: "some interval",
         owner: "yojat",
@@ -85,7 +102,8 @@ class _DashboardPageState extends State<DashboardPage> {
     SingleAsset(
         description: "This is some description",
         price: "300",
-        url: "https://via.placeholder.com/230",
+        url:
+            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
         title: "This is title",
         interval: "some interval",
         owner: "yojat",
@@ -147,7 +165,6 @@ class HorizontalCardViewBuilder extends StatelessWidget {
   }) : super(key: key);
 
   final List<SingleAsset> res;
-  final String url = "https://" + env['SERVER_URL'];
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -235,52 +252,57 @@ class UserInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return (userDetails == null)
+        ? CircularProgressIndicator()
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Hey there,",
-                  style: GoogleFonts.inter(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: kAccentColor1)),
-              Text("Yajat Vishwakarma",
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: GoogleFonts.inter(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w900,
-                  )),
-              Text("yojat@gmail.com",
-                  style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold, color: kAccentColor3)),
-              SizedBox(
-                height: 20,
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Hey there,",
+                        style: GoogleFonts.inter(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: kAccentColor1)),
+                    Text(userDetails.firstName + " " + userDetails.lastName,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: GoogleFonts.inter(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w900,
+                        )),
+                    Text(userDetails.email,
+                        style: GoogleFonts.inter(
+                            fontWeight: FontWeight.bold, color: kAccentColor3)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                            icon: Icon(Icons.edit_outlined), onPressed: () {}),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        IconButton(
+                            icon: Icon(Icons.email_outlined), onPressed: () {}),
+                      ],
+                    )
+                  ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(icon: Icon(Icons.edit_outlined), onPressed: () {}),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.email_outlined), onPressed: () {}),
-                ],
-              )
+              CircleAvatar(
+                radius: 40,
+                backgroundImage: (userDetails.picture != "/static/null")
+                    ? NetworkImage(url + userDetails.picture)
+                    : NetworkImage(
+                        "https://ui-avatars.com/api/?name=Place+Holder"),
+              ),
             ],
-          ),
-        ),
-        CircleAvatar(
-          radius: 40,
-          backgroundImage:
-              NetworkImage("https://ui-avatars.com/api/?name=John+Doe"),
-        ),
-      ],
-    );
+          );
   }
 }
