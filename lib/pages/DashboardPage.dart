@@ -7,6 +7,7 @@ import 'package:frontend/services/AssetsHttpService.dart';
 import 'package:frontend/services/UserHttpService.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/pages/ProductDetails.dart';
+import 'package:frontend/pages/EditProfile.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -293,7 +294,16 @@ class UserInfoCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         IconButton(
-                            icon: Icon(Icons.edit_outlined), onPressed: () {}),
+                            icon: Icon(Icons.edit_outlined),
+                            onPressed: () {
+                              var route = MaterialPageRoute(
+                                  builder: (context) => EditProfile(
+                                      firstName: userDetails.firstName,
+                                      lastName: userDetails.lastName,
+                                      url: userDetails.picture,
+                                      email: userDetails.email));
+                              Navigator.of(context).push(route);
+                            }),
                         SizedBox(
                           width: 10,
                         ),

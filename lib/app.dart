@@ -6,6 +6,7 @@ import 'package:frontend/pages/ChatView.dart';
 import 'package:frontend/pages/EditPage.dart';
 import 'package:frontend/pages/NotificationPage.dart';
 import 'package:frontend/pages/ProductDetails.dart';
+import 'package:frontend/pages/EditProfile.dart';
 
 // constants
 import './shared/constants.dart';
@@ -30,6 +31,7 @@ class _AppState extends State<App> {
         "/productDetail": (context) => ProductDetails(),
         "/chatListing": (context) => ChatListingPage(),
         "/editListing": (context) => EditListingPage(),
+        "/editProfile": (context) => EditProfile(),
         "/chat": (context) => ChatView(),
       },
       title: "Renteefy",
