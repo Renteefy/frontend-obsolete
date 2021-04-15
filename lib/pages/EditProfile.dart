@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/services/UserHttpService.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:image_picker/image_picker.dart';
@@ -177,7 +178,11 @@ class _EditProfileState extends State<EditProfile> {
                     _formKey.currentState.save();
                     // Change this to patch asset
                     String tmpUrl = (newImagePicked) ? url : null;
-                    int postRes = 200;
+                    int postRes = await UserHttpService().patchUserDetails(
+                        firstNameController.text,
+                        lastNameController.text,
+                        emailController.text,
+                        tmpUrl);
                     if (postRes == 200) {
                       VoidCallback continueCallBack = () => {
                             Navigator.pushReplacementNamed(context, '/home')
@@ -220,7 +225,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Submit Listing",
+                        Text("Update Profile",
                             style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold, fontSize: 14)),
                         Icon(Icons.arrow_right_alt),

@@ -89,8 +89,7 @@ class AssetsHttpService {
     request.fields["category"] = category;
     request.fields["owner"] = await store.read(key: "username");
 
-    final storage = new FlutterSecureStorage();
-    String value = await storage.read(key: "jwt");
+    String value = await store.read(key: "jwt");
     if (picture != null) {
       request.files
           .add(await http.MultipartFile.fromPath('AssetImage', picture));
@@ -115,8 +114,7 @@ class AssetsHttpService {
     request.fields["category"] = category;
     request.fields["owner"] = await store.read(key: "username");
 
-    final storage = new FlutterSecureStorage();
-    String value = await storage.read(key: "jwt");
+    String value = await store.read(key: "jwt");
     if (picture != null) {
       request.files
           .add(await http.MultipartFile.fromPath('AssetImage', picture));
@@ -126,7 +124,6 @@ class AssetsHttpService {
 
     var response = await request.send();
     var respStr = await http.Response.fromStream(response);
-    print(respStr.body);
     return (respStr.statusCode);
   }
 

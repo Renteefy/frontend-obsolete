@@ -313,7 +313,7 @@ class _EditListingPageState extends State<EditListingPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Add Some Pictures  ",
+                              "Change Picture ",
                               style: GoogleFonts.inter(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,

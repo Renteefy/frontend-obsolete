@@ -40,4 +40,24 @@ class UserHttpService {
     UserListing user = UserListing.fromJson(jsonData);
     return user;
   }
+
+  Future<int> patchUserDetails(
+      String firstName, String lastName, String email, picture) async {
+    String value = await store.read(key: "jwt");
+    var request = http.MultipartRequest("PATCH", Uri.https(url, "users/user/"));
+    request.fields["firstName"] = firstName;
+    request.fields["lastName"] = lastName;
+    request.fields["email"] = email;
+
+    if (picture != null) {
+      request.files
+          .add(await http.MultipartFile.fromPath('UserImage', picture));
+    }
+    request.headers.addAll(
+        {'Content-Type': 'multipart/form-data', 'Authorization': value});
+
+    var response = await request.send();
+    var respStr = await http.Response.fromStream(response);
+    return (respStr.statusCode);
+  }
 }

@@ -55,6 +55,18 @@ class _ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          title: Row(
+            children: [
+              Text("Product ",
+                  style: GoogleFonts.inter(
+                      fontSize: 24, fontWeight: FontWeight.w900)),
+              Text("Details",
+                  style: GoogleFonts.inter(
+                      fontSize: 24,
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.w900)),
+            ],
+          ),
           backgroundColor: Colors.transparent,
           actions: [
             IconButton(
