@@ -7,6 +7,7 @@ import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/services/UserHttpService.dart';
 
 class HomePageController extends StatefulWidget {
   @override
@@ -27,9 +28,9 @@ class _HomePageControllerState extends State<HomePageController> {
   }
 
   void getPicture() async {
-    String tmp = await store.read(key: "picture");
+    var tmp = await UserHttpService().getUserDetails();
     setState(() {
-      picture = tmp;
+      picture = tmp.picture;
     });
   }
 

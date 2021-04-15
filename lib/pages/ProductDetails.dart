@@ -384,39 +384,10 @@ class _DetailsState extends State<Details> {
                               child: Padding(
                                   padding: const EdgeInsets.all(20.0),
                                   child: Text(
-                                    "Chat with Owner",
+                                    "Chat with ${widget.asset.owner}",
                                     style: GoogleFonts.inter(
                                         fontWeight: FontWeight.w900),
                                   )))),
-                      // SizedBox(
-                      //     width: double.infinity,
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.all(8.0),
-                      //       child: ElevatedButton(
-                      //           style: ElevatedButton.styleFrom(
-                      //               primary: kAccentColor2),
-                      //           onPressed: () {
-                      //             var route = MaterialPageRoute(
-                      //                 builder: (context) => EditListingPage(
-                      //                       category: widget.asset.category,
-                      //                       type: "Asset",
-                      //                       description:
-                      //                           widget.asset.description,
-                      //                       interval: widget.asset.interval,
-                      //                       price: widget.asset.price,
-                      //                       title: widget.asset.title,
-                      //                       url: widget.asset.url,
-                      //                     ));
-                      //             Navigator.of(context).push(route);
-                      //           },
-                      //           child: Padding(
-                      //               padding: const EdgeInsets.all(20.0),
-                      //               child: Text(
-                      //                 "Edit this",
-                      //                 style: GoogleFonts.inter(
-                      //                     fontWeight: FontWeight.w900),
-                      //               ))),
-                      //     )),
                     ],
                   ),
                 ),

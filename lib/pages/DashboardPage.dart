@@ -50,18 +50,6 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
-  // final List<SingleAsset> assetRes = [
-  //   SingleAsset(
-  //       description: "This is some description",
-  //       price: "300",
-  //       url: "https://via.placeholder.com/230",
-  //       title: "This is title",
-  //       interval: "some interval",
-  //       owner: "yojat",
-  //       renter: "tester1",
-  //       assetID: "12"),
-  // ];
-
   final List<SingleAsset> serviceRes = [
     SingleAsset(
         description: "This is some description",
@@ -74,29 +62,6 @@ class _DashboardPageState extends State<DashboardPage> {
         renter: "tester1",
         assetID: "12"),
   ];
-
-  // final List<SingleAsset> rentedAssetRes = [
-  //   SingleAsset(
-  //       description: "This is some description",
-  //       price: "300",
-  //       url:
-  //           "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
-  //       title: "This is title",
-  //       interval: "some interval",
-  //       owner: "yojat",
-  //       renter: "tester1",
-  //       assetID: "12"),
-  //   SingleAsset(
-  //       description: "This is some description",
-  //       price: "300",
-  //       url:
-  //           "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
-  //       title: "This is title",
-  //       interval: "some interval",
-  //       owner: "yojat",
-  //       renter: "tester1",
-  //       assetID: "12"),
-  // ];
 
   final List<SingleAsset> rentedServiceRes = [
     SingleAsset(

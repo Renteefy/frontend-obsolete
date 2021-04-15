@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:io' as io;
 import 'package:frontend/shared/alertBox.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class EditProfile extends StatefulWidget {
   final String firstName;
@@ -33,7 +34,6 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       url = (pickedFile != null) ? pickedFile.path : null;
       newImagePicked = true;
-      print(url);
     });
   }
 
@@ -92,7 +92,7 @@ class _EditProfileState extends State<EditProfile> {
                   child: CircleAvatar(
                       radius: 120.0,
                       backgroundImage: (io.File(url).existsSync())
-                          ? Image.file(io.File(url))
+                          ? AssetImage(url)
                           : NetworkImage(
                               "https://" + env['SERVER_URL'] + url,
                             )),
