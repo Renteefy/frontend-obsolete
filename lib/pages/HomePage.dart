@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/pages/CatalogPage.dart';
 
 class HomePage extends StatelessWidget {
   static const TextStyle optionStyle =
@@ -23,7 +24,12 @@ class HomePage extends StatelessWidget {
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: kPrimaryColor),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/assetCatalog');
+                      // Navigator.pushNamed(context, '/assetCatalog');
+                      var route = MaterialPageRoute(
+                          builder: (context) => CatalogPage(
+                                type: "asset",
+                              ));
+                      Navigator.of(context).push(route);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
@@ -41,7 +47,14 @@ class HomePage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: kAccentColor1),
-                    onPressed: () {},
+                    onPressed: () {
+                      // Navigator.pushNamed(context, '/assetCatalog');
+                      var route = MaterialPageRoute(
+                          builder: (context) => CatalogPage(
+                                type: "service",
+                              ));
+                      Navigator.of(context).push(route);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Text(

@@ -1,41 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/AssetListing.dart';
+import 'package:frontend/models/ItemListing.dart';
 import 'package:frontend/pages/components/ListingCard.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:frontend/services/AssetsHttpService.dart';
+import 'package:frontend/services/ItemsHttpService.dart';
 
-// - AssetCatalogPage - All assets will be displayed here
-// Functionality: This renders the Scaffold and calls in the ListingCardBuilder Widget
-// - The  ListingCardBuilder widget renders all the assets on screen. It uses very basic algorithm to
-// render 2 items in one row and return this an array of such rows back to this page, where it is rendered in a scroll view
-// - This page loads data lazily, to save resources.
-// - The json required for the cards to display(for now, will change):
-//
-// {     "url": "https://via.placeholder.com/150",
-//       "title": "Asset1",
-//       "price": "10",
-//       "interval": "per day"
-// }
-
-// fetch function is where the network call resides.
-// So, fetchfive() does 5 network calls, which is inefficient
-// TODO:
-// 1. Gotta refactor fetch and fetchfive function to make one call to server and get 5 unique asset items
-// 2. Build Models for the json which is flowing in (done)
-// 3. Convert the ListCardBuilder to use iterable
-
-class AssetCatalogPage extends StatefulWidget {
+class CatalogPage extends StatefulWidget {
+  final String type;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  const CatalogPage({Key key, this.type}) : super(key: key);
 
   @override
   _AssetCatalogPageState createState() => _AssetCatalogPageState();
 }
 
-class _AssetCatalogPageState extends State<AssetCatalogPage> {
+class _AssetCatalogPageState extends State<CatalogPage> {
   ScrollController scrollController = new ScrollController();
-  final assetService = AssetsHttpService();
+  final itemService = ItemsHttpService();
   // Skip is basically the number of entries that have to be skipped in the database call, should be incremented after every call
   int skip = 0;
 
@@ -49,7 +31,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        print(scrollController.position.pixels);
+        print("pixel position: " + scrollController.position.pixels.toString());
         fetch(5);
       }
     });
@@ -61,23 +43,23 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
     scrollController.dispose();
   }
 
-  List<AssetListing> res = [];
-  List<AssetListing> searchRes = [];
-  List<AssetListing> allAssets = [];
+  List<ItemListing> res = [];
+  List<ItemListing> searchRes = [];
+  List<ItemListing> allItems = [];
 
   void fetch(int limit) async {
-    List<AssetListing> tmp = await assetService.getAssets(skip, limit);
+    List<ItemListing> tmp =
+        await itemService.getItems(skip, limit, widget.type);
     setState(() {
       res.addAll(tmp);
-      // increment skip here
       skip = skip + 5;
     });
   }
 
   void fetchAll() async {
-    List<AssetListing> tmp = await assetService.getAllAssets();
+    List<ItemListing> tmp = await itemService.getAllItems(widget.type);
     setState(() {
-      allAssets.addAll(tmp);
+      allItems.addAll(tmp);
     });
   }
 
@@ -146,9 +128,9 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
       setState(() {});
       return;
     }
-    allAssets.forEach((asset) {
-      if (asset.title.toLowerCase().contains(text.toLowerCase()) ||
-          asset.price.contains(text)) searchRes.add(asset);
+    allItems.forEach((item) {
+      if (item.title.toLowerCase().contains(text.toLowerCase()) ||
+          item.price.contains(text)) searchRes.add(item);
     });
 
     setState(() {});
@@ -156,7 +138,6 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Add sorting code here
     void onSortPressed() {
       showModalBottomSheet(
           context: context,
@@ -268,7 +249,7 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
                           contentPadding: EdgeInsets.all(20),
                           filled: true,
                           border: InputBorder.none,
-                          hintText: 'Search Asset',
+                          hintText: 'Search ${widget.type}',
                         ),
                       ),
                     ),
@@ -287,8 +268,8 @@ class _AssetCatalogPageState extends State<AssetCatalogPage> {
                       itemCount: (searched) ? searchRes.length : res.length,
                       itemBuilder: (BuildContext ctx, index) {
                         return ListingCard(
-                          obj: (searched) ? searchRes[index] : res[index],
-                        );
+                            obj: (searched) ? searchRes[index] : res[index],
+                            type: widget.type);
                       }),
                 ),
               ],

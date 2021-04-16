@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:frontend/models/AssetListing.dart';
+import 'package:frontend/models/ItemListing.dart';
 import 'package:frontend/models/UserListing.dart';
-import 'package:frontend/services/AssetsHttpService.dart';
+import 'package:frontend/services/ItemsHttpService.dart';
 import 'package:frontend/services/UserHttpService.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/pages/ProductDetails.dart';
@@ -16,30 +16,49 @@ class DashboardPage extends StatefulWidget {
 
 UserListing userDetails;
 final String url = "https://" + env['SERVER_URL'];
+final itemService = ItemsHttpService();
 
 class _DashboardPageState extends State<DashboardPage> {
-  List<SingleAsset> assetRes;
-  List<SingleAsset> rentedAssetRes;
+  List<SingleItem> assetRes;
+  List<SingleItem> serviceRes;
+  List<SingleItem> rentedAssetRes;
+  List<SingleItem> rentedServiceRes;
 
   @override
   void initState() {
     super.initState();
     fetchAssetRes();
     fetchRentedAssetRes();
+    fetchServiceRes();
+    fetchRentedServiceRes();
     fetchUserDetails();
   }
 
   void fetchAssetRes() async {
-    List<SingleAsset> tmp = await AssetsHttpService().getUserAssets();
+    List<SingleItem> tmp = await itemService.getUserItems("asset");
     setState(() {
       assetRes = tmp;
     });
   }
 
+  void fetchServiceRes() async {
+    List<SingleItem> tmp = await itemService.getUserItems("service");
+    setState(() {
+      serviceRes = tmp;
+    });
+  }
+
   void fetchRentedAssetRes() async {
-    List<SingleAsset> tmp = await AssetsHttpService().getUserRentedAssets();
+    List<SingleItem> tmp = await itemService.getUserRentedItems("asset");
     setState(() {
       rentedAssetRes = tmp;
+    });
+  }
+
+  void fetchRentedServiceRes() async {
+    List<SingleItem> tmp = await itemService.getUserRentedItems("service");
+    setState(() {
+      rentedServiceRes = tmp;
     });
   }
 
@@ -49,42 +68,6 @@ class _DashboardPageState extends State<DashboardPage> {
       userDetails = tmp;
     });
   }
-
-  final List<SingleAsset> serviceRes = [
-    SingleAsset(
-        description: "This is some description",
-        price: "300",
-        url:
-            "/static/2021-04-12T07:29:12.676Z2021-04-03T10:02:12.932Z72425.jpg",
-        title: "This is title",
-        interval: "some interval",
-        owner: "yojat",
-        renter: "tester1",
-        assetID: "12"),
-  ];
-
-  final List<SingleAsset> rentedServiceRes = [
-    SingleAsset(
-        description: "This is some description",
-        price: "300",
-        url:
-            "/static/2021-04-12T07:29:12.676Z2021-04-03T10:02:12.932Z72425.jpg",
-        title: "This is title",
-        interval: "some interval",
-        owner: "yojat",
-        renter: "tester1",
-        assetID: "12"),
-    SingleAsset(
-        description: "This is some description",
-        price: "300",
-        url:
-            "/static/2021-04-12T07:24:25.610Z2021-04-03T09:56:57.468Zimages.jpeg",
-        title: "This is title",
-        interval: "some interval",
-        owner: "yojat",
-        renter: "tester1",
-        assetID: "12"),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +122,7 @@ class HorizontalCardViewBuilder extends StatelessWidget {
     @required this.res,
   }) : super(key: key);
 
-  final List<SingleAsset> res;
+  final List<SingleItem> res;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -147,7 +130,7 @@ class HorizontalCardViewBuilder extends StatelessWidget {
       child: (res == null)
           ? Center(child: CircularProgressIndicator())
           : (res.length == 0)
-              ? Text("Assets Illa")
+              ? Text("This do be empty")
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   primary: false,
@@ -155,10 +138,10 @@ class HorizontalCardViewBuilder extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) => GestureDetector(
                         onTap: () {
-                          print(res[index].assetID);
+                          print(res[index].itemID);
                           var route = MaterialPageRoute(
                               builder: (context) => ProductDetails(
-                                    assetID: res[index].assetID,
+                                    itemID: res[index].itemID,
                                   ));
                           Navigator.of(context).push(route);
                         },

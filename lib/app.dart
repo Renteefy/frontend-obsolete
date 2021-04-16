@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/pageController/HomePageController.dart';
-import 'package:frontend/pages/AssetsCatalogPage.dart';
+import 'package:frontend/pages/CatalogPage.dart';
 import 'package:frontend/pages/ChatListingPage.dart';
 import 'package:frontend/pages/ChatView.dart';
 import 'package:frontend/pages/EditPage.dart';
@@ -26,7 +26,7 @@ class _AppState extends State<App> {
       routes: {
         "/": (context) => LandingPage(),
         "/home": (context) => HomePageController(),
-        "/assetCatalog": (context) => AssetCatalogPage(),
+        "/assetCatalog": (context) => CatalogPage(),
         "/notification": (context) => NotificationPage(),
         "/productDetail": (context) => ProductDetails(),
         "/chatListing": (context) => ChatListingPage(),

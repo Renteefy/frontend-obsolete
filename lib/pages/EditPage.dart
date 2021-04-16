@@ -2,7 +2,7 @@ import 'dart:io' as io;
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:frontend/services/AssetsHttpService.dart';
+import 'package:frontend/services/ItemsHttpService.dart';
 import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/alertBox.dart';
 import 'package:frontend/shared/constants.dart';
@@ -17,7 +17,7 @@ class EditListingPage extends StatefulWidget {
   final String description;
   final String url;
   final String title;
-  final String assetID;
+  final String itemID;
 
   const EditListingPage(
       {Key key,
@@ -27,7 +27,7 @@ class EditListingPage extends StatefulWidget {
       this.price,
       this.category,
       this.description,
-      this.assetID,
+      this.itemID,
       this.url})
       : super(key: key);
 
@@ -35,12 +35,24 @@ class EditListingPage extends StatefulWidget {
   _EditListingPageState createState() => _EditListingPageState();
 }
 
+final assetCategories = [
+  "Books and Stationary",
+  "Furniture and Home Decor",
+  "Hardware and Tools",
+  "Technology and Electronics",
+  "Clothing and Accessories",
+  "Automobiles and Vehicles",
+  "Others"
+];
+
+final serviceCategory = ["Teaching", "Driving", "Others"];
+
 class _EditListingPageState extends State<EditListingPage> {
   String type;
   String url;
   String interval;
   String category;
-  String assetID;
+  String itemID;
   TextEditingController titleController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
@@ -68,8 +80,8 @@ class _EditListingPageState extends State<EditListingPage> {
     priceController.text = widget.price;
     descriptionController.text = widget.description;
     category = widget.category;
-    assetID = widget.assetID;
-    print(category);
+    itemID = widget.itemID;
+    print(type);
   }
 
   @override
@@ -122,31 +134,37 @@ class _EditListingPageState extends State<EditListingPage> {
                       fontWeight: FontWeight.bold, fontSize: 17),
                 ),
                 RadioListTile(
-                  value: "Asset",
+                  value: "asset",
                   groupValue: type,
                   title: Text("Asset"),
                   subtitle: Text("Physical entities"),
                   onChanged: (val) {
                     print("Radio Tile pressed $val");
                     setState(() {
+                      print("ramu aa");
                       type = val;
+                      print(type);
+                      print("ramu aa");
                     });
                   },
                   activeColor: kAccentColor1,
-                  selected: (type == "Asset") ? true : false,
+                  selected: (type == "asset") ? true : false,
                 ),
                 RadioListTile(
-                  value: "Service",
+                  value: "service",
                   groupValue: type,
                   title: Text("Service"),
                   subtitle: Text("Intangible entities"),
                   onChanged: (val) {
                     print("Radio Tile pressed $val");
                     setState(() {
+                      print("ramu ss");
                       type = val;
+                      print(type);
+                      print("ramu ss");
                     });
                   },
-                  selected: (type == "Service") ? true : false,
+                  selected: (type == "service") ? true : false,
                 ),
                 SizedBox(height: 20),
                 TextFormField(
@@ -243,26 +261,34 @@ class _EditListingPageState extends State<EditListingPage> {
                       value: category,
                       style: TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.black,
-                      items: <String>[
-                        "Books and Stationary",
-                        "Furniture and Home Decor",
-                        "Hardware and Tools",
-                        "Technology and Electronics",
-                        "Clothing and Accessories",
-                        "Automobiles and Vehicles",
-                        "Others",
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              value,
-                              style: GoogleFonts.inter(fontSize: 14),
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                      // update the logic here, so that when the user changes the type this should also change, then update add page also
+                      items: (widget.type == "asset")
+                          ? assetCategories
+                              .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    value,
+                                    style: GoogleFonts.inter(fontSize: 14),
+                                  ),
+                                ),
+                              );
+                            }).toList()
+                          : serviceCategory
+                              .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    value,
+                                    style: GoogleFonts.inter(fontSize: 14),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
                       icon: Icon(
                         // Add this
                         Icons.arrow_drop_down, // Add this
@@ -336,14 +362,15 @@ class _EditListingPageState extends State<EditListingPage> {
                     _formKey.currentState.save();
                     // Change this to patch asset
                     String tmpUrl = (newImagePicked) ? url : null;
-                    int postRes = await AssetsHttpService().patchAsset(
+                    int postRes = await ItemsHttpService().patchItem(
                         titleController.text,
                         descriptionController.text,
                         tmpUrl,
                         priceController.text,
                         interval,
                         category,
-                        assetID);
+                        itemID,
+                        type.toLowerCase());
                     if (postRes == 200) {
                       VoidCallback continueCallBack = () => {
                             Navigator.pushReplacementNamed(context, '/home')

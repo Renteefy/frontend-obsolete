@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-class AssetListing {
-  final String assetID;
+class ItemListing {
+  final String itemID;
   final String title;
   final String price;
   final String interval;
@@ -9,8 +9,8 @@ class AssetListing {
   final String date;
   final String category;
 
-  AssetListing({
-    @required this.assetID,
+  ItemListing({
+    @required this.itemID,
     @required this.title,
     @required this.price,
     @required this.interval,
@@ -19,9 +19,9 @@ class AssetListing {
     this.category,
   });
 
-  factory AssetListing.fromJson(Map<String, dynamic> json) {
-    return AssetListing(
-        assetID: json['assetID'] as String,
+  factory ItemListing.fromJson(Map<String, dynamic> json) {
+    return ItemListing(
+        itemID: json['id'] as String,
         title: json['title'] as String,
         price: json['price'] as String,
         interval: json['interval'] as String,
@@ -31,8 +31,8 @@ class AssetListing {
   }
 }
 
-class SingleAsset {
-  final String assetID;
+class SingleItem {
+  final String itemID;
   final String title;
   final String price;
   final String interval;
@@ -42,8 +42,8 @@ class SingleAsset {
   final String category;
   final String renter; // person who is presently renting the product
   final List<String> waitingList;
-  SingleAsset({
-    @required this.assetID,
+  SingleItem({
+    @required this.itemID,
     @required this.title,
     @required this.price,
     @required this.interval,
@@ -55,9 +55,9 @@ class SingleAsset {
     this.waitingList,
   });
 
-  factory SingleAsset.fromJson(Map<String, dynamic> json) {
-    return SingleAsset(
-      assetID: json['assetID'] as String,
+  factory SingleItem.fromJson(Map<String, dynamic> json) {
+    return SingleItem(
+      itemID: json['id'] as String,
       title: json['title'] as String,
       price: json['price'] as String,
       interval: json['interval'] as String,

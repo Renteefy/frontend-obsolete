@@ -146,7 +146,7 @@ class _NotificationCardState extends State<NotificationCard> {
         onTap: () {
           var route = MaterialPageRoute(
               builder: (context) => ProductDetails(
-                    assetID: widget.notifi.assetID,
+                    itemID: widget.notifi.assetID,
                   ));
           Navigator.of(context).push(route);
         },

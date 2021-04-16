@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:frontend/services/AssetsHttpService.dart';
+import 'package:frontend/services/ItemsHttpService.dart';
 import 'package:frontend/shared/alertBox.dart';
 import "dart:io";
 
@@ -25,7 +25,7 @@ class _AddPageState extends State<AddPage> {
         await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
       file = (pickedFile != null) ? pickedFile.path : null;
-      print(file);
+      print("filename: " + file);
     });
   }
 
@@ -262,13 +262,14 @@ class _AddPageState extends State<AddPage> {
                     return;
                   }
                   _formKey.currentState.save();
-                  int postRes = await AssetsHttpService().postAsset(
+                  int postRes = await ItemsHttpService().postItem(
                       titleController.text,
                       descriptionController.text,
                       file,
                       priceController.text,
                       interval,
-                      category);
+                      category,
+                      type.toLowerCase());
                   if (postRes == 200) {
                     VoidCallback continueCallBack = () => {
                           Navigator.pushReplacementNamed(context, '/home')

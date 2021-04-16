@@ -6,45 +6,47 @@ import 'package:frontend/pages/ChatView.dart';
 import 'package:frontend/pages/EditPage.dart';
 import 'package:frontend/shared/alertBox.dart';
 import 'package:frontend/shared/constants.dart';
-import 'package:frontend/models/AssetListing.dart';
+import 'package:frontend/models/ItemListing.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:frontend/services/AssetsHttpService.dart';
+import 'package:frontend/services/ItemsHttpService.dart';
 import 'package:frontend/services/NotificationsHttpService.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ProductDetails extends StatefulWidget {
-  final String assetID;
-  const ProductDetails({Key key, this.assetID}) : super(key: key);
+  final String itemID;
+  final String item;
+  const ProductDetails({Key key, this.itemID, this.item}) : super(key: key);
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  final assetService = AssetsHttpService();
-  SingleAsset asset;
+  final itemService = ItemsHttpService();
+  SingleItem product;
   NotificationListing notifi;
   bool loading = true;
   String rentedStatus;
   String notifiID;
   final String url = "https://" + env['SERVER_URL'];
-  // have to reimplement rent this logic
+
   @override
   void initState() {
     super.initState();
 
     () async {
-      List asset_notifi = await assetService.getSingleAsset(widget.assetID);
-      if (asset_notifi[1] != "") {
+      List itemNotifi =
+          await itemService.getSingleItem(widget.itemID, widget.item);
+      if (itemNotifi[1] != "") {
         setState(() {
-          asset = asset_notifi[0];
-          notifi = asset_notifi[1];
+          product = itemNotifi[0];
+          notifi = itemNotifi[1];
           loading = false;
           rentedStatus = notifi.status;
           notifiID = notifi.notificationID;
         });
       } else {
         setState(() {
-          asset = asset_notifi[0];
+          product = itemNotifi[0];
           loading = false;
         });
       }
@@ -81,10 +83,11 @@ class _ProductDetailsState extends State<ProductDetails> {
             ? Center(child: CircularProgressIndicator())
             : Details(
                 url: url,
-                asset: asset,
+                product: product,
                 notifi: notifi,
                 rentedStatus: rentedStatus,
                 notifiID: notifiID,
+                item: widget.item,
               ));
   }
 }
@@ -93,16 +96,18 @@ class Details extends StatefulWidget {
   Details({
     Key key,
     @required this.url,
-    @required this.asset,
+    @required this.product,
     @required this.notifi,
     @required this.rentedStatus,
     @required this.notifiID,
+    @required this.item,
   }) : super(key: key);
 
   final String url;
   String rentedStatus;
   String notifiID;
-  final SingleAsset asset;
+  final SingleItem product;
+  final String item;
   final NotificationListing notifi;
 
   @override
@@ -147,13 +152,13 @@ class _DetailsState extends State<Details> {
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(17),
                             child:
-                                Image.network(widget.url + widget.asset.url)),
+                                Image.network(widget.url + widget.product.url)),
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       Text(
-                        widget.asset.title,
+                        widget.product.title,
                         style: GoogleFonts.inter(
                             fontSize: 24, fontWeight: FontWeight.w900),
                       ),
@@ -161,7 +166,7 @@ class _DetailsState extends State<Details> {
                         height: 10,
                       ),
                       Text(
-                        widget.asset.description,
+                        widget.product.description,
                         style: GoogleFonts.inter(
                             color: Color(0xffBDBDBD),
                             fontSize: 14,
@@ -180,14 +185,14 @@ class _DetailsState extends State<Details> {
                                 fontWeight: FontWeight.w900),
                           ),
                           Text(
-                            widget.asset.price + " ",
+                            widget.product.price + " ",
                             style: GoogleFonts.inter(
                                 color: kPrimaryColor,
                                 fontSize: 25,
                                 fontWeight: FontWeight.w900),
                           ),
                           Text(
-                            widget.asset.interval,
+                            widget.product.interval,
                             style: GoogleFonts.inter(
                                 color: kPrimaryColor,
                                 fontSize: 25,
@@ -223,29 +228,29 @@ class _DetailsState extends State<Details> {
                                               primary: notifiDenied)
                                           : ElevatedButton.styleFrom(
                                               primary: notifiSent),
-                              onPressed: (widget.asset.owner == username)
+                              onPressed: (widget.product.owner == username)
                                   ? () {
                                       var route = MaterialPageRoute(
                                           builder: (context) => EditListingPage(
-                                              type: "Asset",
-                                              interval: widget.asset.interval,
-                                              price: widget.asset.price,
-                                              category: widget.asset.category,
+                                              type: widget.item,
+                                              interval: widget.product.interval,
+                                              price: widget.product.price,
+                                              category: widget.product.category,
                                               description:
-                                                  widget.asset.description,
-                                              url: widget.asset.url,
-                                              assetID: widget.asset.assetID,
-                                              title: widget.asset.title));
+                                                  widget.product.description,
+                                              url: widget.product.url,
+                                              itemID: widget.product.itemID,
+                                              title: widget.product.title));
                                       Navigator.of(context).push(route);
                                     }
                                   : (widget.rentedStatus == null)
                                       ? () async {
                                           String notifiID = await notifiService
                                               .postNotification(
-                                                  widget.asset.title,
+                                                  widget.product.title,
                                                   "Request Raised",
-                                                  widget.asset.owner,
-                                                  widget.asset.assetID);
+                                                  widget.product.owner,
+                                                  widget.product.itemID);
                                           setState(() {
                                             widget.rentedStatus =
                                                 "Request Raised";
@@ -254,7 +259,8 @@ class _DetailsState extends State<Details> {
                                         }
                                       : (widget.rentedStatus == "Accepted")
                                           ? () {
-                                              String owner = widget.asset.owner;
+                                              String owner =
+                                                  widget.product.owner;
                                               VoidCallback continueCallBack =
                                                   () => {
                                                         Navigator.of(context)
@@ -278,7 +284,7 @@ class _DetailsState extends State<Details> {
                                           : (widget.rentedStatus == "Denied")
                                               ? () {
                                                   String owner =
-                                                      widget.asset.owner;
+                                                      widget.product.owner;
                                                   VoidCallback
                                                       continueCallBack = () => {
                                                             Navigator.of(
@@ -331,7 +337,7 @@ class _DetailsState extends State<Details> {
                                                 },
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: (widget.asset.owner == username)
+                                child: (widget.product.owner == username)
                                     ? Text(
                                         "Edit Item",
                                         style: GoogleFonts.inter(
@@ -384,7 +390,7 @@ class _DetailsState extends State<Details> {
                               child: Padding(
                                   padding: const EdgeInsets.all(20.0),
                                   child: Text(
-                                    "Chat with ${widget.asset.owner}",
+                                    "Chat with ${widget.product.owner}",
                                     style: GoogleFonts.inter(
                                         fontWeight: FontWeight.w900),
                                   )))),
