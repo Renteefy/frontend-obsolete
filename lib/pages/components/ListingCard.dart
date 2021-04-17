@@ -16,6 +16,7 @@ class ListingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(obj.url);
     final String url = "https://" + env['SERVER_URL'];
     return GestureDetector(
       onTap: () {
@@ -41,9 +42,10 @@ class ListingCard extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(url + obj.url),
-                    ),
+                        fit: BoxFit.fill,
+                        image: (obj.url == "/static/null")
+                            ? NetworkImage("https://via.placeholder.com/150")
+                            : NetworkImage(url + obj.url)),
                   ),
                 ),
               )),

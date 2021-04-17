@@ -1,10 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:frontend/models/ChatListing.dart';
+import 'package:frontend/models/ChatRoom.dart';
 import 'package:frontend/pages/ChatView.dart';
+import 'package:frontend/services/ChatHttpService.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:web_socket_channel/io.dart';
+
+import '../models/ChatRoom.dart';
 
 class ChatListingPage extends StatefulWidget {
   @override
@@ -14,15 +18,9 @@ class ChatListingPage extends StatefulWidget {
 class _ChatListingPageState extends State<ChatListingPage> {
   final store = new FlutterSecureStorage();
   String username;
+  final chatService = ChatHttpService();
 
-  final List<ChatListing> userList = [
-    ChatListing.fromJson({
-      "user1": "yajat",
-      "user2": "tester1",
-      "chatID": "this is chatID",
-      "lastMessage": "this is lastmessage",
-    }),
-  ];
+  List<ChatRoom> userList = [];
   @override
   void initState() {
     super.initState();
@@ -31,8 +29,11 @@ class _ChatListingPageState extends State<ChatListingPage> {
 
   void resolveUsername() async {
     var tmp = await store.read(key: "username");
+    var chatListarr = await chatService.getChatRoomForUser(tmp);
+
     setState(() {
       username = tmp;
+      userList = chatListarr;
     });
   }
 
@@ -68,12 +69,9 @@ class _ChatListingPageState extends State<ChatListingPage> {
         child: ListView.builder(
           itemCount: userList.length,
           itemBuilder: (context, index) {
-            String selUser = (userList[index].user1 != username)
-                ? userList[index].user1
-                : userList[index].user2;
-            String unselUser = (userList[index].user1 == username)
-                ? userList[index].user1
-                : userList[index].user2;
+            String otherUser = (userList[index].user1 == username)
+                ? userList[index].user2
+                : userList[index].user1;
 
             return Card(
               margin: EdgeInsets.all(20),
@@ -85,19 +83,19 @@ class _ChatListingPageState extends State<ChatListingPage> {
                         "https://ui-avatars.com/api/?name=John+Doe"),
                   ),
                   title: Text(
-                    selUser,
+                    otherUser,
                     style: GoogleFonts.inter(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  subtitle: (userList[index].lastMessage != null)
-                      ? Text(userList[index].lastMessage)
-                      : Text('Start conversation'),
                   onTap: () {
                     var route = MaterialPageRoute(
                         builder: (context) => ChatView(
-                              chatID: userList[index].chatId,
+                              chatID: userList[index].chatID,
                               username: username,
-                              chatee: unselUser,
+                              chatee: otherUser,
+                              channel: IOWebSocketChannel.connect(
+                                  ("wss://chat.renteefy.ga/ws?username=" +
+                                      username)),
                             ));
                     Navigator.of(context).push(route);
                   }),

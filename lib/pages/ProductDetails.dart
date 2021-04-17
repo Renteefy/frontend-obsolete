@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/models/NotificationListing.dart';
 import 'package:frontend/pages/ChatView.dart';
 import 'package:frontend/pages/EditPage.dart';
+import 'package:frontend/services/ChatHttpService.dart';
 import 'package:frontend/shared/alertBox.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:frontend/models/ItemListing.dart';
@@ -12,6 +13,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/services/ItemsHttpService.dart';
 import 'package:frontend/services/NotificationsHttpService.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:web_socket_channel/io.dart';
+
+import '../models/ChatRoom.dart';
+import '../models/ChatRoom.dart';
 
 class ProductDetails extends StatefulWidget {
   final String itemID;
@@ -23,6 +28,7 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   final itemService = ItemsHttpService();
+
   SingleItem product;
   NotificationListing notifi;
   bool loading = true;
@@ -118,6 +124,7 @@ class Details extends StatefulWidget {
 class _DetailsState extends State<Details> {
   final store = new FlutterSecureStorage();
   final notifiService = NotificationHttpService();
+  final chatService = ChatHttpService();
 
   String username;
   @override
@@ -152,8 +159,10 @@ class _DetailsState extends State<Details> {
                       Center(
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(17),
-                            child:
-                                Image.network(widget.url + widget.product.url)),
+                            child: (widget.product.url != "/static/null")
+                                ? Image.network(widget.url + widget.product.url)
+                                : Image.network(
+                                    "https://via.placeholder.com/150")),
                       ),
                       SizedBox(
                         height: 20,
@@ -379,12 +388,18 @@ class _DetailsState extends State<Details> {
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   primary: kAccentColor2),
-                              onPressed: () {
+                              onPressed: () async {
+                                var chatList = await chatService.getChatRoom(
+                                    username, widget.product.owner);
+
                                 var route = MaterialPageRoute(
                                     builder: (context) => ChatView(
+                                          channel: IOWebSocketChannel.connect(
+                                              ("wss://chat.renteefy.ga/ws?username=" +
+                                                  username)),
                                           username: username,
-                                          chatID: "chatID",
-                                          chatee: "someone who is not tester1",
+                                          chatID: chatList.chatID,
+                                          chatee: widget.product.owner,
                                         ));
                                 Navigator.of(context).push(route);
                               },
