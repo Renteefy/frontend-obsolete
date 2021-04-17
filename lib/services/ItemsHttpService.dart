@@ -79,7 +79,7 @@ class ItemsHttpService {
 
   Future<int> postItem(String title, String description, picture, String price,
       String interval, String category, String item) async {
-    var request = http.MultipartRequest("POST", Uri.https(url, "${item}s"));
+    var request = http.MultipartRequest("POST", Uri.https(url, "/${item}s"));
 
     request.fields["title"] = title;
     request.fields["description"] = description;

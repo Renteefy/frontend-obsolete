@@ -141,10 +141,8 @@ class _EditListingPageState extends State<EditListingPage> {
                   onChanged: (val) {
                     print("Radio Tile pressed $val");
                     setState(() {
-                      print("ramu aa");
                       type = val;
-                      print(type);
-                      print("ramu aa");
+                      category = null;
                     });
                   },
                   activeColor: kAccentColor1,
@@ -158,10 +156,8 @@ class _EditListingPageState extends State<EditListingPage> {
                   onChanged: (val) {
                     print("Radio Tile pressed $val");
                     setState(() {
-                      print("ramu ss");
                       type = val;
-                      print(type);
-                      print("ramu ss");
+                      category = null;
                     });
                   },
                   selected: (type == "service") ? true : false,
@@ -262,7 +258,7 @@ class _EditListingPageState extends State<EditListingPage> {
                       style: TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.black,
                       // update the logic here, so that when the user changes the type this should also change, then update add page also
-                      items: (widget.type == "asset")
+                      items: (type == "asset")
                           ? assetCategories
                               .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(

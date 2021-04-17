@@ -11,8 +11,20 @@ class AddPage extends StatefulWidget {
   _AddPageState createState() => _AddPageState();
 }
 
+final assetCategories = [
+  "Books and Stationary",
+  "Furniture and Home Decor",
+  "Hardware and Tools",
+  "Technology and Electronics",
+  "Clothing and Accessories",
+  "Automobiles and Vehicles",
+  "Others"
+];
+
+final serviceCategory = ["Teaching", "Driving", "Others"];
+
 class _AddPageState extends State<AddPage> {
-  String type = "Asset";
+  String type = "asset";
   String interval;
   String category;
   TextEditingController titleController = new TextEditingController();
@@ -48,7 +60,7 @@ class _AddPageState extends State<AddPage> {
                     fontWeight: FontWeight.bold, fontSize: 17),
               ),
               RadioListTile(
-                value: "Asset",
+                value: "asset",
                 groupValue: type,
                 title: Text("Asset"),
                 subtitle: Text("Physical entities"),
@@ -56,13 +68,14 @@ class _AddPageState extends State<AddPage> {
                   print("Radio Tile pressed $val");
                   setState(() {
                     type = val;
+                    category = null;
                   });
                 },
                 activeColor: kAccentColor1,
-                selected: (type == "Asset") ? true : false,
+                selected: (type == "asset") ? true : false,
               ),
               RadioListTile(
-                value: "Service",
+                value: "service",
                 groupValue: type,
                 title: Text("Service"),
                 subtitle: Text("Intangible entities"),
@@ -70,9 +83,10 @@ class _AddPageState extends State<AddPage> {
                   print("Radio Tile pressed $val");
                   setState(() {
                     type = val;
+                    category = null;
                   });
                 },
-                selected: (type == "Service") ? true : false,
+                selected: (type == "service") ? true : false,
               ),
               SizedBox(height: 20),
               TextFormField(
@@ -170,26 +184,33 @@ class _AddPageState extends State<AddPage> {
                     value: category,
                     style: TextStyle(color: Colors.white),
                     iconEnabledColor: Colors.black,
-                    items: <String>[
-                      "Books and Stationary",
-                      "Furniture and Home Decor",
-                      "Hardware and Tools",
-                      "Technology and Electronics",
-                      "Clothing and Accessories",
-                      "Automobiles and Vehicles",
-                      "Others",
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            value,
-                            style: GoogleFonts.inter(fontSize: 14),
-                          ),
-                        ),
-                      );
-                    }).toList(),
+                    items: (type == "asset")
+                        ? assetCategories
+                            .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  value,
+                                  style: GoogleFonts.inter(fontSize: 14),
+                                ),
+                              ),
+                            );
+                          }).toList()
+                        : serviceCategory
+                            .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  value,
+                                  style: GoogleFonts.inter(fontSize: 14),
+                                ),
+                              ),
+                            );
+                          }).toList(),
                     icon: Icon(
                       // Add this
                       Icons.arrow_drop_down, // Add this
