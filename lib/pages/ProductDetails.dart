@@ -15,9 +15,6 @@ import 'package:frontend/services/NotificationsHttpService.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:web_socket_channel/io.dart';
 
-import '../models/ChatRoom.dart';
-import '../models/ChatRoom.dart';
-
 class ProductDetails extends StatefulWidget {
   final String itemID;
   final String item;
