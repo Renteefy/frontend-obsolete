@@ -99,7 +99,10 @@ class _DashboardPageState extends State<DashboardPage> {
                                 title: "Your Assets",
                                 subtitle: "Your listed assets on Renteefy",
                               ),
-                              HorizontalCardViewBuilder(res: assetRes),
+                              HorizontalCardViewBuilder(
+                                res: assetRes,
+                                type: "asset",
+                              ),
                             ],
                           ),
                     SizedBox(
@@ -113,7 +116,8 @@ class _DashboardPageState extends State<DashboardPage> {
                               TitleSection(
                                   title: "Your Services",
                                   subtitle: "Your listed services on Renteefy"),
-                              HorizontalCardViewBuilder(res: serviceRes),
+                              HorizontalCardViewBuilder(
+                                  res: serviceRes, type: "service"),
                               SizedBox(
                                 height: 40,
                               ),
@@ -133,7 +137,10 @@ class _DashboardPageState extends State<DashboardPage> {
                               TitleSection(
                                   title: "Rented Assets",
                                   subtitle: "Assets you have rented"),
-                              HorizontalCardViewBuilder(res: rentedAssetRes),
+                              HorizontalCardViewBuilder(
+                                res: rentedAssetRes,
+                                type: "asset",
+                              ),
                             ],
                           ),
                     SizedBox(
@@ -146,7 +153,8 @@ class _DashboardPageState extends State<DashboardPage> {
                               TitleSection(
                                   title: "Rented Services",
                                   subtitle: "Service you have rented"),
-                              HorizontalCardViewBuilder(res: rentedServiceRes),
+                              HorizontalCardViewBuilder(
+                                  res: rentedServiceRes, type: "service"),
                             ],
                           ),
                   ]),
@@ -159,9 +167,11 @@ class HorizontalCardViewBuilder extends StatelessWidget {
   HorizontalCardViewBuilder({
     Key key,
     @required this.res,
+    this.type,
   }) : super(key: key);
 
   final List<SingleItem> res;
+  final String type;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -181,6 +191,7 @@ class HorizontalCardViewBuilder extends StatelessWidget {
                           var route = MaterialPageRoute(
                               builder: (context) => ProductDetails(
                                     itemID: res[index].itemID,
+                                    item: type,
                                   ));
                           Navigator.of(context).push(route);
                         },
