@@ -25,7 +25,7 @@ class ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<ChatView> {
-  List chats = [];
+  List<Message> chats = [];
   final chatService = ChatHttpService();
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _ChatViewState extends State<ChatView> {
     print(chats.length);
     return Scaffold(
         appBar: AppBar(
-          title: Text(chats.length.toString()), //Text(widget.chatee)
+          title: Text(widget.chatee), //Text(widget.chatee)
           backgroundColor: Colors.transparent,
         ),
         body: Padding(
@@ -80,18 +80,57 @@ class _ChatViewState extends State<ChatView> {
                 child: ListView.builder(
                     itemCount: chats.length,
                     itemBuilder: (context, index) {
-                      return Text(chats[index].message);
+                      return Column(
+                        crossAxisAlignment:
+                            (chats[index].sender == widget.username)
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: (chats[index].sender == widget.username)
+                                  ? kPrimaryColor
+                                  : kAccentColor3,
+                            ),
+                            margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.6),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(chats[index].message,
+                                  style: GoogleFonts.inter(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500)),
+                            ),
+                          ),
+                          (chats[index].time == null)
+                              ? Text(DateFormat.Hm().format(DateTime.now()))
+                              : Text(DateFormat.Hm().format(
+                                  DateTime.fromMicrosecondsSinceEpoch(
+                                      int.parse(chats[index].time) * 1000))),
+                        ],
+                      );
                     }),
+              ),
+              SizedBox(
+                height: 10,
               ),
               TextField(
                 controller: messageController,
+                onSubmitted: (value) {
+                  sendMessage(value);
+                  messageController.clear();
+                },
                 decoration: InputDecoration(
                     hintText: "message pls",
                     filled: true,
                     suffixIcon: IconButton(
                       onPressed: () {
-                        print(messageController.text);
+                        //print(messageController.text);
                         sendMessage(messageController.text);
+                        messageController.clear();
                       },
                       icon: Icon(Icons.send_rounded),
                     )),

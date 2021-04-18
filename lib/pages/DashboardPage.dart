@@ -130,7 +130,7 @@ class HorizontalCardViewBuilder extends StatelessWidget {
       child: (res == null)
           ? Center(child: CircularProgressIndicator())
           : (res.length == 0)
-              ? Text("This do be empty")
+              ? SizedBox()
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   primary: false,
@@ -224,6 +224,9 @@ class UserInfoCard extends StatelessWidget {
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: kAccentColor1)),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(userDetails.firstName + " " + userDetails.lastName,
                         softWrap: false,
                         overflow: TextOverflow.ellipsis,
@@ -232,6 +235,9 @@ class UserInfoCard extends StatelessWidget {
                           fontSize: 25,
                           fontWeight: FontWeight.w900,
                         )),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(userDetails.email,
                         style: GoogleFonts.inter(
                             fontWeight: FontWeight.bold, color: kAccentColor3)),
