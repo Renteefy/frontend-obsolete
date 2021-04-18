@@ -1,4 +1,5 @@
 // these are the changes
+import 'package:badges/badges.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -172,12 +173,38 @@ class _DetailsState extends State<Details> {
                       SizedBox(
                         height: 10,
                       ),
+                      Badge(
+                        toAnimate: false,
+                        shape: BadgeShape.square,
+                        borderSide:
+                            BorderSide(width: 1.3, color: kPrimaryColor),
+                        badgeColor: Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                        badgeContent: Text(widget.product.category,
+                            style: GoogleFonts.inter(fontSize: 15)),
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
                       Text(
                         widget.product.description,
                         style: GoogleFonts.inter(
-                            color: Color(0xffBDBDBD),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w900),
+                          color: notifiSent,
+                          fontSize: 14,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Text("Listed by: ",
+                              style: GoogleFonts.inter(
+                                  color: notifiSent, fontSize: 17)),
+                          Text(widget.product.owner,
+                              style: GoogleFonts.inter(
+                                  fontWeight: FontWeight.bold, fontSize: 17)),
+                        ],
                       ),
                       SizedBox(
                         height: 20,
@@ -187,7 +214,7 @@ class _DetailsState extends State<Details> {
                           Text(
                             "Rs. ",
                             style: GoogleFonts.inter(
-                                color: Color(0xffBDBDBD),
+                                color: notifiSent,
                                 fontSize: 25,
                                 fontWeight: FontWeight.w900),
                           ),

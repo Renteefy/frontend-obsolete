@@ -21,10 +21,10 @@ final String url = "https://" + env['SERVER_URL'];
 final itemService = ItemsHttpService();
 
 class _DashboardPageState extends State<DashboardPage> {
-  List<SingleItem> assetRes;
-  List<SingleItem> serviceRes;
-  List<SingleItem> rentedAssetRes;
-  List<SingleItem> rentedServiceRes;
+  List<SingleItem> assetRes = [];
+  List<SingleItem> serviceRes = [];
+  List<SingleItem> rentedAssetRes = [];
+  List<SingleItem> rentedServiceRes = [];
   bool loading = true;
 
   @override
