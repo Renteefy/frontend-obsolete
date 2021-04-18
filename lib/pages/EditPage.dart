@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/services/ItemsHttpService.dart';
-import 'package:frontend/shared/TopBar.dart';
 import 'package:frontend/shared/alertBox.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,6 +45,39 @@ final assetCategories = [
 ];
 
 final serviceCategory = ["Teaching", "Driving", "Others"];
+
+void deleteItem(String item, String itemID, context) async {
+  int x = await ItemsHttpService().deleteItem(item, itemID);
+  if (x != 1) {
+    VoidCallback continueCallBack = () => {
+          Navigator.of(context).pop(),
+          // code on Okay comes here
+        };
+    BlurryDialog alert = BlurryDialog("Failure",
+        "Something went wrong, Please try again", continueCallBack, false);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  } else {
+    VoidCallback continueCallBack = () => {
+          Navigator.pushReplacementNamed(context, '/home')
+          // code on Okay comes here
+        };
+    BlurryDialog alert = BlurryDialog(
+        "Done", "Item Deleted Successfully", continueCallBack, false);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+}
 
 class _EditListingPageState extends State<EditListingPage> {
   String type;
@@ -257,7 +289,6 @@ class _EditListingPageState extends State<EditListingPage> {
                       value: category,
                       style: TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.black,
-                      // update the logic here, so that when the user changes the type this should also change, then update add page also
                       items: (type == "asset")
                           ? assetCategories
                               .map<DropdownMenuItem<String>>((String value) {
@@ -417,6 +448,42 @@ class _EditListingPageState extends State<EditListingPage> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    VoidCallback continueCallBack = () => {
+                          // on pressed okay comes here
+                          Navigator.of(context).pop(),
+                          deleteItem(type, itemID, context)
+                        };
+                    BlurryDialog alert = BlurryDialog(
+                        "Delete?",
+                        "Do you want to delete this listing?",
+                        continueCallBack,
+                        true);
+
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return alert;
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(primary: notifiDenied),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Delete Listing",
+                            style: GoogleFonts.inter(
+                                fontWeight: FontWeight.bold, fontSize: 14)),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
           )),

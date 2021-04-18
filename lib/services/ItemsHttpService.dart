@@ -168,4 +168,18 @@ class ItemsHttpService {
     }
     return items;
   }
+
+  Future<int> deleteItem(String item, String itemID) async {
+    String value = await store.read(key: "jwt");
+
+    var data = await http.delete(Uri.https(url, "${item}s/$item/$itemID"),
+        headers: {'Content-Type': 'application/json', 'Authorization': value});
+
+    if (data.statusCode != 200) {
+      print("Auth Failed, please login");
+      throw "Unable to delete item";
+    } else {
+      return 1;
+    }
+  }
 }
