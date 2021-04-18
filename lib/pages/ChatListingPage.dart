@@ -74,11 +74,11 @@ class _ChatListingPageState extends State<ChatListingPage> {
                 : userList[index].user1;
 
             return Card(
-              margin: EdgeInsets.all(20),
+              margin: EdgeInsets.all(10),
               child: ListTile(
-                  trailing: Text("🟢"),
+                  trailing: Icon(Icons.arrow_forward_ios),
                   leading: CircleAvatar(
-                    radius: 18,
+                    radius: 15,
                     backgroundImage: NetworkImage(
                         "https://ui-avatars.com/api/?name=John+Doe"),
                   ),

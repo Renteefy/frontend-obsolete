@@ -9,7 +9,6 @@ import 'package:frontend/services/ChatHttpService.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatView extends StatefulWidget {
@@ -44,6 +43,9 @@ class _ChatViewState extends State<ChatView> {
     });
   }
 
+  ScrollController scrollController = new ScrollController();
+  TextEditingController messageController = new TextEditingController();
+
   void sendMessage(String message) {
     setState(() {
       chats.add(Message(
@@ -51,6 +53,8 @@ class _ChatViewState extends State<ChatView> {
           message: message,
           receiver: widget.chatee,
           sender: widget.username));
+      scrollController.animateTo(scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
     });
 
     widget.channel.sink.add(jsonEncode({
@@ -64,13 +68,14 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    //ScrollController scrollController = new ScrollController();
-    TextEditingController messageController = new TextEditingController();
     print(chats.length);
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.chatee), //Text(widget.chatee)
           backgroundColor: Colors.transparent,
+          actions: [
+            IconButton(icon: Icon(Icons.info_outline_rounded), onPressed: () {})
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -78,6 +83,7 @@ class _ChatViewState extends State<ChatView> {
             children: [
               Expanded(
                 child: ListView.builder(
+                    controller: scrollController,
                     itemCount: chats.length,
                     itemBuilder: (context, index) {
                       return Column(
@@ -140,71 +146,3 @@ class _ChatViewState extends State<ChatView> {
         ));
   }
 }
-
-// Padding(
-//         padding: const EdgeInsets.all(20.0),
-//         child: Column(
-//           children: [
-//             Flexible(
-//                 child: ListView.builder(
-//                     controller: scrollController,
-//                     itemCount: chats.length,
-//                     itemBuilder: (context, index) {
-//                       return Column(
-//                         crossAxisAlignment:
-//                             (chats[index]["sender"] == widget.username)
-//                                 ? CrossAxisAlignment.end
-//                                 : CrossAxisAlignment.start,
-//                         children: [
-//                           Container(
-//                             decoration: BoxDecoration(
-//                               borderRadius: BorderRadius.circular(8.0),
-//                               color: (chats[index]["sender"] == widget.username)
-//                                   ? kPrimaryColor
-//                                   : kAccentColor3,
-//                             ),
-//                             margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-//                             constraints: BoxConstraints(
-//                                 maxWidth:
-//                                     MediaQuery.of(context).size.width * 0.6),
-//                             child: Padding(
-//                               padding: const EdgeInsets.all(16.0),
-//                               child: Text(chats[index]["message"],
-//                                   style: GoogleFonts.inter(
-//                                       fontSize: 15,
-//                                       fontWeight: FontWeight.w500)),
-//                             ),
-//                           ),
-//                           Text(DateFormat.Hm().format(chats[index]["time"])),
-//                         ],
-//                       );
-//                     })),
-//             TextField(
-//               controller: messageController,
-//               onSubmitted: (value) {
-//                 setState(() {
-//                   chats.add({
-//                     "sender": widget.username,
-//                     "message": value,
-//                     "time": DateTime.now()
-//                   });
-//                   messageController.clear();
-//                 });
-//               },
-//               onChanged: (val) {
-//                 scrollController.animateTo(
-//                   scrollController.position.maxScrollExtent,
-//                   curve: Curves.easeOut,
-//                   duration: const Duration(milliseconds: 300),
-//                 );
-//               },
-//               decoration: InputDecoration(
-//                 contentPadding: EdgeInsets.all(20),
-//                 filled: true,
-//                 border: InputBorder.none,
-//                 hintText: 'Start typing here...',
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),

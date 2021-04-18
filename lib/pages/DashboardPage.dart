@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/InviteUser.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/models/ItemListing.dart';
@@ -262,7 +263,18 @@ class UserInfoCard extends StatelessWidget {
                           width: 10,
                         ),
                         IconButton(
-                            icon: Icon(Icons.email_outlined), onPressed: () {}),
+                            icon: Icon(Icons.email_outlined),
+                            onPressed: () {
+                              var route = MaterialPageRoute(
+                                  builder: (context) => InviteUser());
+                              Navigator.of(context).push(route);
+                            }),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        IconButton(
+                            icon: Icon(Icons.bug_report_outlined),
+                            onPressed: () {}),
                       ],
                     )
                   ],
