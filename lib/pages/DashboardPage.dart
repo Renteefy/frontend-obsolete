@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/BugReportPage.dart';
 import 'package:frontend/pages/InviteUser.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,6 +25,7 @@ class _DashboardPageState extends State<DashboardPage> {
   List<SingleItem> serviceRes;
   List<SingleItem> rentedAssetRes;
   List<SingleItem> rentedServiceRes;
+  bool loading = true;
 
   @override
   void initState() {
@@ -33,6 +35,9 @@ class _DashboardPageState extends State<DashboardPage> {
     fetchServiceRes();
     fetchRentedServiceRes();
     fetchUserDetails();
+    setState(() {
+      loading = false;
+    });
   }
 
   void fetchAssetRes() async {
@@ -75,71 +80,76 @@ class _DashboardPageState extends State<DashboardPage> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          UserInfoCard(),
-          SizedBox(
-            height: 40,
-          ),
-          (assetRes.length == 0)
-              ? SizedBox(height: 0)
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleSection(
-                      title: "Your Assets",
-                      subtitle: "Your listed assets on Renteefy",
-                    ),
-                    HorizontalCardViewBuilder(res: assetRes),
-                  ],
-                ),
-          SizedBox(
-            height: 40,
-          ),
-          (serviceRes.length == 0)
-              ? SizedBox(height: 0)
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleSection(
-                        title: "Your Services",
-                        subtitle: "Your listed services on Renteefy"),
-                    HorizontalCardViewBuilder(res: serviceRes),
+        child: (loading == true)
+            ? CircularProgressIndicator()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                    UserInfoCard(),
                     SizedBox(
                       height: 40,
                     ),
-                    Divider(
-                      color: Colors.white,
-                      thickness: 2,
-                    ),
+                    (assetRes.length == 0)
+                        ? SizedBox(height: 0)
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitleSection(
+                                title: "Your Assets",
+                                subtitle: "Your listed assets on Renteefy",
+                              ),
+                              HorizontalCardViewBuilder(res: assetRes),
+                            ],
+                          ),
                     SizedBox(
                       height: 40,
                     ),
-                  ],
-                ),
-          (rentedAssetRes.length == 0)
-              ? SizedBox(height: 0)
-              : Column(
-                  children: [
-                    TitleSection(
-                        title: "Rented Assets",
-                        subtitle: "Assets you have rented"),
-                    HorizontalCardViewBuilder(res: rentedAssetRes),
-                  ],
-                ),
-          SizedBox(
-            height: 40,
-          ),
-          (rentedServiceRes.length == 0)
-              ? SizedBox(height: 0)
-              : Column(
-                  children: [
-                    TitleSection(
-                        title: "Rented Services",
-                        subtitle: "Service you have rented"),
-                    HorizontalCardViewBuilder(res: rentedServiceRes),
-                  ],
-                ),
-        ]),
+                    (serviceRes.length == 0)
+                        ? SizedBox(height: 0)
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TitleSection(
+                                  title: "Your Services",
+                                  subtitle: "Your listed services on Renteefy"),
+                              HorizontalCardViewBuilder(res: serviceRes),
+                              SizedBox(
+                                height: 40,
+                              ),
+                              Divider(
+                                color: Colors.white,
+                                thickness: 2,
+                              ),
+                              SizedBox(
+                                height: 40,
+                              ),
+                            ],
+                          ),
+                    (rentedAssetRes.length == 0)
+                        ? SizedBox(height: 0)
+                        : Column(
+                            children: [
+                              TitleSection(
+                                  title: "Rented Assets",
+                                  subtitle: "Assets you have rented"),
+                              HorizontalCardViewBuilder(res: rentedAssetRes),
+                            ],
+                          ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    (rentedServiceRes.length == 0)
+                        ? SizedBox(height: 0)
+                        : Column(
+                            children: [
+                              TitleSection(
+                                  title: "Rented Services",
+                                  subtitle: "Service you have rented"),
+                              HorizontalCardViewBuilder(res: rentedServiceRes),
+                            ],
+                          ),
+                  ]),
       ),
     );
   }
@@ -302,7 +312,11 @@ class UserInfoCard extends StatelessWidget {
                         ),
                         IconButton(
                             icon: Icon(Icons.bug_report_outlined),
-                            onPressed: () {}),
+                            onPressed: () {
+                              var route = MaterialPageRoute(
+                                  builder: (context) => BugReportPage());
+                              Navigator.of(context).push(route);
+                            }),
                       ],
                     )
                   ],
