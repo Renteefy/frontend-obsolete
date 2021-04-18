@@ -80,37 +80,65 @@ class _DashboardPageState extends State<DashboardPage> {
           SizedBox(
             height: 40,
           ),
-          TitleSection(
-            title: "Your Assets",
-            subtitle: "Your listed assets on Renteefy",
-          ),
-          HorizontalCardViewBuilder(res: assetRes),
+          (assetRes.length == 0)
+              ? SizedBox(height: 0)
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleSection(
+                      title: "Your Assets",
+                      subtitle: "Your listed assets on Renteefy",
+                    ),
+                    HorizontalCardViewBuilder(res: assetRes),
+                  ],
+                ),
           SizedBox(
             height: 40,
           ),
-          TitleSection(
-              title: "Your Services",
-              subtitle: "Your listed services on Renteefy"),
-          HorizontalCardViewBuilder(res: serviceRes),
+          (serviceRes.length == 0)
+              ? SizedBox(height: 0)
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TitleSection(
+                        title: "Your Services",
+                        subtitle: "Your listed services on Renteefy"),
+                    HorizontalCardViewBuilder(res: serviceRes),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 2,
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                  ],
+                ),
+          (rentedAssetRes.length == 0)
+              ? SizedBox(height: 0)
+              : Column(
+                  children: [
+                    TitleSection(
+                        title: "Rented Assets",
+                        subtitle: "Assets you have rented"),
+                    HorizontalCardViewBuilder(res: rentedAssetRes),
+                  ],
+                ),
           SizedBox(
             height: 40,
           ),
-          Divider(
-            color: Colors.white,
-            thickness: 2,
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          TitleSection(
-              title: "Rented Assets", subtitle: "Assets you have rented"),
-          HorizontalCardViewBuilder(res: rentedAssetRes),
-          SizedBox(
-            height: 40,
-          ),
-          TitleSection(
-              title: "Rented Services", subtitle: "Service you have rented"),
-          HorizontalCardViewBuilder(res: rentedServiceRes),
+          (rentedServiceRes.length == 0)
+              ? SizedBox(height: 0)
+              : Column(
+                  children: [
+                    TitleSection(
+                        title: "Rented Services",
+                        subtitle: "Service you have rented"),
+                    HorizontalCardViewBuilder(res: rentedServiceRes),
+                  ],
+                ),
         ]),
       ),
     );
@@ -131,7 +159,7 @@ class HorizontalCardViewBuilder extends StatelessWidget {
       child: (res == null)
           ? Center(child: CircularProgressIndicator())
           : (res.length == 0)
-              ? SizedBox()
+              ? Center(child: Text("Nothing to show here"))
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   primary: false,
