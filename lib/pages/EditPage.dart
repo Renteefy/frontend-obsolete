@@ -44,7 +44,14 @@ final assetCategories = [
   "Others"
 ];
 
-final serviceCategory = ["Teaching", "Driving", "Others"];
+final serviceCategory = [
+  "Business and Finance",
+  "Logistics and Transportation",
+  "Construction and Engineering",
+  "Teaching and Education",
+  "Tourism",
+  "Others"
+];
 
 void deleteItem(String item, String itemID, context) async {
   int x = await ItemsHttpService().deleteItem(item, itemID);

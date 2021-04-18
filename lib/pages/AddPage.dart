@@ -21,7 +21,14 @@ final assetCategories = [
   "Others"
 ];
 
-final serviceCategory = ["Teaching", "Driving", "Others"];
+final serviceCategory = [
+  "Business and Finance",
+  "Logistics and Transportation",
+  "Construction and Engineering",
+  "Teaching and Education",
+  "Tourism",
+  "Others"
+];
 
 class _AddPageState extends State<AddPage> {
   String type = "asset";
