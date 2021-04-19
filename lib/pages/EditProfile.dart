@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/LandingPage.dart';
 import 'package:frontend/services/UserHttpService.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/shared/constants.dart';
@@ -32,12 +33,19 @@ void sendPatchRequest(String firstName, String lastName, String username,
   int postRes = await UserHttpService()
       .patchUserDetails(firstName, lastName, username, tmpUrl);
   if (postRes == 200) {
-    VoidCallback continueCallBack = () => {
-          (goHome)
-              ? Navigator.pushReplacementNamed(context, '/home')
-              : Navigator.pushReplacementNamed(context, '/')
-          // code on Okay comes here
-        };
+    VoidCallback continueCallBack = () {
+      if (goHome) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LandingPage()));
+      }
+
+      // code on Okay comes here
+    };
     BlurryDialog alert = BlurryDialog(
         "Success", "Listing updated successfully", continueCallBack, false);
 
