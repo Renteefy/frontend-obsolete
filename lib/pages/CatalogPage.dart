@@ -151,7 +151,7 @@ class _AssetCatalogPageState extends State<CatalogPage> {
                 children: [
                   ListTile(
                     title: Text("Name: A to Z"),
-                    leading: Icon(Icons.ac_unit),
+                    leading: Icon(Icons.sort_by_alpha_sharp),
                     onTap: () => setState(() {
                       sortMadoAppa("name_a");
                       Navigator.of(context).pop();
@@ -159,7 +159,7 @@ class _AssetCatalogPageState extends State<CatalogPage> {
                   ),
                   ListTile(
                     title: Text("Name: Z to A"),
-                    leading: Icon(Icons.ac_unit),
+                    leading: Icon(Icons.sort_by_alpha_rounded),
                     onTap: () => setState(() {
                       sortMadoAppa("name_b");
                       Navigator.of(context).pop();
@@ -167,7 +167,7 @@ class _AssetCatalogPageState extends State<CatalogPage> {
                   ),
                   ListTile(
                     title: Text("Price: Low to High"),
-                    leading: Icon(Icons.ac_unit),
+                    leading: Icon(Icons.monetization_on_outlined),
                     onTap: () => setState(() {
                       sortMadoAppa("price_a");
                       Navigator.of(context).pop();
@@ -175,7 +175,7 @@ class _AssetCatalogPageState extends State<CatalogPage> {
                   ),
                   ListTile(
                     title: Text("Price: High to Low"),
-                    leading: Icon(Icons.ac_unit),
+                    leading: Icon(Icons.monetization_on_rounded),
                     onTap: () => setState(() {
                       sortMadoAppa("price_b");
                       Navigator.of(context).pop();
@@ -187,7 +187,7 @@ class _AssetCatalogPageState extends State<CatalogPage> {
                       sortMadoAppa("interval");
                       Navigator.of(context).pop();
                     }),
-                    leading: Icon(Icons.ac_unit),
+                    leading: Icon(Icons.timer_rounded),
                   ),
                   ListTile(
                     title: Text("Date (Newest to Oldest)"),
@@ -195,7 +195,7 @@ class _AssetCatalogPageState extends State<CatalogPage> {
                       sortMadoAppa("date_a");
                       Navigator.of(context).pop();
                     }),
-                    leading: Icon(Icons.ac_unit),
+                    leading: Icon(Icons.date_range_outlined),
                   ),
                   ListTile(
                     title: Text("Date (Oldest to Newest)"),
@@ -203,7 +203,7 @@ class _AssetCatalogPageState extends State<CatalogPage> {
                       sortMadoAppa("date_b");
                       Navigator.of(context).pop();
                     }),
-                    leading: Icon(Icons.ac_unit),
+                    leading: Icon(Icons.date_range_rounded),
                   ),
                 ],
               ),

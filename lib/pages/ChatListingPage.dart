@@ -18,6 +18,7 @@ class ChatListingPage extends StatefulWidget {
 class _ChatListingPageState extends State<ChatListingPage> {
   final store = new FlutterSecureStorage();
   String username;
+  bool loading = true;
   final chatService = ChatHttpService();
 
   List<ChatRoom> userList = [];
@@ -34,6 +35,7 @@ class _ChatListingPageState extends State<ChatListingPage> {
     setState(() {
       username = tmp;
       userList = chatListarr;
+      loading = false;
     });
   }
 
@@ -65,44 +67,46 @@ class _ChatListingPageState extends State<ChatListingPage> {
               }),
         ],
       ),
-      body: Container(
-        child: ListView.builder(
-          itemCount: userList.length,
-          itemBuilder: (context, index) {
-            String otherUser = (userList[index].user1 == username)
-                ? userList[index].user2
-                : userList[index].user1;
+      body: (loading)
+          ? CircularProgressIndicator()
+          : Container(
+              child: ListView.builder(
+                itemCount: userList.length,
+                itemBuilder: (context, index) {
+                  String otherUser = (userList[index].user1 == username)
+                      ? userList[index].user2
+                      : userList[index].user1;
 
-            return Card(
-              margin: EdgeInsets.all(10),
-              child: ListTile(
-                  trailing: Icon(Icons.arrow_forward_ios),
-                  leading: CircleAvatar(
-                    radius: 15,
-                    backgroundImage: NetworkImage(
-                        "https://ui-avatars.com/api/?name=John+Doe"),
-                  ),
-                  title: Text(
-                    otherUser,
-                    style: GoogleFonts.inter(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    var route = MaterialPageRoute(
-                        builder: (context) => ChatView(
-                              chatID: userList[index].chatID,
-                              username: username,
-                              chatee: otherUser,
-                              channel: IOWebSocketChannel.connect(
-                                  ("wss://chat.renteefy.ga/ws?username=" +
-                                      username)),
-                            ));
-                    Navigator.of(context).push(route);
-                  }),
-            );
-          },
-        ),
-      ),
+                  return Card(
+                    margin: EdgeInsets.all(10),
+                    child: ListTile(
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        leading: CircleAvatar(
+                          radius: 15,
+                          backgroundImage: NetworkImage(
+                              "https://ui-avatars.com/api/?name=John+Doe"),
+                        ),
+                        title: Text(
+                          otherUser,
+                          style: GoogleFonts.inter(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        onTap: () {
+                          var route = MaterialPageRoute(
+                              builder: (context) => ChatView(
+                                    chatID: userList[index].chatID,
+                                    username: username,
+                                    chatee: otherUser,
+                                    channel: IOWebSocketChannel.connect(
+                                        ("wss://chat.renteefy.ga/ws?username=" +
+                                            username)),
+                                  ));
+                          Navigator.of(context).push(route);
+                        }),
+                  );
+                },
+              ),
+            ),
     );
   }
 }

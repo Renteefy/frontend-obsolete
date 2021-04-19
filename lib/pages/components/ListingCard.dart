@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/ItemListing.dart';
@@ -76,9 +77,24 @@ class ListingCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 10,
-              ),
+              (obj.category != null)
+                  ? Row(
+                      children: [
+                        Badge(
+                          toAnimate: false,
+                          shape: BadgeShape.square,
+                          borderSide:
+                              BorderSide(width: 1.3, color: kPrimaryColor),
+                          badgeColor: Colors.transparent,
+                          borderRadius: BorderRadius.circular(8),
+                          badgeContent: Text(obj.category,
+                              style: GoogleFonts.inter(fontSize: 15)),
+                        ),
+                      ],
+                    )
+                  : SizedBox(
+                      height: 10,
+                    ),
             ],
           ),
         ),

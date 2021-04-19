@@ -103,7 +103,7 @@ class _EditListingPageState extends State<EditListingPage> {
     PickedFile pickedFile =
         await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
-      url = (pickedFile != null) ? pickedFile.path : null;
+      url = (pickedFile != null) ? pickedFile.path : widget.url;
       newImagePicked = true;
       print(url);
     });
