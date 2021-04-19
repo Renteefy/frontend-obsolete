@@ -470,7 +470,6 @@ class _EditListingPageState extends State<EditListingPage> {
                         "Do you want to delete this listing?",
                         continueCallBack,
                         true);
-
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -480,7 +479,7 @@ class _EditListingPageState extends State<EditListingPage> {
                   },
                   style: ElevatedButton.styleFrom(primary: notifiDenied),
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
