@@ -84,7 +84,7 @@ class _EditProfileState extends State<EditProfile> {
     PickedFile pickedFile =
         await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
-      url = (pickedFile != null) ? pickedFile.path : null;
+      url = (pickedFile != null) ? pickedFile.path : widget.url;
       newImagePicked = true;
     });
   }
