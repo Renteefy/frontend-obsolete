@@ -22,6 +22,48 @@ class EditProfile extends StatefulWidget {
 
 final store = new FlutterSecureStorage();
 
+Future<String> getUsername() async {
+  var tmp = await store.read(key: "username");
+  return tmp;
+}
+
+void sendPatchRequest(String firstName, String lastName, String username,
+    String tmpUrl, context, bool goHome) async {
+  int postRes = await UserHttpService()
+      .patchUserDetails(firstName, lastName, username, tmpUrl);
+  if (postRes == 200) {
+    VoidCallback continueCallBack = () => {
+          (goHome)
+              ? Navigator.pushReplacementNamed(context, '/home')
+              : Navigator.pushReplacementNamed(context, '/')
+          // code on Okay comes here
+        };
+    BlurryDialog alert = BlurryDialog(
+        "Success", "Listing updated successfully", continueCallBack, false);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  } else {
+    VoidCallback continueCallBack = () => {
+          Navigator.of(context).pop(),
+          // code on Okay comes here
+        };
+    BlurryDialog alert = BlurryDialog("Failure",
+        "Something went wrong, Please try again", continueCallBack, false);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+}
+
 class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController firstNameController = new TextEditingController();
@@ -181,27 +223,26 @@ class _EditProfileState extends State<EditProfile> {
                       return;
                     }
                     _formKey.currentState.save();
-                    // Change this to patch asset
+                    // to check if the username is changed
+                    String oldUsername = await getUsername();
                     String tmpUrl = (newImagePicked) ? url : null;
-                    int postRes = await UserHttpService().patchUserDetails(
-                        firstNameController.text,
-                        lastNameController.text,
-                        usernameController.text,
-                        tmpUrl);
-                    if (postRes == 200) {
-                      await store.write(
-                        key: 'username',
-                        value: usernameController.text,
-                      );
+                    if (usernameController.text != oldUsername) {
                       VoidCallback continueCallBack = () => {
-                            Navigator.pushReplacementNamed(context, '/home')
+                            sendPatchRequest(
+                                firstNameController.text,
+                                lastNameController.text,
+                                usernameController.text,
+                                tmpUrl,
+                                context,
+                                false),
+                            Navigator.of(context).pop()
                             // code on Okay comes here
                           };
                       BlurryDialog alert = BlurryDialog(
-                          "Success",
-                          "Listing updated successfully",
+                          "Warning",
+                          "Since you have changed the username, you'll have to login again",
                           continueCallBack,
-                          false);
+                          true);
 
                       showDialog(
                         context: context,
@@ -210,22 +251,13 @@ class _EditProfileState extends State<EditProfile> {
                         },
                       );
                     } else {
-                      VoidCallback continueCallBack = () => {
-                            Navigator.of(context).pop(),
-                            // code on Okay comes here
-                          };
-                      BlurryDialog alert = BlurryDialog(
-                          "Failure",
-                          "Something went wrong, Please try again",
-                          continueCallBack,
-                          false);
-
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return alert;
-                        },
-                      );
+                      sendPatchRequest(
+                          firstNameController.text,
+                          lastNameController.text,
+                          usernameController.text,
+                          tmpUrl,
+                          context,
+                          true);
                     }
                   },
                   style: ElevatedButton.styleFrom(primary: kAccentColor1),
