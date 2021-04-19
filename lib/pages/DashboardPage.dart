@@ -19,6 +19,7 @@ class DashboardPage extends StatefulWidget {
 UserListing userDetails;
 final String url = "https://" + env['SERVER_URL'];
 final itemService = ItemsHttpService();
+bool loading = true;
 
 class _DashboardPageState extends State<DashboardPage> {
   List<SingleItem> assetRes = [];
@@ -77,15 +78,18 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: (loading == true)
-            ? CircularProgressIndicator()
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+    return (loading ||
+            assetRes == null ||
+            serviceRes == null ||
+            rentedAssetRes == null ||
+            rentedServiceRes == null)
+        ? CircularProgressIndicator()
+        : SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     UserInfoCard(),
                     SizedBox(
                       height: 40,
@@ -158,8 +162,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             ],
                           ),
                   ]),
-      ),
-    );
+            ),
+          );
   }
 }
 
@@ -305,7 +309,7 @@ class UserInfoCard extends StatelessWidget {
                                       firstName: userDetails.firstName,
                                       lastName: userDetails.lastName,
                                       url: userDetails.picture,
-                                      email: userDetails.email));
+                                      username: userDetails.username));
                               Navigator.of(context).push(route);
                             }),
                         SizedBox(

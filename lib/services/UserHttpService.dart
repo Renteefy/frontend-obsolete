@@ -9,11 +9,11 @@ class UserHttpService {
   // final String url = env['SERVER_URLx'];
   final store = new FlutterSecureStorage();
 
-  Future<bool> checkInvite(String username) async {
+  Future<bool> checkInvite(String email) async {
     http.Response response = await http.post(
       Uri.https(url, "users/login"),
       headers: {"Content-Type": "application/json"},
-      body: json.encode({'username': username}),
+      body: json.encode({'email': email}),
     );
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
@@ -42,12 +42,12 @@ class UserHttpService {
   }
 
   Future<int> patchUserDetails(
-      String firstName, String lastName, String email, picture) async {
+      String firstName, String lastName, String username, picture) async {
     String value = await store.read(key: "jwt");
     var request = http.MultipartRequest("PATCH", Uri.https(url, "users/user/"));
     request.fields["firstName"] = firstName;
     request.fields["lastName"] = lastName;
-    request.fields["email"] = email;
+    request.fields["username"] = username;
 
     if (picture != null) {
       request.files

@@ -12,19 +12,21 @@ class EditProfile extends StatefulWidget {
   final String firstName;
   final String lastName;
   final String url;
-  final String email;
+  final String username;
   const EditProfile(
-      {Key key, this.email, this.firstName, this.lastName, this.url})
+      {Key key, this.username, this.firstName, this.lastName, this.url})
       : super(key: key);
   @override
   _EditProfileState createState() => _EditProfileState();
 }
 
+final store = new FlutterSecureStorage();
+
 class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController firstNameController = new TextEditingController();
   TextEditingController lastNameController = new TextEditingController();
-  TextEditingController emailController = new TextEditingController();
+  TextEditingController usernameController = new TextEditingController();
   String url;
   bool newImagePicked = false;
 
@@ -42,7 +44,7 @@ class _EditProfileState extends State<EditProfile> {
     super.initState();
     firstNameController.text = widget.firstName;
     lastNameController.text = widget.lastName;
-    emailController.text = widget.email;
+    usernameController.text = widget.username;
     url = widget.url;
   }
 
@@ -93,9 +95,12 @@ class _EditProfileState extends State<EditProfile> {
                       radius: 120.0,
                       backgroundImage: (io.File(url).existsSync())
                           ? AssetImage(url)
-                          : NetworkImage(
-                              "https://" + env['SERVER_URL'] + url,
-                            )),
+                          : (url != "/static/null")
+                              ? NetworkImage(
+                                  "https://" + env['SERVER_URL'] + url,
+                                )
+                              : NetworkImage(
+                                  "https://ui-avatars.com/api/?name=Display+Picture")),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
@@ -156,17 +161,17 @@ class _EditProfileState extends State<EditProfile> {
                 TextFormField(
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return 'Email Required';
+                      return 'Username Required';
                     }
 
                     return null;
                   },
-                  controller: emailController,
+                  controller: usernameController,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(20),
                     filled: true,
                     border: InputBorder.none,
-                    hintText: 'Email',
+                    hintText: 'Username',
                   ),
                 ),
                 SizedBox(height: 30),
@@ -181,9 +186,13 @@ class _EditProfileState extends State<EditProfile> {
                     int postRes = await UserHttpService().patchUserDetails(
                         firstNameController.text,
                         lastNameController.text,
-                        emailController.text,
+                        usernameController.text,
                         tmpUrl);
                     if (postRes == 200) {
+                      await store.write(
+                        key: 'username',
+                        value: usernameController.text,
+                      );
                       VoidCallback continueCallBack = () => {
                             Navigator.pushReplacementNamed(context, '/home')
                             // code on Okay comes here
