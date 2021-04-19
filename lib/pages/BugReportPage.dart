@@ -154,7 +154,8 @@ class _BugReportPageState extends State<BugReportPage> {
                       Text("Mail us at",
                           style: GoogleFonts.inter(
                               fontSize: 20, fontWeight: FontWeight.w600)),
-                      Row(
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Text("renteefy.company@gmail.com",
                               style: GoogleFonts.inter(

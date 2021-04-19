@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/services/LocalNotifications.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/pages/CatalogPage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    LocalNotificationService().initialize();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -59,6 +72,26 @@ class HomePage extends StatelessWidget {
                       padding: const EdgeInsets.all(15.0),
                       child: Text(
                         "Rent Services",
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )),
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: kAccentColor1),
+                    onPressed: () {
+                      LocalNotificationService()
+                          .sendNotification("this is title", "this is body");
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        "What are cows?",
                         style: GoogleFonts.inter(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
