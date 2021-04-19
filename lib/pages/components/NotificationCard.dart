@@ -22,8 +22,12 @@ class _NotificationCardState extends State<NotificationCard> {
     if (widget.isRentee == true) {
       return GestureDetector(
         onTap: () {
-          print("on tap");
-          Navigator.pushReplacementNamed(context, "/productDetail");
+          var route = MaterialPageRoute(
+              builder: (context) => ProductDetails(
+                    itemID: widget.notifi.itemID,
+                    item: widget.notifi.itemType,
+                  ));
+          Navigator.of(context).push(route);
         },
         child: Container(
           margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -146,7 +150,8 @@ class _NotificationCardState extends State<NotificationCard> {
         onTap: () {
           var route = MaterialPageRoute(
               builder: (context) => ProductDetails(
-                    itemID: widget.notifi.assetID,
+                    itemID: widget.notifi.itemID,
+                    item: widget.notifi.itemType,
                   ));
           Navigator.of(context).push(route);
         },

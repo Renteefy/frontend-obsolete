@@ -41,6 +41,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     () async {
       List itemNotifi =
           await itemService.getSingleItem(widget.itemID, widget.item);
+
       if (itemNotifi[1] != "") {
         setState(() {
           product = itemNotifi[0];
@@ -284,7 +285,8 @@ class _DetailsState extends State<Details> {
                                                   widget.product.title,
                                                   "Request Raised",
                                                   widget.product.owner,
-                                                  widget.product.itemID);
+                                                  widget.product.itemID,
+                                                  widget.item);
                                           setState(() {
                                             widget.rentedStatus =
                                                 "Request Raised";

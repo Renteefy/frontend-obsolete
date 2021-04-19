@@ -30,8 +30,8 @@ class NotificationHttpService {
     return notifications;
   }
 
-  Future<String> postNotification(
-      String title, String status, String owner, String assetID) async {
+  Future<String> postNotification(String title, String status, String owner,
+      String itemID, String itemType) async {
     String value = await store.read(key: "jwt");
     http.Response response = await http.post(
       Uri.https(url, "notifications"),
@@ -40,7 +40,8 @@ class NotificationHttpService {
         'title': title,
         'status': status,
         'owner': owner,
-        'assetID': assetID
+        'itemID': itemID,
+        'itemType': itemType
       }),
     );
     if (response.statusCode == 200) {
