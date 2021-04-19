@@ -38,3 +38,17 @@ class UserListing {
         date: json['date'] as String);
   }
 }
+
+class InviteModel {
+  final String inviteID;
+  final String inviteeEmail;
+
+  InviteModel({@required this.inviteID, @required this.inviteeEmail});
+
+  factory InviteModel.fromJson(Map<String, dynamic> json) {
+    return InviteModel(
+      inviteID: json['_id'] as String,
+      inviteeEmail: json['inviteeEmail'] as String,
+    );
+  }
+}

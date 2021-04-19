@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
+import 'package:frontend/services/UserHttpService.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/shared/alertBox.dart';
+import 'package:frontend/models/UserListing.dart';
 
 class InviteUser extends StatefulWidget {
   @override
@@ -13,13 +15,28 @@ class InviteUser extends StatefulWidget {
 }
 
 class _InviteUserState extends State<InviteUser> {
-  List<String> emailList = [];
+  List<InviteModel> emailList = [];
   TextEditingController emailController = new TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    emailList.add("yojat");
+    getInvites();
+  }
+
+  void getInvites() async {
+    List tmp = await UserHttpService().getInvites();
+    setState(() {
+      emailList = tmp;
+    });
+  }
+
+  Future<int> deleteInvites(String email, String inviteID, index) async {
+    int res = await UserHttpService().deleteInvite(email, inviteID);
+    setState(() {
+      emailList.remove(emailList[index]);
+    });
+
+    return res;
   }
 
   @override
@@ -90,17 +107,69 @@ class _InviteUserState extends State<InviteUser> {
                       filled: true,
                       border: InputBorder.none,
                       suffixIcon: IconButton(
-                        onPressed: () {
+                        onPressed: () async {
                           //print(messageController.text);
-                          setState(() {
-                            if (emailList.length == 3 ||
-                                !EmailValidator.validate(
-                                    emailController.text)) {
+                          if (emailList.length == 3 ||
+                              !EmailValidator.validate(emailController.text)) {
+                          } else {
+                            String resCode = await UserHttpService()
+                                .sendInvite(emailController.text);
+                            if (resCode != "0") {
+                              VoidCallback continueCallBack = () => {
+                                    Navigator.of(context).pop(),
+                                    // code on Okay comes here
+                                  };
+                              BlurryDialog alert = BlurryDialog("Success",
+                                  "Invite Sent!", continueCallBack, false);
+
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return alert;
+                                },
+                              );
+                              setState(() {
+                                emailList.add(InviteModel(
+                                    inviteID: resCode,
+                                    inviteeEmail: emailController.text));
+                                emailController.clear();
+                              });
+                            } else if (resCode == "Email already exists") {
+                              VoidCallback continueCallBack = () => {
+                                    Navigator.of(context).pop(),
+                                    // code on Okay comes here
+                                  };
+                              BlurryDialog alert = BlurryDialog(
+                                  "Error",
+                                  "Email Already Exists",
+                                  continueCallBack,
+                                  false);
+
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return alert;
+                                },
+                              );
                             } else {
-                              emailList.add(emailController.text);
-                              emailController.clear();
+                              VoidCallback continueCallBack = () => {
+                                    Navigator.of(context).pop(),
+                                    // code on Okay comes here
+                                  };
+                              BlurryDialog alert = BlurryDialog(
+                                  "Error",
+                                  "Something went wrong!",
+                                  continueCallBack,
+                                  false);
+
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return alert;
+                                },
+                              );
                             }
-                          });
+                          }
                         },
                         icon: Icon(Icons.check),
                       )),
@@ -130,14 +199,28 @@ class _InviteUserState extends State<InviteUser> {
                   itemBuilder: (context, index) {
                     return Card(
                       child: ListTile(
-                        title: Text(emailList[index]),
+                        title: Text(emailList[index].inviteeEmail),
                         trailing: IconButton(
                           icon: Icon(Icons.close),
                           color: kPrimaryColor,
-                          onPressed: () {
-                            setState(() {
-                              emailList.remove(emailList[index]);
-                            });
+                          onPressed: () async {
+                            VoidCallback continueCallBack = () => {
+                                  Navigator.of(context).pop(),
+                                  deleteInvites(emailList[index].inviteeEmail,
+                                      emailList[index].inviteID, index)
+                                };
+                            BlurryDialog alert = BlurryDialog(
+                                "Warning",
+                                "Are you sure you want to unsend the invite",
+                                continueCallBack,
+                                true);
+
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
                           },
                         ),
                       ),
