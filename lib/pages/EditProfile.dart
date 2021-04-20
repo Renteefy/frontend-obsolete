@@ -47,7 +47,24 @@ void sendPatchRequest(String firstName, String lastName, String username,
       // code on Okay comes here
     };
     BlurryDialog alert = BlurryDialog(
-        "Success", "Listing updated successfully", continueCallBack, false);
+        "Success", "Profile updated successfully", continueCallBack, false);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  } else if (postRes == 409) {
+    VoidCallback continueCallBack = () => {
+          Navigator.of(context).pop(),
+          // code on Okay comes here
+        };
+    BlurryDialog alert = BlurryDialog(
+        "Failure",
+        "Username already taken, please select a different one",
+        continueCallBack,
+        false);
 
     showDialog(
       context: context,
@@ -145,12 +162,11 @@ class _EditProfileState extends State<EditProfile> {
                       radius: 120.0,
                       backgroundImage: (io.File(url).existsSync())
                           ? AssetImage(url)
-                          : (url != "/static/null")
+                          : (url.startsWith("/static"))
                               ? NetworkImage(
                                   "https://" + env['SERVER_URL'] + url,
                                 )
-                              : NetworkImage(
-                                  "https://ui-avatars.com/api/?name=Display+Picture")),
+                              : NetworkImage(url)),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(

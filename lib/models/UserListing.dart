@@ -22,19 +22,15 @@ class UserListing {
   factory UserListing.fromJson(Map<String, dynamic> json) {
     return UserListing(
         userID: json['_id'] as String,
-        username: (json['username'] != null)
-            ? json['username'] as String
-            : "placeHolder",
-        email: (json['email'] != null)
-            ? json['email'] as String
-            : "place@holder.com",
-        picture: (json['picture'] != null)
+        username: json['username'] as String,
+        email: json['email'] as String,
+        picture: (json['picture'] != null && json["picture"] != "/static/null")
             ? json['picture'] as String
-            : "https://via.placeholder.com/230",
-        firstName:
-            (json['firstName'] != null) ? json['firstName'] as String : "Place",
-        lastName:
-            (json['lastName'] != null) ? json['lastName'] as String : "Holder",
+            : (json["firstName"] != null && json["lastName"] != null)
+                ? "https://ui-avatars.com/api/?name=${json["firstName"]}+${json["lastName"]}"
+                : "https://via.placeholder.com/230",
+        firstName: json["firstName"],
+        lastName: json["lastName"],
         date: json['date'] as String);
   }
 }

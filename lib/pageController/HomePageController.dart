@@ -32,6 +32,7 @@ class _HomePageControllerState extends State<HomePageController> {
     setState(() {
       picture = tmp.picture;
     });
+    print(tmp.picture);
   }
 
   static List<Widget> _widgetOptions = <Widget>[
@@ -85,10 +86,9 @@ class _HomePageControllerState extends State<HomePageController> {
                       BottomNavigationBarItem(
                         icon: CircleAvatar(
                           radius: 13,
-                          backgroundImage: (picture != "/static/null")
+                          backgroundImage: (picture.startsWith("/static"))
                               ? NetworkImage("https://" + url + picture)
-                              : NetworkImage(
-                                  "https://ui-avatars.com/api/?name=Place+Holder"),
+                              : NetworkImage(picture),
                         ),
                         label: 'Dashboard',
                       ),

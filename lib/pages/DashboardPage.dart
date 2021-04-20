@@ -281,14 +281,25 @@ class UserInfoCard extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(userDetails.firstName + " " + userDetails.lastName,
-                        softWrap: false,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: GoogleFonts.inter(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w900,
-                        )),
+                    (userDetails.firstName == null &&
+                            userDetails.lastName == null)
+                        ? Text(userDetails.username,
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: GoogleFonts.inter(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w900,
+                            ))
+                        : Text(
+                            userDetails.firstName + " " + userDetails.lastName,
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: GoogleFonts.inter(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w900,
+                            )),
                     SizedBox(
                       height: 10,
                     ),
@@ -339,10 +350,9 @@ class UserInfoCard extends StatelessWidget {
               ),
               CircleAvatar(
                 radius: 40,
-                backgroundImage: (userDetails.picture != "/static/null")
+                backgroundImage: (userDetails.picture.startsWith("/static"))
                     ? NetworkImage(url + userDetails.picture)
-                    : NetworkImage(
-                        "https://ui-avatars.com/api/?name=Place+Holder"),
+                    : NetworkImage(userDetails.picture),
               ),
             ],
           );
