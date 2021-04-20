@@ -17,14 +17,6 @@ class NotificationCard extends StatefulWidget {
   _NotificationCardState createState() => _NotificationCardState();
 }
 
-bool isUserExcited(notifiTime) {
-  final date2 = DateTime.now();
-
-  final difference = date2.difference(notifiTime).inHours;
-  print(difference);
-  return true;
-}
-
 class _NotificationCardState extends State<NotificationCard> {
   @override
   Widget build(BuildContext context) {
