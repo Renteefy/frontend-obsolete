@@ -24,6 +24,14 @@ class ProductDetails extends StatefulWidget {
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
+bool isUserExcited(notifiTime) {
+  final date2 = DateTime.now();
+
+  final difference = date2.difference(notifiTime).inHours;
+  print(difference);
+  return true;
+}
+
 class _ProductDetailsState extends State<ProductDetails> {
   final itemService = ItemsHttpService();
 
@@ -252,7 +260,8 @@ class _DetailsState extends State<Details> {
                       SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                              style: (widget.rentedStatus == null)
+                              style: (widget.rentedStatus == null ||
+                                      widget.product.renter == username)
                                   ? ElevatedButton.styleFrom(
                                       primary: kAccentColor1)
                                   : (widget.rentedStatus == "Accepted")
@@ -278,36 +287,30 @@ class _DetailsState extends State<Details> {
                                               title: widget.product.title));
                                       Navigator.of(context).push(route);
                                     }
-                                  : (widget.rentedStatus == null)
-                                      ? () async {
-                                          String notifiID = await notifiService
-                                              .postNotification(
-                                                  widget.product.title,
-                                                  "Request Raised",
-                                                  widget.product.owner,
-                                                  widget.product.itemID,
-                                                  widget.item);
-                                          setState(() {
-                                            widget.rentedStatus =
-                                                "Request Raised";
-                                            widget.notifiID = notifiID;
-                                          });
-                                        }
-                                      : (widget.rentedStatus == "Accepted")
+                                  : (widget.product.renter != null)
+                                      ? (widget.product.renter == username)
                                           ? () {
-                                              String owner =
-                                                  widget.product.owner;
                                               VoidCallback continueCallBack =
                                                   () => {
                                                         Navigator.of(context)
                                                             .pop(),
                                                         // code on Okay comes here
+                                                        ItemsHttpService()
+                                                            .setRenter(
+                                                                widget.item,
+                                                                widget.product
+                                                                    .itemID,
+                                                                null),
+                                                        notifiService
+                                                            .deleteNotificaiton(
+                                                                widget
+                                                                    .notifiID),
                                                       };
                                               BlurryDialog alert = BlurryDialog(
-                                                  "Hooray!🎉",
-                                                  "$owner has accepted you request to rent the item!",
+                                                  "Return Item",
+                                                  "Are you sure you want to return the item?",
                                                   continueCallBack,
-                                                  false);
+                                                  true);
 
                                               showDialog(
                                                 context: context,
@@ -317,7 +320,24 @@ class _DetailsState extends State<Details> {
                                                 },
                                               );
                                             }
-                                          : (widget.rentedStatus == "Denied")
+                                          : null
+                                      : (widget.rentedStatus == null)
+                                          ? () async {
+                                              String notifiID =
+                                                  await notifiService
+                                                      .postNotification(
+                                                          widget.product.title,
+                                                          "Request Raised",
+                                                          widget.product.owner,
+                                                          widget.product.itemID,
+                                                          widget.item);
+                                              setState(() {
+                                                widget.rentedStatus =
+                                                    "Request Raised";
+                                                widget.notifiID = notifiID;
+                                              });
+                                            }
+                                          : (widget.rentedStatus == "Accepted")
                                               ? () {
                                                   String owner =
                                                       widget.product.owner;
@@ -329,8 +349,8 @@ class _DetailsState extends State<Details> {
                                                             // code on Okay comes here
                                                           };
                                                   BlurryDialog alert = BlurryDialog(
-                                                      "Alas😞",
-                                                      "$owner has denied you request to rent the item.",
+                                                      "Hooray!🎉",
+                                                      "$owner has accepted you request to rent the item!",
                                                       continueCallBack,
                                                       false);
 
@@ -342,35 +362,65 @@ class _DetailsState extends State<Details> {
                                                     },
                                                   );
                                                 }
-                                              : () {
-                                                  VoidCallback
-                                                      continueCallBack = () => {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop(),
-                                                            notifiService
-                                                                .deleteNotificaiton(
-                                                                    widget
-                                                                        .notifiID),
-                                                            setState(() {
-                                                              widget.rentedStatus =
-                                                                  null;
-                                                            })
-                                                          };
-                                                  BlurryDialog alert = BlurryDialog(
-                                                      "Undo?",
-                                                      "Do you want to undo your request to rent this item?",
-                                                      continueCallBack,
-                                                      true);
+                                              : (widget.rentedStatus ==
+                                                      "Denied")
+                                                  ? () {
+                                                      String owner =
+                                                          widget.product.owner;
+                                                      VoidCallback
+                                                          continueCallBack =
+                                                          () => {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(),
+                                                                // code on Okay comes here
+                                                              };
+                                                      BlurryDialog alert =
+                                                          BlurryDialog(
+                                                              "Alas😞",
+                                                              "$owner has denied you request to rent the item.",
+                                                              continueCallBack,
+                                                              false);
 
-                                                  showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return alert;
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return alert;
+                                                        },
+                                                      );
+                                                    }
+                                                  : () {
+                                                      VoidCallback
+                                                          continueCallBack =
+                                                          () => {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(),
+                                                                notifiService
+                                                                    .deleteNotificaiton(
+                                                                        widget
+                                                                            .notifiID),
+                                                                setState(() {
+                                                                  widget.rentedStatus =
+                                                                      null;
+                                                                })
+                                                              };
+                                                      BlurryDialog alert =
+                                                          BlurryDialog(
+                                                              "Undo?",
+                                                              "Do you want to undo your request to rent this item?",
+                                                              continueCallBack,
+                                                              true);
+
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return alert;
+                                                        },
+                                                      );
                                                     },
-                                                  );
-                                                },
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 child: (widget.product.owner == username)
@@ -379,32 +429,53 @@ class _DetailsState extends State<Details> {
                                         style: GoogleFonts.inter(
                                             fontWeight: FontWeight.w900),
                                       )
-                                    : (widget.rentedStatus == null)
-                                        ? Text(
-                                            "Rent Item",
-                                            style: GoogleFonts.inter(
-                                                fontWeight: FontWeight.w900),
-                                          )
-                                        : (widget.rentedStatus == "Accepted")
+                                    : (widget.product.renter != null)
+                                        ? (widget.product.renter == username)
                                             ? Text(
-                                                "Accepted!",
+                                                "Return Item",
                                                 style: GoogleFonts.inter(
                                                     fontWeight:
                                                         FontWeight.w900),
                                               )
-                                            : (widget.rentedStatus == "Denied")
+                                            : Text(
+                                                "Out of Stock",
+                                                style: GoogleFonts.inter(
+                                                    fontWeight:
+                                                        FontWeight.w900),
+                                              )
+                                        : (widget.rentedStatus == null)
+                                            ? Text(
+                                                "Rent Item",
+                                                style: GoogleFonts.inter(
+                                                    fontWeight:
+                                                        FontWeight.w900),
+                                              )
+                                            : (widget.rentedStatus ==
+                                                    "Accepted")
                                                 ? Text(
-                                                    "Denied",
+                                                    "Accepted!",
                                                     style: GoogleFonts.inter(
                                                         fontWeight:
                                                             FontWeight.w900),
                                                   )
-                                                : Text(
-                                                    "Notification Sent",
-                                                    style: GoogleFonts.inter(
-                                                        fontWeight:
-                                                            FontWeight.w900),
-                                                  ),
+                                                : (widget.rentedStatus ==
+                                                        "Denied")
+                                                    ? Text(
+                                                        "Denied",
+                                                        style:
+                                                            GoogleFonts.inter(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900),
+                                                      )
+                                                    : Text(
+                                                        "Notification Sent",
+                                                        style:
+                                                            GoogleFonts.inter(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900),
+                                                      ),
                               ))),
                       SizedBox(
                         height: 10,

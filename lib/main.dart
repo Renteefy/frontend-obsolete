@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 //env
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:frontend/app.dart';
-import 'package:frontend/services/LocalNotifications.dart';
-import 'package:workmanager/workmanager.dart';
 
 // to avoid the handshake error
 class MyHttpOverrides extends HttpOverrides {
@@ -18,25 +16,7 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-// to make a background task with Workmanager
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) {
-    print(
-        "Native called background task: $task"); //simpleTask will be emitted here.
-    LocalNotificationService().initialize();
-    LocalNotificationService().sendNotification("title", " body");
-    return Future.value(true);
-  });
-}
-
 Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
-  Workmanager().registerOneOffTask(
-    "testTask",
-    "testTask",
-    inputData: {"data": "someData"},
-  );
   await DotEnv.load(fileName: ".env");
   HttpOverrides.global = new MyHttpOverrides();
   runApp(App());

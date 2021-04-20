@@ -182,4 +182,13 @@ class ItemsHttpService {
       return 1;
     }
   }
+
+  void setRenter(String item, String itemID, String rentee) async {
+    String value = await store.read(key: "jwt");
+
+    http.Response res = await http.patch(
+        Uri.https(url, "${item}s/$item/renter/$itemID"),
+        headers: {'Content-Type': 'application/json', 'Authorization': value},
+        body: json.encode({"renterUsername": rentee}));
+  }
 }

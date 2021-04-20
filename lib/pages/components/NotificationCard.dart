@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/NotificationListing.dart';
 import 'package:frontend/pages/ProductDetails.dart';
+import 'package:frontend/services/ItemsHttpService.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/services/NotificationsHttpService.dart';
@@ -14,6 +15,14 @@ class NotificationCard extends StatefulWidget {
 
   @override
   _NotificationCardState createState() => _NotificationCardState();
+}
+
+bool isUserExcited(notifiTime) {
+  final date2 = DateTime.now();
+
+  final difference = date2.difference(notifiTime).inHours;
+  print(difference);
+  return true;
 }
 
 class _NotificationCardState extends State<NotificationCard> {
@@ -253,6 +262,10 @@ class _NotificationCardState extends State<NotificationCard> {
                           color: kAccentColor1,
                           onPressed: (widget.notifi.status != "Accepted")
                               ? () async {
+                                  ItemsHttpService().setRenter(
+                                      widget.notifi.itemType,
+                                      widget.notifi.itemID,
+                                      widget.notifi.rentee);
                                   int resStatus =
                                       await NotificationHttpService()
                                           .patchNotification(
@@ -260,13 +273,16 @@ class _NotificationCardState extends State<NotificationCard> {
                                               "Accepted",
                                               widget.notifi.notificationID);
                                   if (resStatus == 200) {
-                                    // Only using "setState" should refresh the page, but it ain't doing so
                                     setState(() {
                                       widget.notifi.status = "Accepted";
                                     });
                                   }
                                 }
                               : () async {
+                                  ItemsHttpService().setRenter(
+                                      widget.notifi.itemType,
+                                      widget.notifi.itemID,
+                                      null);
                                   int resStatus =
                                       await NotificationHttpService()
                                           .patchNotification(
@@ -274,7 +290,6 @@ class _NotificationCardState extends State<NotificationCard> {
                                               "Request Raised",
                                               widget.notifi.notificationID);
                                   if (resStatus == 200) {
-                                    // Only using "setState" should refresh the page, but it ain't doing so
                                     setState(() {
                                       widget.notifi.status = "Request Raised";
                                     });
@@ -291,8 +306,11 @@ class _NotificationCardState extends State<NotificationCard> {
                                       await NotificationHttpService()
                                           .patchNotification("status", "Denied",
                                               widget.notifi.notificationID);
+                                  ItemsHttpService().setRenter(
+                                      widget.notifi.itemType,
+                                      widget.notifi.itemID,
+                                      null);
                                   if (resStatus == 200) {
-                                    // Only using "setState" should refresh the page, but it ain't doing so
                                     setState(() {
                                       widget.notifi.status = "Denied";
                                     });
@@ -306,7 +324,6 @@ class _NotificationCardState extends State<NotificationCard> {
                                               "Request Raised",
                                               widget.notifi.notificationID);
                                   if (resStatus == 200) {
-                                    // Only using "setState" should refresh the page, but it ain't doing so
                                     setState(() {
                                       widget.notifi.status = "Request Raised";
                                     });
