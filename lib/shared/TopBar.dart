@@ -1,7 +1,10 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/models/GlobalState.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class TopBar extends PreferredSize {
   final List<String> title;
@@ -12,36 +15,45 @@ class TopBar extends PreferredSize {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      automaticallyImplyLeading: false,
-      title: Row(
-        children: [
-          Text(title[0] + " ",
-              style:
-                  GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.w900)),
-          Text(title[1],
-              style: GoogleFonts.inter(
-                  fontSize: 24,
-                  color: kPrimaryColor,
-                  fontWeight: FontWeight.w900)),
-        ],
-      ),
-      actions: [
-        IconButton(
-            icon: Icon(Icons.notifications_none_rounded),
-            iconSize: 30,
-            onPressed: () {
-              Navigator.pushNamed(context, '/notification');
-            }),
-        SizedBox(width: 10),
-        IconButton(
-            icon: Icon(Icons.messenger_outline),
-            iconSize: 28,
-            onPressed: () {
-              Navigator.pushNamed(context, '/chatListing');
-            })
-      ],
+    return Consumer(
+      builder: (BuildContext context, GlobalState globalState, _) {
+        return AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Text(title[0] + " ",
+                  style: GoogleFonts.inter(
+                      fontSize: 24, fontWeight: FontWeight.w900)),
+              Text(title[1],
+                  style: GoogleFonts.inter(
+                      fontSize: 24,
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.w900)),
+            ],
+          ),
+          actions: [
+            IconButton(
+                icon: Badge(
+                    badgeContent:
+                        Text(globalState.notificationCount.toString()),
+                    child: Icon(Icons.notifications_none_rounded)),
+                iconSize: 30,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/notification');
+                }),
+            SizedBox(width: 10),
+            IconButton(
+                icon: Badge(
+                    badgeContent: Text("1"),
+                    child: Icon(Icons.messenger_outline)),
+                iconSize: 28,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/chatListing');
+                })
+          ],
+        );
+      },
     );
   }
 }

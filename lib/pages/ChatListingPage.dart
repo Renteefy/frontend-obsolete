@@ -68,7 +68,7 @@ class _ChatListingPageState extends State<ChatListingPage> {
         ],
       ),
       body: (loading)
-          ? CircularProgressIndicator()
+          ? Center(child: CircularProgressIndicator())
           : Container(
               child: ListView.builder(
                 itemCount: userList.length,

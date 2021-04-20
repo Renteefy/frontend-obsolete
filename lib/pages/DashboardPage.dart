@@ -92,7 +92,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   children: [
                     UserInfoCard(),
                     SizedBox(
-                      height: 40,
+                      height: 30,
                     ),
                     (assetRes.length == 0)
                         ? SizedBox(height: 0)
@@ -137,6 +137,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     (rentedAssetRes.length == 0)
                         ? SizedBox(height: 0)
                         : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TitleSection(
                                   title: "Rented Assets",
@@ -153,6 +154,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     (rentedServiceRes.length == 0)
                         ? SizedBox(height: 0)
                         : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TitleSection(
                                   title: "Rented Services",

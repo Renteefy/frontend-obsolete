@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/GlobalState.dart';
 import 'package:frontend/pageController/HomePageController.dart';
 import 'package:frontend/pages/CatalogPage.dart';
 import 'package:frontend/pages/ChatListingPage.dart';
@@ -7,6 +8,7 @@ import 'package:frontend/pages/EditPage.dart';
 import 'package:frontend/pages/NotificationPage.dart';
 import 'package:frontend/pages/ProductDetails.dart';
 import 'package:frontend/pages/EditProfile.dart';
+import 'package:provider/provider.dart';
 
 // constants
 import './shared/constants.dart';
@@ -22,23 +24,26 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        "/": (context) => LandingPage(),
-        "/home": (context) => HomePageController(),
-        "/assetCatalog": (context) => CatalogPage(),
-        "/notification": (context) => NotificationPage(),
-        "/productDetail": (context) => ProductDetails(),
-        "/chatListing": (context) => ChatListingPage(),
-        "/editListing": (context) => EditListingPage(),
-        "/editProfile": (context) => EditProfile(),
-        "/chat": (context) => ChatView(),
-      },
-      title: "Renteefy",
-      theme: ThemeData(
-          brightness: Brightness.dark,
-          scaffoldBackgroundColor: kBackgroundColor,
-          primaryColor: kPrimaryColor),
+    return ChangeNotifierProvider<GlobalState>(
+      create: (context) => GlobalState(),
+      child: MaterialApp(
+        routes: {
+          "/": (context) => LandingPage(),
+          "/home": (context) => HomePageController(),
+          "/assetCatalog": (context) => CatalogPage(),
+          "/notification": (context) => NotificationPage(),
+          "/productDetail": (context) => ProductDetails(),
+          "/chatListing": (context) => ChatListingPage(),
+          "/editListing": (context) => EditListingPage(),
+          "/editProfile": (context) => EditProfile(),
+          "/chat": (context) => ChatView(),
+        },
+        title: "Renteefy",
+        theme: ThemeData(
+            brightness: Brightness.dark,
+            scaffoldBackgroundColor: kBackgroundColor,
+            primaryColor: kPrimaryColor),
+      ),
     );
   }
 }
