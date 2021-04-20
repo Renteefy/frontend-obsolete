@@ -81,27 +81,6 @@ class _HomePageState extends State<HomePage> {
                     )),
               ),
               SizedBox(height: 10),
-              Consumer(
-                  builder: (BuildContext context, GlobalState globalState, _) {
-                return SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: kAccentColor1),
-                      onPressed: () {
-                        globalState.incrementCounter();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          "What are cows?",
-                          style: GoogleFonts.inter(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )),
-                );
-              })
             ],
           ),
         ));

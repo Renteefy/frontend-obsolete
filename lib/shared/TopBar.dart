@@ -34,19 +34,14 @@ class TopBar extends PreferredSize {
           ),
           actions: [
             IconButton(
-                icon: Badge(
-                    badgeContent:
-                        Text(globalState.notificationCount.toString()),
-                    child: Icon(Icons.notifications_none_rounded)),
+                icon: Icon(Icons.notifications_none_rounded),
                 iconSize: 30,
                 onPressed: () {
                   Navigator.pushNamed(context, '/notification');
                 }),
             SizedBox(width: 10),
             IconButton(
-                icon: Badge(
-                    badgeContent: Text("1"),
-                    child: Icon(Icons.messenger_outline)),
+                icon: Icon(Icons.messenger_outline),
                 iconSize: 28,
                 onPressed: () {
                   Navigator.pushNamed(context, '/chatListing');
