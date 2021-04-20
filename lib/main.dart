@@ -18,7 +18,6 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await DotEnv.load(fileName: ".env");
   HttpOverrides.global = new MyHttpOverrides();
   runApp(App());
