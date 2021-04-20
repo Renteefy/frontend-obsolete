@@ -24,6 +24,8 @@ class ProductDetails extends StatefulWidget {
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
+final notifiService = NotificationHttpService();
+
 bool isUserExcited(notifiTime) {
   final date2 = DateTime.now();
   final date1 = DateTime.parse(notifiTime);
@@ -33,12 +35,13 @@ bool isUserExcited(notifiTime) {
 
 class _ProductDetailsState extends State<ProductDetails> {
   final itemService = ItemsHttpService();
+  String notifiID;
 
   SingleItem product;
   NotificationListing notifi;
   bool loading = true;
   String rentedStatus;
-  String notifiID;
+
   final String url = "https://" + env['SERVER_URL'];
 
   @override
@@ -129,14 +132,24 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
   final store = new FlutterSecureStorage();
-  final notifiService = NotificationHttpService();
   final chatService = ChatHttpService();
+
+  void tmpPostNotification(
+      String title, String owner, String itemID, String item) async {
+    String notifiID = await notifiService.postNotification(
+        title, "Request Raised", owner, itemID, item);
+    setState(() {
+      widget.rentedStatus = "Request Raised";
+      widget.notifiID = notifiID;
+    });
+  }
 
   String username;
   @override
   void initState() {
     super.initState();
     resolveUsername();
+    print(widget.rentedStatus);
   }
 
   void resolveUsername() async {
@@ -303,127 +316,26 @@ class _DetailsState extends State<Details> {
     // if the logged in user owns the asset
     if (widget.product.owner == username) {
       // Return the EDIT ITEM button
-      return ElevatedButton(
-        onPressed: () {
-          var route = MaterialPageRoute(
-              builder: (context) => EditListingPage(
-                  type: widget.item,
-                  interval: widget.product.interval,
-                  price: widget.product.price,
-                  category: widget.product.category,
-                  description: widget.product.description,
-                  url: widget.product.url,
-                  itemID: widget.product.itemID,
-                  title: widget.product.title));
-          Navigator.of(context).push(route);
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Text(
-            "Edit Item",
-            style: GoogleFonts.inter(fontWeight: FontWeight.w900),
-          ),
-        ),
-        style: ElevatedButton.styleFrom(primary: kAccentColor1),
-      );
+      return editItemButton(context);
     }
 
     // If the logged in user is not the owner, then they must be looking to rent
     else {
       // this is a new user, who has not sent a notification requesting to rent this product
-      if (widget.rentedStatus == null) {
+      if (widget.rentedStatus == null && widget.product.renter == null) {
         // Return the RENT ITEM button
-        return ElevatedButton(
-          onPressed: () async {
-            String notifiID = await notifiService.postNotification(
-                widget.product.title,
-                "Request Raised",
-                widget.product.owner,
-                widget.product.itemID,
-                widget.item);
-            setState(() {
-              widget.rentedStatus = "Request Raised";
-              widget.notifiID = notifiID;
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              "Rent Item",
-              style: GoogleFonts.inter(fontWeight: FontWeight.w900),
-            ),
-          ),
-          style: ElevatedButton.styleFrom(primary: kAccentColor1),
-        );
+        return rentItemButton();
       }
 
       // if the user has already sent a notification requesting to rent this item and it is pending from the owner's end
       else if (widget.rentedStatus == "Request Raised") {
-        return ElevatedButton(
-          onPressed: () {
-            VoidCallback continueCallBack = () => {
-                  Navigator.of(context).pop(),
-                  notifiService.deleteNotificaiton(widget.notifiID),
-                  setState(() {
-                    widget.rentedStatus = null;
-                  })
-                };
-            BlurryDialog alert = BlurryDialog(
-                "Undo?",
-                "Do you want to undo your request to rent this item?",
-                continueCallBack,
-                true);
-
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return alert;
-              },
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              "Notification Sent",
-              style: GoogleFonts.inter(fontWeight: FontWeight.w900),
-            ),
-          ),
-          style: ElevatedButton.styleFrom(primary: notifiSent),
-        );
+        return undoRequestButton(context);
       }
 
       // if the user has already sent a notification requesting to rent this item, but has been denied
       else if ((widget.rentedStatus == "Denied")) {
         // Return the DENIED button
-        return ElevatedButton(
-          onPressed: () {
-            String owner = widget.product.owner;
-            VoidCallback continueCallBack = () => {
-                  Navigator.of(context).pop(),
-                  // code on Okay comes here
-                };
-            BlurryDialog alert = BlurryDialog(
-                "Alas😞",
-                "$owner has denied you request to rent the item.",
-                continueCallBack,
-                false);
-
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return alert;
-              },
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              "Denied",
-              style: GoogleFonts.inter(fontWeight: FontWeight.w900),
-            ),
-          ),
-          style: ElevatedButton.styleFrom(primary: notifiDenied),
-        );
+        return deniedButton(context);
       }
 
       // if the user has already sent a notification requesting to rent this item and the request has been ACCEPTED
@@ -434,81 +346,202 @@ class _DetailsState extends State<Details> {
         // Note: the excitement is checked by "isUserExcited" function
 
         if (isUserExcited(widget.notifi.date)) {
-          return ElevatedButton(
-            onPressed: () {
-              String owner = widget.product.owner;
-              VoidCallback continueCallBack = () => {
-                    Navigator.of(context).pop(),
-                    // code on Okay comes here
-                  };
-              BlurryDialog alert = BlurryDialog(
-                  "Hooray!🎉",
-                  "$owner has accepted you request to rent the item!",
-                  continueCallBack,
-                  false);
-
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return alert;
-                },
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                "Accepted!",
-                style: GoogleFonts.inter(fontWeight: FontWeight.w900),
-              ),
-            ),
-            style: ElevatedButton.styleFrom(primary: notifiAccepted),
-          );
+          return acceptedButton(context);
         } else {
-          return ElevatedButton(
-            onPressed: () {
-              VoidCallback continueCallBack = () => {
-                    Navigator.pushReplacementNamed(context, '/home'),
-                    // code on Okay comes here
-                    ItemsHttpService()
-                        .setRenter(widget.item, widget.product.itemID, null),
-                    notifiService.deleteNotificaiton(widget.notifiID),
-                  };
-              BlurryDialog alert = BlurryDialog(
-                  "Return Item",
-                  "Are you sure you want to return the item?",
-                  continueCallBack,
-                  true);
-
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return alert;
-                },
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                "Return Item",
-                style: GoogleFonts.inter(fontWeight: FontWeight.w900),
-              ),
-            ),
-            style: ElevatedButton.styleFrom(primary: kAccentColor1),
-          );
+          return returnItemButton(context);
         }
       }
       // The last option is that the item has already been rented, and hence it's out of stock
       else {
-        return ElevatedButton(
-            onPressed: null,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                "Out of Stock",
-                style: GoogleFonts.inter(fontWeight: FontWeight.w900),
-              ),
-            ));
+        return outOfStockButton();
       }
     }
+  }
+
+  ElevatedButton rentItemButton() {
+    return ElevatedButton(
+      onPressed: () {
+        tmpPostNotification(widget.product.title, widget.product.owner,
+            widget.product.itemID, widget.item);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          "Rent Item",
+          style: GoogleFonts.inter(fontWeight: FontWeight.w900),
+        ),
+      ),
+      style: ElevatedButton.styleFrom(primary: kAccentColor1),
+    );
+  }
+
+  ElevatedButton outOfStockButton() {
+    return ElevatedButton(
+        onPressed: null,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            "Out of Stock",
+            style: GoogleFonts.inter(fontWeight: FontWeight.w900),
+          ),
+        ));
+  }
+
+  ElevatedButton returnItemButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        VoidCallback continueCallBack = () => {
+              Navigator.pushReplacementNamed(context, '/home'),
+              // code on Okay comes here
+              ItemsHttpService()
+                  .setRenter(widget.item, widget.product.itemID, null),
+              notifiService.deleteNotificaiton(widget.notifiID),
+            };
+        BlurryDialog alert = BlurryDialog(
+            "Return Item",
+            "Are you sure you want to return the item?",
+            continueCallBack,
+            true);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          "Return Item",
+          style: GoogleFonts.inter(fontWeight: FontWeight.w900),
+        ),
+      ),
+      style: ElevatedButton.styleFrom(primary: kAccentColor1),
+    );
+  }
+
+  ElevatedButton acceptedButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        String owner = widget.product.owner;
+        VoidCallback continueCallBack = () => {
+              Navigator.of(context).pop(),
+              // code on Okay comes here
+            };
+        BlurryDialog alert = BlurryDialog(
+            "Hooray!🎉",
+            "$owner has accepted you request to rent the item!",
+            continueCallBack,
+            false);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          "Accepted!",
+          style: GoogleFonts.inter(fontWeight: FontWeight.w900),
+        ),
+      ),
+      style: ElevatedButton.styleFrom(primary: notifiAccepted),
+    );
+  }
+
+  ElevatedButton deniedButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        String owner = widget.product.owner;
+        VoidCallback continueCallBack = () => {
+              Navigator.of(context).pop(),
+              // code on Okay comes here
+            };
+        BlurryDialog alert = BlurryDialog(
+            "Alas😞",
+            "$owner has denied you request to rent the item.",
+            continueCallBack,
+            false);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          "Denied",
+          style: GoogleFonts.inter(fontWeight: FontWeight.w900),
+        ),
+      ),
+      style: ElevatedButton.styleFrom(primary: notifiDenied),
+    );
+  }
+
+  ElevatedButton undoRequestButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        VoidCallback continueCallBack = () => {
+              Navigator.of(context).pop(),
+              notifiService.deleteNotificaiton(widget.notifiID),
+              setState(() {
+                widget.rentedStatus = null;
+              })
+            };
+        BlurryDialog alert = BlurryDialog(
+            "Undo?",
+            "Do you want to undo your request to rent this item?",
+            continueCallBack,
+            true);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          "Notification Sent",
+          style: GoogleFonts.inter(fontWeight: FontWeight.w900),
+        ),
+      ),
+      style: ElevatedButton.styleFrom(primary: notifiSent),
+    );
+  }
+
+  ElevatedButton editItemButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        var route = MaterialPageRoute(
+            builder: (context) => EditListingPage(
+                type: widget.item,
+                interval: widget.product.interval,
+                price: widget.product.price,
+                category: widget.product.category,
+                description: widget.product.description,
+                url: widget.product.url,
+                itemID: widget.product.itemID,
+                title: widget.product.title));
+        Navigator.of(context).push(route);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          "Edit Item",
+          style: GoogleFonts.inter(fontWeight: FontWeight.w900),
+        ),
+      ),
+      style: ElevatedButton.styleFrom(primary: kAccentColor1),
+    );
   }
 }
