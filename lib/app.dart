@@ -9,38 +9,13 @@ import 'package:frontend/pages/EditPage.dart';
 import 'package:frontend/pages/NotificationPage.dart';
 import 'package:frontend/pages/ProductDetails.dart';
 import 'package:frontend/pages/EditProfile.dart';
-import 'package:frontend/services/LocalNotification.dart';
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
 
 // constants
 import './shared/constants.dart';
 
 // pages
 import './pages/LandingPage.dart';
-
-void callbackDispatcher() async {
-  Workmanager().executeTask((task, inputData) {
-    print(
-        "Native called background task: $task"); //simpleTask will be emitted here.
-    return Future.value(true);
-  });
-}
-
-void doInitStuff() async {
-  final store = FlutterSecureStorage();
-  String username = await store.read(key: "username");
-  print(username);
-  if (username.isNotEmpty) {
-    LocalNotificationService().initialize();
-    Workmanager().initialize(
-        callbackDispatcher, // The top level function, aka callbackDispatcher
-        isInDebugMode:
-            true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-        );
-    Workmanager().registerOneOffTask("1", "simpleTask");
-  }
-}
 
 class App extends StatefulWidget {
   @override
@@ -59,7 +34,6 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
-    doInitStuff();
     resolveUsername();
     super.initState();
   }

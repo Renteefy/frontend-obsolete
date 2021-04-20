@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/GlobalState.dart';
-import 'package:frontend/services/LocalNotification.dart';
 
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -89,8 +88,6 @@ class _HomePageState extends State<HomePage> {
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: kAccentColor1),
                       onPressed: () {
-                        LocalNotificationService()
-                            .sendNotification("this is title", "this is body");
                         globalState.incrementCounter();
                       },
                       child: Padding(
