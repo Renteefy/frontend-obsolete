@@ -323,7 +323,6 @@ class _DetailsState extends State<Details> {
     else {
       // this is a new user, who has not sent a notification requesting to rent this product
       if (widget.rentedStatus == null && widget.product.renter == null) {
-        // Return the RENT ITEM button
         return rentItemButton();
       }
 
@@ -334,7 +333,6 @@ class _DetailsState extends State<Details> {
 
       // if the user has already sent a notification requesting to rent this item, but has been denied
       else if ((widget.rentedStatus == "Denied")) {
-        // Return the DENIED button
         return deniedButton(context);
       }
 
