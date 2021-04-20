@@ -32,7 +32,6 @@ dependencies:
     email_validator: ^2.0.1
     mailer: ^5.0.0
     badges: ^1.2.0
-    flutter_local_notifications: ^5.0.0+1
     provider: ^5.0.0
 
     # The following adds the Cupertino Icons font to your application.
