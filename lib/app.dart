@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/models/GlobalState.dart';
@@ -10,6 +11,8 @@ import 'package:frontend/pages/NotificationPage.dart';
 import 'package:frontend/pages/ProductDetails.dart';
 import 'package:frontend/pages/EditProfile.dart';
 import 'package:provider/provider.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // constants
 import './shared/constants.dart';
@@ -25,6 +28,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   String username = "";
   final store = FlutterSecureStorage();
+
   void resolveUsername() async {
     String user = await store.read(key: "username");
     setState(() {

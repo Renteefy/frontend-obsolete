@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/shared/alertBox.dart';
 import 'package:frontend/shared/constants.dart';
@@ -13,6 +15,13 @@ class _LandingPageState extends State<LandingPage> {
   String email;
   bool loading = false;
   final httpService = UserHttpService();
+  Future<void> saveTokenToDatabase(String username) async {
+    String token = await FirebaseMessaging.instance.getToken();
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(username)
+        .set({"token": token});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +32,7 @@ class _LandingPageState extends State<LandingPage> {
       bool isAuth = await httpService.checkInvite(email);
 
       if (isAuth) {
+        saveTokenToDatabase(email);
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         setState(() {
