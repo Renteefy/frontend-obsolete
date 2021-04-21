@@ -34,7 +34,7 @@ class UserHttpService {
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     if (data.statusCode != 200) {
       print("Auth Failed, please login");
-      throw "Unable to retrieve assetCatalog.";
+      throw "Unable to retrieve userinfo.";
     }
     var jsonData = json.decode(data.body);
     UserListing user = UserListing.fromJson(jsonData);
