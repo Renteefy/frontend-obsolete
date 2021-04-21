@@ -7,20 +7,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/shared/alertBox.dart';
 
 class BugReportPage extends StatefulWidget {
   @override
   _BugReportPageState createState() => _BugReportPageState();
 }
 
+final store = FlutterSecureStorage();
+
 class _BugReportPageState extends State<BugReportPage> {
   TextEditingController titleController = new TextEditingController();
   TextEditingController desController = new TextEditingController();
   bool loading = false;
+
   void sendMail(String title, String description) async {
     String username = env["USERNAME"];
     String password = env["PASSWORD"];
-    final store = FlutterSecureStorage();
 
     String sender = await store.read(key: "username");
     setState(() {
@@ -35,6 +38,22 @@ class _BugReportPageState extends State<BugReportPage> {
       ..html = "<h1>${title}</h1> <br> ${description}";
 
     await send(equivalentMessage, smtpServer);
+  }
+
+  Future<bool> rateLimiter() async {
+    String previous = await store.read(key: "bugReport");
+    if (previous == null) {
+      return false;
+    }
+    final currentTime = DateTime.now();
+    final timeDifference =
+        currentTime.difference(DateTime.parse(previous)).inMinutes;
+    if (timeDifference < 5) {
+      return true;
+    } else {
+      await store.write(key: 'bugReport', value: currentTime.toString());
+      return false;
+    }
   }
 
   @override
@@ -122,9 +141,29 @@ class _BugReportPageState extends State<BugReportPage> {
                 height: 10,
               ),
               ElevatedButton(
-                onPressed: () {
-                  sendMail(titleController.text, desController.text);
-                  Navigator.of(context).pushNamed("/home");
+                onPressed: () async {
+                  bool isRateLimited = await rateLimiter();
+                  if (isRateLimited) {
+                    VoidCallback continueCallBack = () => {
+                          Navigator.of(context).pushNamed("/home")
+                          // code on Okay comes here
+                        };
+                    BlurryDialog alert = BlurryDialog(
+                        "Oops, too fast there",
+                        "You have sent a bug report too often, please wait",
+                        continueCallBack,
+                        false);
+
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return alert;
+                      },
+                    );
+                  } else {
+                    sendMail(titleController.text, desController.text);
+                    Navigator.of(context).pushNamed("/home");
+                  }
                 },
                 style: ElevatedButton.styleFrom(primary: kAccentColor1),
                 child: (loading)
