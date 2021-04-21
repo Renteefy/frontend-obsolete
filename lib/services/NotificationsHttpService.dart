@@ -53,7 +53,7 @@ class NotificationHttpService {
 
   void deleteNotificaiton(String notificationID) async {
     String value = await store.read(key: "jwt");
-    var res = await http.delete(
+    await http.delete(
         Uri.https(url, "notifications/notification/$notificationID"),
         headers: {'Content-Type': 'application/json', 'Authorization': value});
     print("$notificationID deleted");
