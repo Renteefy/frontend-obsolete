@@ -113,6 +113,12 @@ class _AssetCatalogPageState extends State<CatalogPage> {
           searchRes.sort((a, b) => a.date.compareTo(b.date));
         });
         break;
+      case "category":
+        setState(() {
+          res.sort((a, b) => a.category.compareTo(b.category));
+          searchRes.sort((a, b) => a.category.compareTo(b.category));
+        });
+        break;
       default:
         return;
     }
@@ -188,6 +194,14 @@ class _AssetCatalogPageState extends State<CatalogPage> {
                       Navigator.of(context).pop();
                     }),
                     leading: Icon(Icons.timer_rounded),
+                  ),
+                  ListTile(
+                    title: Text("Category"),
+                    onTap: () => setState(() {
+                      sortMadoAppa("category");
+                      Navigator.of(context).pop();
+                    }),
+                    leading: Icon(Icons.category_rounded),
                   ),
                   ListTile(
                     title: Text("Date (Newest to Oldest)"),
