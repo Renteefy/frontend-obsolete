@@ -149,7 +149,6 @@ class _DetailsState extends State<Details> {
   void initState() {
     super.initState();
     resolveUsername();
-    print(widget.rentedStatus);
   }
 
   void resolveUsername() async {

@@ -39,6 +39,59 @@ class _InviteUserState extends State<InviteUser> {
     return res;
   }
 
+  void sendInvite(String email, context) async {
+    {
+      String resCode = await UserHttpService().sendInvite(email);
+      if (resCode != "0") {
+        VoidCallback continueCallBack = () => {
+              Navigator.of(context).pop(),
+              // code on Okay comes here
+            };
+        BlurryDialog alert =
+            BlurryDialog("Success", "Invite Sent!", continueCallBack, false);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+        setState(() {
+          emailList.add(InviteModel(inviteID: resCode, inviteeEmail: email));
+          emailController.clear();
+        });
+      } else if (resCode == "Email already exists") {
+        VoidCallback continueCallBack = () => {
+              Navigator.of(context).pop(),
+              // code on Okay comes here
+            };
+        BlurryDialog alert = BlurryDialog(
+            "Error", "Email Already Exists", continueCallBack, false);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+      } else {
+        VoidCallback continueCallBack = () => {
+              Navigator.of(context).pop(),
+              // code on Okay comes here
+            };
+        BlurryDialog alert = BlurryDialog(
+            "Error", "Something went wrong!", continueCallBack, false);
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,63 +165,23 @@ class _InviteUserState extends State<InviteUser> {
                           if (emailList.length == 3 ||
                               !EmailValidator.validate(emailController.text)) {
                           } else {
-                            String resCode = await UserHttpService()
-                                .sendInvite(emailController.text);
-                            if (resCode != "0") {
-                              VoidCallback continueCallBack = () => {
-                                    Navigator.of(context).pop(),
-                                    // code on Okay comes here
-                                  };
-                              BlurryDialog alert = BlurryDialog("Success",
-                                  "Invite Sent!", continueCallBack, false);
+                            VoidCallback continueCallBack = () => {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/home'),
+                                  sendInvite(emailController.text, context)
+                                };
+                            BlurryDialog alert = BlurryDialog(
+                                "Send Invite",
+                                "Are you sure you want to send the invite?",
+                                continueCallBack,
+                                true);
 
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alert;
-                                },
-                              );
-                              setState(() {
-                                emailList.add(InviteModel(
-                                    inviteID: resCode,
-                                    inviteeEmail: emailController.text));
-                                emailController.clear();
-                              });
-                            } else if (resCode == "Email already exists") {
-                              VoidCallback continueCallBack = () => {
-                                    Navigator.of(context).pop(),
-                                    // code on Okay comes here
-                                  };
-                              BlurryDialog alert = BlurryDialog(
-                                  "Error",
-                                  "Email Already Exists",
-                                  continueCallBack,
-                                  false);
-
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alert;
-                                },
-                              );
-                            } else {
-                              VoidCallback continueCallBack = () => {
-                                    Navigator.of(context).pop(),
-                                    // code on Okay comes here
-                                  };
-                              BlurryDialog alert = BlurryDialog(
-                                  "Error",
-                                  "Something went wrong!",
-                                  continueCallBack,
-                                  false);
-
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return alert;
-                                },
-                              );
-                            }
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
                           }
                         },
                         icon: Icon(Icons.check),
@@ -200,29 +213,6 @@ class _InviteUserState extends State<InviteUser> {
                     return Card(
                       child: ListTile(
                         title: Text(emailList[index].inviteeEmail),
-                        trailing: IconButton(
-                          icon: Icon(Icons.close),
-                          color: kPrimaryColor,
-                          onPressed: () async {
-                            VoidCallback continueCallBack = () => {
-                                  Navigator.of(context).pop(),
-                                  deleteInvites(emailList[index].inviteeEmail,
-                                      emailList[index].inviteID, index)
-                                };
-                            BlurryDialog alert = BlurryDialog(
-                                "Warning",
-                                "Are you sure you want to unsend the invite",
-                                continueCallBack,
-                                true);
-
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return alert;
-                              },
-                            );
-                          },
-                        ),
                       ),
                     );
                   })
