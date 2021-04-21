@@ -51,8 +51,11 @@ class _AppState extends State<App> {
           "/editListing": (context) => EditListingPage(),
           "/editProfile": (context) => EditProfile(),
           "/chat": (context) => ChatView(),
+          '/home': (context) => HomePageController()
         },
-        home: (username.isEmpty) ? LandingPage() : HomePageController(),
+        home: (username == null || username.isEmpty)
+            ? LandingPage()
+            : HomePageController(),
         title: "Renteefy",
         theme: ThemeData(
             brightness: Brightness.dark,

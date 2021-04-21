@@ -10,6 +10,9 @@ import 'package:frontend/services/UserHttpService.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/pages/ProductDetails.dart';
 import 'package:frontend/pages/EditProfile.dart';
+import 'package:frontend/shared/alertBox.dart';
+import 'package:frontend/pages/LandingPage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -20,6 +23,7 @@ UserListing userDetails;
 final String url = "https://" + env['SERVER_URL'];
 final itemService = ItemsHttpService();
 bool loading = true;
+final store = new FlutterSecureStorage();
 
 class _DashboardPageState extends State<DashboardPage> {
   List<SingleItem> assetRes = [];
@@ -345,6 +349,33 @@ class UserInfoCard extends StatelessWidget {
                                   builder: (context) => BugReportPage());
                               Navigator.of(context).push(route);
                             }),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.logout),
+                          onPressed: () {
+                            var route = MaterialPageRoute(
+                                builder: (context) => LandingPage());
+                            VoidCallback continueCallBack = () => {
+                                  store.write(key: 'username', value: null),
+                                  Navigator.of(context).pushReplacement(route)
+                                  // code on Okay comes here
+                                };
+                            BlurryDialog alert = BlurryDialog(
+                                "Logout",
+                                "Are you sure you want to logout?",
+                                continueCallBack,
+                                true);
+
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return alert;
+                              },
+                            );
+                          },
+                        ),
                       ],
                     )
                   ],
