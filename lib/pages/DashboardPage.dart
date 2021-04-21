@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/pages/BugReportPage.dart';
 import 'package:frontend/pages/InviteUser.dart';
@@ -357,11 +359,15 @@ class UserInfoCard extends StatelessWidget {
                           onPressed: () {
                             var route = MaterialPageRoute(
                                 builder: (context) => LandingPage());
-                            VoidCallback continueCallBack = () => {
-                                  store.write(key: 'username', value: null),
-                                  Navigator.of(context).pushReplacement(route)
-                                  // code on Okay comes here
-                                };
+                            VoidCallback continueCallBack = () async {
+                              await FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(userDetails.email)
+                                  .set({"token": null});
+                              store.write(key: 'username', value: null);
+                              Navigator.of(context).pushReplacement(route);
+                              // code on Okay comes here
+                            };
                             BlurryDialog alert = BlurryDialog(
                                 "Logout",
                                 "Are you sure you want to logout?",
