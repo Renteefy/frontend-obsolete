@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 //env
@@ -19,7 +19,7 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   await DotEnv.load(fileName: ".env");
   HttpOverrides.global = new MyHttpOverrides();
   runApp(App());
