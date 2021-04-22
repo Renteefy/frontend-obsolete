@@ -22,6 +22,9 @@ class UserHttpService {
       await store.write(key: 'jwt', value: jsonData["token"]);
       await store.write(key: 'username', value: username);
       await store.write(key: 'picture', value: jsonData["picture"]);
+      // get notification from database
+      await store.write(
+          key: 'notificationCount', value: jsonData["notificationCount"]);
       return true;
     } else {
       return false;

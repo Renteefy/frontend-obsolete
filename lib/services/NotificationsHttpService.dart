@@ -59,10 +59,11 @@ class NotificationHttpService {
     print("$notificationID deleted");
   }
 
-  Future<int> patchNotification(
-      String propName, String value, String notifID) async {
+  Future<int> patchNotification(String propName, String value, String notifID,
+      String renteeUsername) async {
     String token = await store.read(key: "jwt");
-    var changes = '{"changes": [{"propName": "$propName", "value": "$value"}]}';
+    var changes =
+        '{"changes": [{"propName": "$propName", "value": "$value"}], "renteeUsername":"$renteeUsername"}';
 
     http.Response response = await http.patch(
         Uri.https(url, "notifications/notification/$notifID"),

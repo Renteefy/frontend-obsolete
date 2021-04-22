@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "795367540670",
+    "project_id": "renteefy-notification-system",
+    "storage_bucket": "renteefy-notification-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:795367540670:android:abb22f72070898d9299bef",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "795367540670-o35m3amv1he85t2j3kqo6fh7erus3uoo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLQSujnIzJamR-QbrNR1SyHqsw18JBIdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "795367540670-o35m3amv1he85t2j3kqo6fh7erus3uoo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

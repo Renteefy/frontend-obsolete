@@ -11,7 +11,7 @@ class ChatHttpService {
   final store = new FlutterSecureStorage();
   Future<ChatRoom> getChatRoom(String user1, String user2) async {
     String value = await store.read(key: "jwt");
-    var data = await http.post(Uri.https(url, "chatRoom"),
+    var data = await http.post(Uri.http(url, "chatRoom"),
         headers: {'Content-Type': 'application/json', 'Authorization': value},
         body: json.encode({'user1': user1, "user2": user2}));
     if (data.statusCode != 200) {
@@ -27,7 +27,7 @@ class ChatHttpService {
     //String value = await store.read(key: "jwt");
     print(username);
     var data = await http.get(
-      Uri.https(
+      Uri.http(
         url,
         "userchatRoom/" + username,
       ),
@@ -50,7 +50,7 @@ class ChatHttpService {
 
   Future<ChatObj> getAllChats(String chatID) async {
     var data = await http.post(
-      Uri.https(
+      Uri.http(
         url,
         "chats/",
       ),

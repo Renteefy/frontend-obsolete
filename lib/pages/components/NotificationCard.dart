@@ -263,7 +263,8 @@ class _NotificationCardState extends State<NotificationCard> {
                                           .patchNotification(
                                               "status",
                                               "Accepted",
-                                              widget.notifi.notificationID);
+                                              widget.notifi.notificationID,
+                                              widget.notifi.rentee);
                                   if (resStatus == 200) {
                                     setState(() {
                                       widget.notifi.status = "Accepted";
@@ -280,7 +281,9 @@ class _NotificationCardState extends State<NotificationCard> {
                                           .patchNotification(
                                               "status",
                                               "Request Raised",
-                                              widget.notifi.notificationID);
+                                              widget.notifi.notificationID,
+                                              widget.notifi.rentee);
+
                                   if (resStatus == 200) {
                                     setState(() {
                                       widget.notifi.status = "Request Raised";
@@ -296,8 +299,11 @@ class _NotificationCardState extends State<NotificationCard> {
                               ? () async {
                                   int resStatus =
                                       await NotificationHttpService()
-                                          .patchNotification("status", "Denied",
-                                              widget.notifi.notificationID);
+                                          .patchNotification(
+                                              "status",
+                                              "Denied",
+                                              widget.notifi.notificationID,
+                                              widget.notifi.rentee);
                                   ItemsHttpService().setRenter(
                                       widget.notifi.itemType,
                                       widget.notifi.itemID,
@@ -314,7 +320,8 @@ class _NotificationCardState extends State<NotificationCard> {
                                           .patchNotification(
                                               "status",
                                               "Request Raised",
-                                              widget.notifi.notificationID);
+                                              widget.notifi.notificationID,
+                                              widget.notifi.rentee);
                                   if (resStatus == 200) {
                                     setState(() {
                                       widget.notifi.status = "Request Raised";

@@ -72,7 +72,7 @@ class _HomePageControllerState extends State<HomePageController> {
               bottomRight: Radius.circular(10),
             ),
             child: (picture == null)
-                ? CircularProgressIndicator()
+                ? Center(child: CircularProgressIndicator())
                 : BottomNavigationBar(
                     items: [
                       BottomNavigationBarItem(
