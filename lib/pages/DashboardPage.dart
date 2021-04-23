@@ -278,14 +278,6 @@ class UserInfoCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hey there,",
-                        style: GoogleFonts.inter(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: kAccentColor1)),
-                    SizedBox(
-                      height: 10,
-                    ),
                     (userDetails.firstName == null &&
                             userDetails.lastName == null)
                         ? Text(userDetails.username,
@@ -385,7 +377,7 @@ class UserInfoCard extends StatelessWidget {
                 ),
               ),
               CircleAvatar(
-                radius: 60,
+                radius: 40,
                 backgroundImage: (userDetails.picture.startsWith("/static"))
                     ? NetworkImage(url + userDetails.picture)
                     : NetworkImage(userDetails.picture),

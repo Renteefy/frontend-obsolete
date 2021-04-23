@@ -32,6 +32,10 @@ class _ChatViewState extends State<ChatView> {
       ChatObj chatobj = await chatService.getAllChats(widget.chatID);
       setState(() {
         chats = chatobj.messages;
+        scrollController.animateTo(
+            scrollController.position.maxScrollExtent + 100,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeOut);
       });
     }();
 
@@ -52,8 +56,10 @@ class _ChatViewState extends State<ChatView> {
           message: message,
           receiver: widget.chatee,
           sender: widget.username));
-      scrollController.animateTo(scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+      scrollController.animateTo(
+          scrollController.position.maxScrollExtent + 100,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOut);
     });
 
     widget.channel.sink.add(jsonEncode({

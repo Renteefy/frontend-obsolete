@@ -153,73 +153,75 @@ class _AssetCatalogPageState extends State<CatalogPage> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0))),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text("Name: A to Z"),
-                    leading: Icon(Icons.sort_by_alpha_sharp),
-                    onTap: () => setState(() {
-                      sortMadoAppa("name_a");
-                      Navigator.of(context).pop();
-                    }),
-                  ),
-                  ListTile(
-                    title: Text("Name: Z to A"),
-                    leading: Icon(Icons.sort_by_alpha_rounded),
-                    onTap: () => setState(() {
-                      sortMadoAppa("name_b");
-                      Navigator.of(context).pop();
-                    }),
-                  ),
-                  ListTile(
-                    title: Text("Price: Low to High"),
-                    leading: Icon(Icons.monetization_on_outlined),
-                    onTap: () => setState(() {
-                      sortMadoAppa("price_a");
-                      Navigator.of(context).pop();
-                    }),
-                  ),
-                  ListTile(
-                    title: Text("Price: High to Low"),
-                    leading: Icon(Icons.monetization_on_rounded),
-                    onTap: () => setState(() {
-                      sortMadoAppa("price_b");
-                      Navigator.of(context).pop();
-                    }),
-                  ),
-                  ListTile(
-                    title: Text("Interval"),
-                    onTap: () => setState(() {
-                      sortMadoAppa("interval");
-                      Navigator.of(context).pop();
-                    }),
-                    leading: Icon(Icons.timer_rounded),
-                  ),
-                  ListTile(
-                    title: Text("Category"),
-                    onTap: () => setState(() {
-                      sortMadoAppa("category");
-                      Navigator.of(context).pop();
-                    }),
-                    leading: Icon(Icons.category_rounded),
-                  ),
-                  ListTile(
-                    title: Text("Date (Newest to Oldest)"),
-                    onTap: () => setState(() {
-                      sortMadoAppa("date_a");
-                      Navigator.of(context).pop();
-                    }),
-                    leading: Icon(Icons.date_range_outlined),
-                  ),
-                  ListTile(
-                    title: Text("Date (Oldest to Newest)"),
-                    onTap: () => setState(() {
-                      sortMadoAppa("date_b");
-                      Navigator.of(context).pop();
-                    }),
-                    leading: Icon(Icons.date_range_rounded),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text("Name: A to Z"),
+                      leading: Icon(Icons.sort_by_alpha_sharp),
+                      onTap: () => setState(() {
+                        sortMadoAppa("name_a");
+                        Navigator.of(context).pop();
+                      }),
+                    ),
+                    ListTile(
+                      title: Text("Name: Z to A"),
+                      leading: Icon(Icons.sort_by_alpha_rounded),
+                      onTap: () => setState(() {
+                        sortMadoAppa("name_b");
+                        Navigator.of(context).pop();
+                      }),
+                    ),
+                    ListTile(
+                      title: Text("Price: Low to High"),
+                      leading: Icon(Icons.monetization_on_outlined),
+                      onTap: () => setState(() {
+                        sortMadoAppa("price_a");
+                        Navigator.of(context).pop();
+                      }),
+                    ),
+                    ListTile(
+                      title: Text("Price: High to Low"),
+                      leading: Icon(Icons.monetization_on_rounded),
+                      onTap: () => setState(() {
+                        sortMadoAppa("price_b");
+                        Navigator.of(context).pop();
+                      }),
+                    ),
+                    ListTile(
+                      title: Text("Interval"),
+                      onTap: () => setState(() {
+                        sortMadoAppa("interval");
+                        Navigator.of(context).pop();
+                      }),
+                      leading: Icon(Icons.timer_rounded),
+                    ),
+                    ListTile(
+                      title: Text("Category"),
+                      onTap: () => setState(() {
+                        sortMadoAppa("category");
+                        Navigator.of(context).pop();
+                      }),
+                      leading: Icon(Icons.category_rounded),
+                    ),
+                    ListTile(
+                      title: Text("Date (Newest to Oldest)"),
+                      onTap: () => setState(() {
+                        sortMadoAppa("date_a");
+                        Navigator.of(context).pop();
+                      }),
+                      leading: Icon(Icons.date_range_outlined),
+                    ),
+                    ListTile(
+                      title: Text("Date (Oldest to Newest)"),
+                      onTap: () => setState(() {
+                        sortMadoAppa("date_b");
+                        Navigator.of(context).pop();
+                      }),
+                      leading: Icon(Icons.date_range_rounded),
+                    ),
+                  ],
+                ),
               ),
             );
           });
