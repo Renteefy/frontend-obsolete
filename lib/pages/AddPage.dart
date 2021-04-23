@@ -64,7 +64,7 @@ class _AddPageState extends State<AddPage> {
                       fontSize: 15, fontWeight: FontWeight.bold)),
               SizedBox(height: 30),
               Text(
-                "What do you want to rent?"
+                "What do you want to rent?",
                 style: GoogleFonts.inter(
                     fontWeight: FontWeight.bold, fontSize: 17),
               ),
