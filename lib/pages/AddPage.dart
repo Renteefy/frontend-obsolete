@@ -59,7 +59,9 @@ class _AddPageState extends State<AddPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  "alesuada tempus efficitur. Duis at facilisis diam. Pellentesque purus enim, mattis vitae massa sed, ultrices efficitur dui. Proin pulvinar dapibus faucibus. Proin nec gravida "),
+                  "Fill in your details to easily add a listing. All data provided to us is stored securely with us, chillax.",
+                  style: GoogleFonts.inter(
+                      fontSize: 15, fontWeight: FontWeight.bold)),
               SizedBox(height: 30),
               Text(
                 "What do you want to rent?",

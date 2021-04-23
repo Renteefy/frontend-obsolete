@@ -385,7 +385,7 @@ class UserInfoCard extends StatelessWidget {
                 ),
               ),
               CircleAvatar(
-                radius: 40,
+                radius: 60,
                 backgroundImage: (userDetails.picture.startsWith("/static"))
                     ? NetworkImage(url + userDetails.picture)
                     : NetworkImage(userDetails.picture),

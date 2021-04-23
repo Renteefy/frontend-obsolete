@@ -220,10 +220,10 @@ class _DetailsState extends State<Details> {
                         children: [
                           Text("Listed by: ",
                               style: GoogleFonts.inter(
-                                  color: notifiSent, fontSize: 17)),
+                                  color: notifiSent, fontSize: 15)),
                           Text(widget.product.owner,
                               style: GoogleFonts.inter(
-                                  fontWeight: FontWeight.bold, fontSize: 17)),
+                                  fontWeight: FontWeight.bold, fontSize: 14)),
                         ],
                       ),
                       SizedBox(

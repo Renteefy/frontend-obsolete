@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/GlobalState.dart';
-
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/pages/CatalogPage.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   static const TextStyle optionStyle =
@@ -29,8 +26,21 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text("Hey there! ",
+                  style: GoogleFonts.inter(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w900,
+                      color: kPrimaryColor)),
+              SizedBox(
+                height: 5,
+              ),
               Text(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus malesuada tempus efficitur. Duis at facilisis diam. Pellentesque purus enim, mattis vitae massa sed, ultrices efficitur dui. Proin pulvinar dapibus faucibus. Proin nec gravida "),
+                "Good to see you here. Make yourself at home. You can start renting from the listed items on Renteefy. So, what are we renting today?",
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               Center(child: Image.asset("assets/home.png")),
               SizedBox(height: 50),
               SizedBox(
