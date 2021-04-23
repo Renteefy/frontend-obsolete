@@ -97,7 +97,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   children: [
                     UserInfoCard(),
                     SizedBox(
-                      height: 40,
+                      height: 30,
                     ),
                     (assetRes.length == 0)
                         ? SizedBox(height: 0)
@@ -108,7 +108,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                 title: "Your Assets",
                                 subtitle: "Your listed assets on Renteefy",
                               ),
-                              HorizontalCardViewBuilder(res: assetRes),
+                              HorizontalCardViewBuilder(
+                                  res: assetRes, type: "asset"),
                             ],
                           ),
                     SizedBox(
