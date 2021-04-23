@@ -250,16 +250,7 @@ class _EditProfileState extends State<EditProfile> {
                     // to check if the username is changed
                     String oldUsername = await getUsername();
                     String tmpUrl = (newImagePicked) ? url : null;
-                    int postRes = await UserHttpService().patchUserDetails(
-                        firstNameController.text,
-                        lastNameController.text,
-                        usernameController.text,
-                        tmpUrl);
-                    if (postRes == 200) {
-                      await store.write(
-                        key: 'username',
-                        value: usernameController.text,
-                      );
+                    if (usernameController.text != oldUsername) {
                       VoidCallback continueCallBack = () => {
                             sendPatchRequest(
                                 firstNameController.text,
