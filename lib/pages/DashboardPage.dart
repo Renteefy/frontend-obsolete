@@ -88,7 +88,7 @@ class _DashboardPageState extends State<DashboardPage> {
             serviceRes == null ||
             rentedAssetRes == null ||
             rentedServiceRes == null)
-        ? CircularProgressIndicator()
+        ? Center(child: CircularProgressIndicator())
         : SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20.0),

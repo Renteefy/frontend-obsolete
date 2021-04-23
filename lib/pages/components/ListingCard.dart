@@ -77,6 +77,9 @@ class ListingCard extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 10,
+              ),
               (obj.category != null)
                   ? Row(
                       children: [

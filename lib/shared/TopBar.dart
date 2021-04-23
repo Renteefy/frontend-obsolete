@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/GlobalState.dart';
@@ -34,7 +33,7 @@ class TopBar extends PreferredSize {
           ),
           actions: [
             IconButton(
-                icon: Badge(child: Icon(Icons.notifications_none_rounded)),
+                icon: Icon(Icons.notifications_none_rounded),
                 iconSize: 30,
                 onPressed: () {
                   Navigator.pushNamed(context, '/notification');

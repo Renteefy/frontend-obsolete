@@ -71,4 +71,18 @@ class NotificationHttpService {
         headers: {'Content-Type': 'application/json', 'Authorization': token});
     return (response.statusCode);
   }
+
+  // Future<int> getUserNotificationCount() async {
+  //   String value = await store.read(key: "jwt");
+
+  //   var data = await http.get(Uri.https(url, "notifications/user/count"),
+  //       headers: {'Content-Type': 'application/json', 'Authorization': value});
+  //   var jsonData = json.decode(data.body);
+
+  //   if (data.statusCode != 200) {
+  //     print("Auth Failed, please login");
+  //     throw "Unable to retrieve Notifications.";
+  //   }
+  //   return int.parse(jsonData.toString());
+  // }
 }
