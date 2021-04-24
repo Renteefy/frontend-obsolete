@@ -31,6 +31,21 @@ class UserHttpService {
     }
   }
 
+  Future<bool> checkVerified(String email, String otp) async {
+    http.Response response = await http.post(
+      Uri.https(url, "users/checkOTP"),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({'email': email, "otp": otp}),
+    );
+    if (response.statusCode == 200) {
+      //var jsonData = json.decode(response.body);
+      //String username = jsonData["username"];
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<UserListing> getUserDetails() async {
     String value = await store.read(key: "jwt");
     var data = await http.get(Uri.https(url, "users/user"),

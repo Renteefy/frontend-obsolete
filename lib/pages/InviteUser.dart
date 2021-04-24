@@ -184,9 +184,9 @@ class _InviteUserState extends State<InviteUser> {
                         },
                         icon: Icon(Icons.check),
                       )),
-                  validator: (value) => EmailValidator.validate(value)
-                      ? null
-                      : "Please enter a valid email",
+                  // validator: (value) => EmailValidator.validate(value)
+                  //     ? null
+                  //     : "Please enter a valid email",
                 ),
               ),
               SizedBox(
