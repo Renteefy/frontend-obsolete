@@ -31,6 +31,7 @@ class _DashboardPageState extends State<DashboardPage> {
   List<SingleItem> serviceRes = [];
   List<SingleItem> rentedAssetRes = [];
   List<SingleItem> rentedServiceRes = [];
+
   bool loading = true;
 
   @override
@@ -96,79 +97,113 @@ class _DashboardPageState extends State<DashboardPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     UserInfoCard(),
-                    SizedBox(
-                      height: 30,
+                    TitleSection(
+                      title: "Your Assets",
+                      subtitle: "Your listed assets on Renteefy",
                     ),
                     (assetRes.length == 0)
-                        ? SizedBox(height: 0)
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TitleSection(
-                                title: "Your Assets",
-                                subtitle: "Your listed assets on Renteefy",
-                              ),
-                              HorizontalCardViewBuilder(
-                                  res: assetRes, type: "asset"),
-                            ],
-                          ),
-                    SizedBox(
-                      height: 40,
-                    ),
+                        ? PlaceholderHorizontalView()
+                        : HorizontalCardViewBuilder(
+                            res: assetRes, type: "asset"),
+                    TitleSection(
+                        title: "Your Services",
+                        subtitle: "Your listed services on Renteefy"),
                     (serviceRes.length == 0)
-                        ? SizedBox(height: 0)
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TitleSection(
-                                  title: "Your Services",
-                                  subtitle: "Your listed services on Renteefy"),
-                              HorizontalCardViewBuilder(
-                                  res: serviceRes, type: "service"),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Divider(
-                                color: Colors.white,
-                                thickness: 2,
-                              ),
-                              SizedBox(
-                                height: 40,
-                              ),
-                            ],
-                          ),
+                        ? PlaceholderHorizontalView()
+                        : HorizontalCardViewBuilder(
+                            res: serviceRes, type: "service"),
+                    TitleSection(
+                        title: "Rented Assets",
+                        subtitle: "Assets you have rented"),
                     (rentedAssetRes.length == 0)
-                        ? SizedBox(height: 0)
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TitleSection(
-                                  title: "Rented Assets",
-                                  subtitle: "Assets you have rented"),
-                              HorizontalCardViewBuilder(
-                                res: rentedAssetRes,
-                                type: "asset",
-                              ),
-                            ],
+                        ? PlaceholderHorizontalView()
+                        : HorizontalCardViewBuilder(
+                            res: rentedAssetRes,
+                            type: "asset",
                           ),
-                    SizedBox(
-                      height: 40,
-                    ),
+                    TitleSection(
+                        title: "Rented Services",
+                        subtitle: "Service you have rented"),
                     (rentedServiceRes.length == 0)
-                        ? SizedBox(height: 0)
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TitleSection(
-                                  title: "Rented Services",
-                                  subtitle: "Service you have rented"),
-                              HorizontalCardViewBuilder(
-                                  res: rentedServiceRes, type: "service"),
-                            ],
-                          ),
+                        ? PlaceholderHorizontalView()
+                        : HorizontalCardViewBuilder(
+                            res: rentedServiceRes, type: "service"),
                   ]),
             ),
           );
+  }
+}
+
+class PlaceholderHorizontalView extends StatelessWidget {
+  const PlaceholderHorizontalView({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              height: 175.0,
+              width: 175.0,
+              color: Colors.white10,
+              child: Center(
+                child: Text(
+                  "look",
+                  style: GoogleFonts.inter(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white24),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              height: 175.0,
+              width: 175.0,
+              color: Colors.white10,
+              child: Center(
+                child: Text(
+                  "into the",
+                  style: GoogleFonts.inter(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white24),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              height: 175.0,
+              width: 175.0,
+              color: Colors.white10,
+              child: Center(
+                  child: Text(
+                "void",
+                style: GoogleFonts.inter(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white24),
+              )),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -249,6 +284,9 @@ class TitleSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(
+          height: 20,
+        ),
         Text(title,
             style:
                 GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w900)),
@@ -257,6 +295,9 @@ class TitleSection extends StatelessWidget {
                 color: kAccentColor3,
                 fontSize: 15,
                 fontWeight: FontWeight.w500)),
+        SizedBox(
+          height: 10,
+        )
       ],
     );
   }
