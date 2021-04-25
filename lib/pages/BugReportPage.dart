@@ -42,10 +42,13 @@ class _BugReportPageState extends State<BugReportPage> {
 
   Future<bool> rateLimiter() async {
     String previous = await store.read(key: "bugReport");
+    final currentTime = DateTime.now();
+
     if (previous == null) {
+      await store.write(key: 'bugReport', value: currentTime.toString());
       return false;
     }
-    final currentTime = DateTime.now();
+
     final timeDifference =
         currentTime.difference(DateTime.parse(previous)).inMinutes;
     if (timeDifference < 5) {
