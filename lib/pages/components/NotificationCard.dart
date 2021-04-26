@@ -1,11 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/NotificationListing.dart';
+import 'package:frontend/pages/ChatView.dart';
 import 'package:frontend/pages/ProductDetails.dart';
+import 'package:frontend/services/ChatHttpService.dart';
 import 'package:frontend/services/ItemsHttpService.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/services/NotificationsHttpService.dart';
+import 'package:web_socket_channel/io.dart';
 
 class NotificationCard extends StatefulWidget {
   final NotificationListing notifi;
@@ -129,12 +132,27 @@ class _NotificationCardState extends State<NotificationCard> {
                           ),
                           primary: Colors.transparent,
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          var chatList = await ChatHttpService().getChatRoom(
+                              widget.notifi.rentee, widget.notifi.owner);
+
+                          var route = MaterialPageRoute(
+                              builder: (context) => ChatView(
+                                    channel: IOWebSocketChannel.connect(
+                                        ("wss://chat.renteefy.ga/ws?username=" +
+                                            widget.notifi.rentee)),
+                                    username: widget.notifi.rentee,
+                                    chatID: chatList.chatID,
+                                    chatee: widget.notifi.owner,
+                                  ));
+                          Navigator.of(context).push(route);
+                        },
                         icon: Icon(Icons.messenger_outline_outlined),
                         label: Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Text(
                             "Chat with " + widget.notifi.owner,
+                            overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.inter(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
@@ -330,7 +348,21 @@ class _NotificationCardState extends State<NotificationCard> {
                                 }),
                       IconButton(
                           icon: Icon(Icons.messenger_outline),
-                          onPressed: () {}),
+                          onPressed: () {
+                            var chatList = await ChatHttpService().getChatRoom(
+                                widget.notifi.rentee, widget.notifi.owner);
+
+                            var route = MaterialPageRoute(
+                                builder: (context) => ChatView(
+                                      channel: IOWebSocketChannel.connect(
+                                          ("wss://chat.renteefy.ga/ws?username=" +
+                                              widget.notifi.rentee)),
+                                      username: widget.notifi.rentee,
+                                      chatID: chatList.chatID,
+                                      chatee: widget.notifi.owner,
+                                    ));
+                            Navigator.of(context).push(route);
+                          }),
                     ],
                   )
                 ],

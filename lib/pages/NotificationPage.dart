@@ -6,6 +6,7 @@ import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/services/NotificationsHttpService.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
@@ -14,6 +15,14 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   final store = new FlutterSecureStorage();
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
+  void onRefresh() {
+    print("Refresh Called");
+    fetchNotifications();
+    refreshController.refreshCompleted();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -62,17 +71,21 @@ class _NotificationPageState extends State<NotificationPage> {
         child: Column(
           children: [
             Flexible(
-              child: ListView.builder(
-                  itemCount: notificationList.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return NotificationCard(
-                      notifi: notificationList[index],
-                      isRentee: (notificationList[index].owner ==
-                              username) // replace yaj with the logged in username
-                          ? false
-                          : true,
-                    );
-                  }),
+              child: SmartRefresher(
+                enablePullDown: true,
+                controller: refreshController,
+                onRefresh: onRefresh,
+                child: ListView.builder(
+                    itemCount: notificationList.length,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      return NotificationCard(
+                        notifi: notificationList[index],
+                        isRentee: (notificationList[index].owner == username)
+                            ? false
+                            : true,
+                      );
+                    }),
+              ),
             ),
           ],
         ),

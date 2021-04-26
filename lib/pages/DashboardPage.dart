@@ -14,6 +14,7 @@ import 'package:frontend/pages/EditProfile.dart';
 import 'package:frontend/shared/alertBox.dart';
 import 'package:frontend/pages/LandingPage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -27,6 +28,8 @@ bool loading = true;
 final store = new FlutterSecureStorage();
 
 class _DashboardPageState extends State<DashboardPage> {
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
   List<SingleItem> assetRes = [];
   List<SingleItem> serviceRes = [];
   List<SingleItem> rentedAssetRes = [];
@@ -42,9 +45,22 @@ class _DashboardPageState extends State<DashboardPage> {
     fetchServiceRes();
     fetchRentedServiceRes();
     fetchUserDetails();
+    if (mounted) {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  void onRefresh() async {
     setState(() {
-      loading = false;
+      fetchAssetRes();
+      fetchRentedAssetRes();
+      fetchServiceRes();
+      fetchRentedServiceRes();
+      fetchUserDetails();
     });
+    refreshController.refreshCompleted();
   }
 
   void fetchAssetRes() async {
@@ -90,45 +106,50 @@ class _DashboardPageState extends State<DashboardPage> {
             rentedAssetRes == null ||
             rentedServiceRes == null)
         ? Center(child: CircularProgressIndicator())
-        : SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    UserInfoCard(),
-                    TitleSection(
-                      title: "Your Assets",
-                      subtitle: "Your listed assets on Renteefy",
-                    ),
-                    (assetRes.length == 0)
-                        ? PlaceholderHorizontalView()
-                        : HorizontalCardViewBuilder(
-                            res: assetRes, type: "asset"),
-                    TitleSection(
-                        title: "Your Services",
-                        subtitle: "Your listed services on Renteefy"),
-                    (serviceRes.length == 0)
-                        ? PlaceholderHorizontalView()
-                        : HorizontalCardViewBuilder(
-                            res: serviceRes, type: "service"),
-                    TitleSection(
-                        title: "Rented Assets",
-                        subtitle: "Assets you have rented"),
-                    (rentedAssetRes.length == 0)
-                        ? PlaceholderHorizontalView()
-                        : HorizontalCardViewBuilder(
-                            res: rentedAssetRes,
-                            type: "asset",
-                          ),
-                    TitleSection(
-                        title: "Rented Services",
-                        subtitle: "Service you have rented"),
-                    (rentedServiceRes.length == 0)
-                        ? PlaceholderHorizontalView()
-                        : HorizontalCardViewBuilder(
-                            res: rentedServiceRes, type: "service"),
-                  ]),
+        : SmartRefresher(
+            controller: refreshController,
+            enablePullDown: true,
+            onRefresh: onRefresh,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      UserInfoCard(),
+                      TitleSection(
+                        title: "Your Assets",
+                        subtitle: "Your listed assets on Renteefy",
+                      ),
+                      (assetRes.length == 0)
+                          ? PlaceholderHorizontalView()
+                          : HorizontalCardViewBuilder(
+                              res: assetRes, type: "asset"),
+                      TitleSection(
+                          title: "Your Services",
+                          subtitle: "Your listed services on Renteefy"),
+                      (serviceRes.length == 0)
+                          ? PlaceholderHorizontalView()
+                          : HorizontalCardViewBuilder(
+                              res: serviceRes, type: "service"),
+                      TitleSection(
+                          title: "Rented Assets",
+                          subtitle: "Assets you have rented"),
+                      (rentedAssetRes.length == 0)
+                          ? PlaceholderHorizontalView()
+                          : HorizontalCardViewBuilder(
+                              res: rentedAssetRes,
+                              type: "asset",
+                            ),
+                      TitleSection(
+                          title: "Rented Services",
+                          subtitle: "Service you have rented"),
+                      (rentedServiceRes.length == 0)
+                          ? PlaceholderHorizontalView()
+                          : HorizontalCardViewBuilder(
+                              res: rentedServiceRes, type: "service"),
+                    ]),
+              ),
             ),
           );
   }
