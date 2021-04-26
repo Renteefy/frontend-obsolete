@@ -20,6 +20,7 @@ class _AssetCatalogPageState extends State<CatalogPage> {
   final itemService = ItemsHttpService();
   // Skip is basically the number of entries that have to be skipped in the database call, should be incremented after every call
   int skip = 0;
+  String selectedSort;
 
   @override
   void initState() {
@@ -156,69 +157,143 @@ class _AssetCatalogPageState extends State<CatalogPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    ListTile(
-                      title: Text("Name: A to Z"),
-                      leading: Icon(Icons.sort_by_alpha_sharp),
-                      onTap: () => setState(() {
-                        sortMadoAppa("name_a");
-                        Navigator.of(context).pop();
-                      }),
+                    Ink(
+                      color: (selectedSort == "name_a") ? kPrimaryColor : null,
+                      child: ListTile(
+                        title: Text("Name: A to Z"),
+                        leading: Icon(Icons.sort_by_alpha_sharp),
+                        onTap: (selectedSort == "name_a")
+                            ? () => setState(() {
+                                  selectedSort = null;
+                                  Navigator.of(context).pop();
+                                })
+                            : () => setState(() {
+                                  sortMadoAppa("name_a");
+                                  selectedSort = "name_a";
+                                  Navigator.of(context).pop();
+                                }),
+                      ),
                     ),
-                    ListTile(
-                      title: Text("Name: Z to A"),
-                      leading: Icon(Icons.sort_by_alpha_rounded),
-                      onTap: () => setState(() {
-                        sortMadoAppa("name_b");
-                        Navigator.of(context).pop();
-                      }),
+                    Ink(
+                      color: (selectedSort == "name_b") ? kPrimaryColor : null,
+                      child: ListTile(
+                        title: Text("Name: Z to A"),
+                        leading: Icon(Icons.sort_by_alpha_rounded),
+                        onTap: (selectedSort == "name_b")
+                            ? () => setState(() {
+                                  selectedSort = null;
+                                  Navigator.of(context).pop();
+                                })
+                            : () => setState(() {
+                                  sortMadoAppa("name_b");
+                                  selectedSort = "name_b";
+                                  Navigator.of(context).pop();
+                                }),
+                      ),
                     ),
-                    ListTile(
-                      title: Text("Price: Low to High"),
-                      leading: Icon(Icons.monetization_on_outlined),
-                      onTap: () => setState(() {
-                        sortMadoAppa("price_a");
-                        Navigator.of(context).pop();
-                      }),
+                    Ink(
+                      color: (selectedSort == "price_a") ? kPrimaryColor : null,
+                      child: ListTile(
+                        title: Text("Price: Low to High"),
+                        leading: Icon(Icons.monetization_on_outlined),
+                        onTap: (selectedSort == "price_a")
+                            ? () => setState(() {
+                                  selectedSort = null;
+                                  Navigator.of(context).pop();
+                                })
+                            : () => setState(() {
+                                  sortMadoAppa("price_a");
+                                  selectedSort = "price_a";
+                                  Navigator.of(context).pop();
+                                }),
+                      ),
                     ),
-                    ListTile(
-                      title: Text("Price: High to Low"),
-                      leading: Icon(Icons.monetization_on_rounded),
-                      onTap: () => setState(() {
-                        sortMadoAppa("price_b");
-                        Navigator.of(context).pop();
-                      }),
+                    Ink(
+                      color: (selectedSort == "price_b") ? kPrimaryColor : null,
+                      child: ListTile(
+                        title: Text("Price: High to Low"),
+                        leading: Icon(Icons.monetization_on_rounded),
+                        onTap: (selectedSort == "price_b")
+                            ? () => setState(() {
+                                  selectedSort = null;
+                                  Navigator.of(context).pop();
+                                })
+                            : () => setState(() {
+                                  sortMadoAppa("price_b");
+                                  selectedSort = "price_b";
+                                  Navigator.of(context).pop();
+                                }),
+                      ),
                     ),
-                    ListTile(
-                      title: Text("Interval"),
-                      onTap: () => setState(() {
-                        sortMadoAppa("interval");
-                        Navigator.of(context).pop();
-                      }),
-                      leading: Icon(Icons.timer_rounded),
+                    Ink(
+                      color:
+                          (selectedSort == "interval") ? kPrimaryColor : null,
+                      child: ListTile(
+                        title: Text("Interval"),
+                        onTap: (selectedSort == "interval")
+                            ? () => setState(() {
+                                  selectedSort = null;
+                                  Navigator.of(context).pop();
+                                })
+                            : () => setState(() {
+                                  sortMadoAppa("interval");
+                                  selectedSort = "interval";
+                                  Navigator.of(context).pop();
+                                }),
+                        leading: Icon(Icons.timer_rounded),
+                      ),
                     ),
-                    ListTile(
-                      title: Text("Category"),
-                      onTap: () => setState(() {
-                        sortMadoAppa("category");
-                        Navigator.of(context).pop();
-                      }),
-                      leading: Icon(Icons.category_rounded),
+                    Ink(
+                      color:
+                          (selectedSort == "category") ? kPrimaryColor : null,
+                      child: ListTile(
+                        title: Text("Category"),
+                        onTap: (selectedSort == "category")
+                            ? () => setState(() {
+                                  selectedSort = null;
+                                  Navigator.of(context).pop();
+                                })
+                            : () => setState(() {
+                                  sortMadoAppa("category");
+                                  selectedSort = "category";
+                                  Navigator.of(context).pop();
+                                }),
+                        leading: Icon(Icons.category_rounded),
+                      ),
                     ),
-                    ListTile(
-                      title: Text("Date (Newest to Oldest)"),
-                      onTap: () => setState(() {
-                        sortMadoAppa("date_a");
-                        Navigator.of(context).pop();
-                      }),
-                      leading: Icon(Icons.date_range_outlined),
+                    Ink(
+                      color: (selectedSort == "date_a") ? kPrimaryColor : null,
+                      child: ListTile(
+                        title: Text("Date (Newest to Oldest)"),
+                        onTap: (selectedSort == "date_a")
+                            ? () => setState(() {
+                                  selectedSort = null;
+                                  Navigator.of(context).pop();
+                                })
+                            : () => setState(() {
+                                  sortMadoAppa("date_a");
+                                  selectedSort = "date_a";
+                                  Navigator.of(context).pop();
+                                }),
+                        leading: Icon(Icons.date_range_outlined),
+                      ),
                     ),
-                    ListTile(
-                      title: Text("Date (Oldest to Newest)"),
-                      onTap: () => setState(() {
-                        sortMadoAppa("date_b");
-                        Navigator.of(context).pop();
-                      }),
-                      leading: Icon(Icons.date_range_rounded),
+                    Ink(
+                      color: (selectedSort == "date_b") ? kPrimaryColor : null,
+                      child: ListTile(
+                        title: Text("Date (Oldest to Newest)"),
+                        onTap: (selectedSort == "date_b")
+                            ? () => setState(() {
+                                  selectedSort = null;
+                                  Navigator.of(context).pop();
+                                })
+                            : () => setState(() {
+                                  sortMadoAppa("date_b");
+                                  selectedSort = "date_b";
+                                  Navigator.of(context).pop();
+                                }),
+                        leading: Icon(Icons.date_range_rounded),
+                      ),
                     ),
                   ],
                 ),
