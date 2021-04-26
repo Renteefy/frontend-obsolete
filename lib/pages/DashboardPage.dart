@@ -356,9 +356,9 @@ class UserInfoCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             style: GoogleFonts.inter(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w900,
-                            )),
+                                fontSize: 25,
+                                fontWeight: FontWeight.w900,
+                                color: kPrimaryColor)),
                     SizedBox(
                       height: 10,
                     ),
