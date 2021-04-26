@@ -6,7 +6,7 @@ import 'package:frontend/models/UserListing.dart';
 
 class UserHttpService {
   final String url = env['SERVER_URL'];
-  // final String url = env['SERVER_URLx'];
+
   final store = new FlutterSecureStorage();
 
   Future<bool> checkInvite(String email) async {
@@ -18,10 +18,13 @@ class UserHttpService {
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
       String username = jsonData["username"];
+
       print(username + " logged in");
+
       await store.write(key: 'jwt', value: jsonData["token"]);
       await store.write(key: 'username', value: username);
       await store.write(key: 'picture', value: jsonData["picture"]);
+
       // get notification from database
       await store.write(
           key: 'notificationCount', value: jsonData["notificationCount"]);
@@ -31,6 +34,7 @@ class UserHttpService {
     }
   }
 
+  // Check if the OTP is correct
   Future<bool> checkVerified(String email, String otp) async {
     http.Response response = await http.post(
       Uri.https(url, "users/checkOTP"),
@@ -46,6 +50,7 @@ class UserHttpService {
     }
   }
 
+  // Get user's details
   Future<UserListing> getUserDetails() async {
     String value = await store.read(key: "jwt");
     var data = await http.get(Uri.https(url, "users/user"),
@@ -59,6 +64,7 @@ class UserHttpService {
     return user;
   }
 
+  // Patches firstname, lastname and username
   Future<int> patchUserDetails(
       String firstName, String lastName, String username, picture) async {
     String value = await store.read(key: "jwt");
@@ -79,6 +85,7 @@ class UserHttpService {
     return (respStr.statusCode);
   }
 
+  // Sends invite to the email given
   Future<String> sendInvite(String email) async {
     String value = await store.read(key: "jwt");
     http.Response response = await http.post(Uri.https(url, "users/sendInvite"),
@@ -93,6 +100,7 @@ class UserHttpService {
     }
   }
 
+  // Returns the list of emails the user has invited
   Future<List<InviteModel>> getInvites() async {
     String value = await store.read(key: "jwt");
     http.Response response = await http.get(
@@ -107,14 +115,5 @@ class UserHttpService {
       invites.add(tmp);
     }
     return invites;
-  }
-
-  Future<int> deleteInvite(String email, String inviteID) async {
-    String value = await store.read(key: "jwt");
-    http.Response response = await http.delete(
-        Uri.https(url, "users/deleteInvite"),
-        headers: {"Content-Type": "application/json", 'Authorization': value},
-        body: json.encode({"email": email, "inviteID": inviteID}));
-    return response.statusCode;
   }
 }

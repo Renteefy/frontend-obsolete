@@ -28,15 +28,6 @@ class _InviteUserState extends State<InviteUser> {
     });
   }
 
-  Future<int> deleteInvites(String email, String inviteID, index) async {
-    int res = await UserHttpService().deleteInvite(email, inviteID);
-    setState(() {
-      emailList.remove(emailList[index]);
-    });
-
-    return res;
-  }
-
   void sendInvite(String email, context) async {
     {
       String resCode = await UserHttpService().sendInvite(email);

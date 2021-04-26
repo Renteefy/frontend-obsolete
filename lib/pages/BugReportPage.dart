@@ -17,6 +17,7 @@ class BugReportPage extends StatefulWidget {
 final store = FlutterSecureStorage();
 
 class _BugReportPageState extends State<BugReportPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController titleController = new TextEditingController();
   TextEditingController desController = new TextEditingController();
   bool loading = false;
@@ -80,149 +81,157 @@ class _BugReportPageState extends State<BugReportPage> {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Reach us out",
-                    style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w900, fontSize: 25),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Something went wrong? We can try helping. Report bugs or send hugs. Both are accepted here.",
-                    style: GoogleFonts.inter(fontSize: 15, color: notifiSent),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  TextFormField(
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'Title Required';
-                      }
-
-                      return null;
-                    },
-                    controller: titleController,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(20),
-                      filled: true,
-                      border: InputBorder.none,
-                      hintText: 'Title',
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Reach us out",
+                      style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w900, fontSize: 25),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'Description Required';
-                      }
-                      return null;
-                    },
-                    controller: desController,
-                    minLines: 10,
-                    maxLines: 50,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(20),
-                      filled: true,
-                      border: InputBorder.none,
-                      hintText: 'Description',
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  bool isRateLimited = await rateLimiter();
-                  if (isRateLimited) {
-                    VoidCallback continueCallBack = () => {
-                          Navigator.of(context).pushNamed("/home")
-                          // code on Okay comes here
-                        };
-                    BlurryDialog alert = BlurryDialog(
-                        "Oops, too fast there",
-                        "You have sent a bug report too often, please wait",
-                        continueCallBack,
-                        false);
+                    Text(
+                      "Something went wrong? We can try helping. Report bugs or send hugs. Both are accepted here.",
+                      style: GoogleFonts.inter(fontSize: 15, color: notifiSent),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    TextFormField(
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Title Required';
+                        }
 
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return alert;
+                        return null;
                       },
-                    );
-                  } else {
-                    sendMail(titleController.text, desController.text);
-                    Navigator.of(context).pushNamed("/home");
-                  }
-                },
-                style: ElevatedButton.styleFrom(primary: kAccentColor1),
-                child: (loading)
-                    ? Center(child: CircularProgressIndicator())
-                    : Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Submit Report",
-                                style: GoogleFonts.inter(
-                                    fontWeight: FontWeight.bold, fontSize: 14)),
-                            Icon(Icons.arrow_right_alt),
-                          ],
-                        ),
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(20),
+                        filled: true,
+                        border: InputBorder.none,
+                        hintText: 'Title',
                       ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Mail us at",
-                          style: GoogleFonts.inter(
-                              fontSize: 20, fontWeight: FontWeight.w600)),
-                      Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Text("renteefy.company@gmail.com",
-                              style: GoogleFonts.inter(
-                                  fontSize: 19,
-                                  color: kPrimaryColor,
-                                  fontWeight: FontWeight.w900)),
-                          IconButton(
-                              icon: Icon(Icons.copy_rounded),
-                              onPressed: () async {
-                                ClipboardData data = ClipboardData(
-                                    text: 'renteefy.company@gmail.com');
-                                await Clipboard.setData(data);
-                                final snackBar = SnackBar(
-                                  content: Text('Copied to Clipboard'),
-                                );
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                              })
-                        ],
-                      )
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Description Required';
+                        }
+                        return null;
+                      },
+                      controller: desController,
+                      minLines: 10,
+                      maxLines: 50,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(20),
+                        filled: true,
+                        border: InputBorder.none,
+                        hintText: 'Description',
+                      ),
+                    ),
+                  ],
                 ),
-              )
-            ],
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (!_formKey.currentState.validate()) {
+                      return;
+                    }
+                    _formKey.currentState.save();
+                    bool isRateLimited = await rateLimiter();
+                    if (isRateLimited) {
+                      VoidCallback continueCallBack = () => {
+                            Navigator.of(context).pushNamed("/home")
+                            // code on Okay comes here
+                          };
+                      BlurryDialog alert = BlurryDialog(
+                          "Oops, too fast there",
+                          "You have sent a bug report too often, please wait",
+                          continueCallBack,
+                          false);
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return alert;
+                        },
+                      );
+                    } else {
+                      sendMail(titleController.text, desController.text);
+                      Navigator.of(context).pushNamed("/home");
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(primary: kAccentColor1),
+                  child: (loading)
+                      ? Center(child: CircularProgressIndicator())
+                      : Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Submit Report",
+                                  style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14)),
+                              Icon(Icons.arrow_right_alt),
+                            ],
+                          ),
+                        ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Mail us at",
+                            style: GoogleFonts.inter(
+                                fontSize: 20, fontWeight: FontWeight.w600)),
+                        Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Text("renteefy.company@gmail.com",
+                                style: GoogleFonts.inter(
+                                    fontSize: 19,
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.w900)),
+                            IconButton(
+                                icon: Icon(Icons.copy_rounded),
+                                onPressed: () async {
+                                  ClipboardData data = ClipboardData(
+                                      text: 'renteefy.company@gmail.com');
+                                  await Clipboard.setData(data);
+                                  final snackBar = SnackBar(
+                                    content: Text('Copied to Clipboard'),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                })
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

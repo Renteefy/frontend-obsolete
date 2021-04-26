@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-//import 'package:frontend/shared/alertBox.dart';
 import 'package:frontend/shared/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/services/UserHttpService.dart';
@@ -125,30 +124,6 @@ class _LandingPageState extends State<LandingPage> {
               );
             });
       }
-      // if (isAuth) {
-      //    saveTokenToDatabase(email);
-      //    Navigator.pushReplacementNamed(context, '/home');
-      // } else {
-      //   setState(() {
-      //     loading = false;
-      //   });
-      //   VoidCallback continueCallBack = () => {
-      //         Navigator.of(context).pop(),
-      //         // code on Okay comes here
-      //       };
-      //   BlurryDialog alert = BlurryDialog(
-      //       "Look, We love you. ❤️",
-      //       "This app is presently for invited users only. Unfortunately, we do not see you on the invite list. Stay tuned for the first public release.",
-      //       continueCallBack,
-      //       false);
-
-      //   showDialog(
-      //     context: context,
-      //     builder: (BuildContext context) {
-      //       return alert;
-      //     },
-      //   );
-      // }
     }
 
     return Scaffold(
@@ -235,4 +210,3 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 }
-// http://159.89.164.229:5000/users/login

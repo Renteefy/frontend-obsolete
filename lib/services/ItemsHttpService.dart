@@ -183,6 +183,7 @@ class ItemsHttpService {
     }
   }
 
+  // Since the "renterUsername" field is a nested object, it would be complicated to update it in the same patch request
   void setRenter(String item, String itemID, String rentee) async {
     String value = await store.read(key: "jwt");
 
