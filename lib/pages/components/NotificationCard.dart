@@ -348,7 +348,7 @@ class _NotificationCardState extends State<NotificationCard> {
                                 }),
                       IconButton(
                           icon: Icon(Icons.messenger_outline),
-                          onPressed: () {
+                          onPressed: () async {
                             var chatList = await ChatHttpService().getChatRoom(
                                 widget.notifi.rentee, widget.notifi.owner);
 
