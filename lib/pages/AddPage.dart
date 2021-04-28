@@ -44,7 +44,6 @@ class _AddPageState extends State<AddPage> {
         await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
       file = (pickedFile != null) ? pickedFile.path : null;
-      print("filename: " + file);
     });
   }
 
